@@ -1,0 +1,3861 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>3D Warp & Weft Weave Simulator Pro</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="config.js"></script>
+
+<style>
+:root{
+    --bg:#0d1713;
+    --card:#14251e;
+    --card2:#192d25;
+    --line:#2c4b3d;
+    --text:#edf7ef;
+    --muted:#9fc5aa;
+    --accent:#78d18a;
+    --blue:#1688d8;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+html,body{
+    min-height:100%;
+    background:var(--bg);
+    color:var(--text);
+}
+
+body{
+    padding:8px;
+}
+
+.container{
+    width:100%;
+    max-width:760px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.header{
+    background:linear-gradient(145deg,#183328,#102019);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px;
+    text-align:center;
+}
+
+.header h1{
+    font-size:1.15rem;
+    color:var(--accent);
+}
+
+.header p{
+    font-size:.72rem;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:11px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+}
+
+.step-no{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#2d8b47;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:.75rem;
+    flex-shrink:0;
+}
+
+.step h3{
+    font-size:.88rem;
+    color:#e5f6e9;
+}
+
+.step p{
+    font-size:.63rem;
+    color:var(--muted);
+    margin-top:2px;
+}
+
+label{
+    font-size:.72rem;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+    margin-bottom:4px;
+}
+
+input,
+select{
+    width:100%;
+    background:#fff;
+    color:#17231d;
+    border:1px solid #c8d3cd;
+    padding:8px 9px;
+    border-radius:9px;
+    font-size:.83rem;
+    min-height:38px;
+    outline:none;
+}
+
+input[type=color]{
+    width:42px!important;
+    min-width:42px!important;
+    height:38px!important;
+    padding:2px!important;
+    cursor:pointer;
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:9px 11px;
+    min-height:38px;
+    font-size:.74rem;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.btn-green{
+    background:#2f9147;
+    color:#fff;
+}
+
+.btn-blue{
+    background:#1285d2;
+    color:#fff;
+}
+
+.btn-dark{
+    background:#244638;
+    color:#aee9ba;
+    border:1px solid #39614f;
+}
+
+.btn-red{
+    background:#633b3b;
+    color:#ffd1ca;
+}
+
+.cloud-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin-top:7px;
+}
+
+.status{
+    font-size:.67rem;
+    color:var(--muted);
+    margin-top:6px;
+    min-height:15px;
+}
+
+.active-design{
+    margin-top:7px;
+    background:#0f1d17;
+    border:1px solid #315746;
+    border-radius:9px;
+    padding:7px 9px;
+    font-size:.7rem;
+    color:#bde8c6;
+}
+
+.active-dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#45c765;
+    margin-right:6px;
+}
+
+.yarn-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-bottom:7px;
+}
+
+.yarn-tab{
+    background:#203b30;
+    border:1px solid #345947;
+    color:#9fc8aa;
+    border-radius:9px;
+    padding:8px;
+    font-weight:900;
+    font-size:.76rem;
+    cursor:pointer;
+}
+
+.yarn-tab.active{
+    background:#2d8d48;
+    color:#fff;
+}
+
+.yarn-summary{
+    display:flex;
+    justify-content:space-between;
+    background:#0e1b16;
+    border:1px solid #28483a;
+    border-radius:8px;
+    padding:7px 9px;
+    margin-bottom:7px;
+    font-size:.66rem;
+    color:#b8d8bf;
+}
+
+.yarn-panel{
+    display:none;
+}
+
+.yarn-panel.active{
+    display:block;
+}
+
+.scroll-box{
+    max-height:255px;
+    overflow:auto;
+    background:#0d1813;
+    padding:5px;
+    border-radius:9px;
+    border:1px solid #28483a;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.scroll-box>div{
+    background:#172b23;
+    border:1px solid #2e5041;
+    border-radius:8px;
+    padding:5px 6px;
+    display:grid;
+    grid-template-columns:55px 42px minmax(0,1fr);
+    align-items:center;
+    gap:6px;
+}
+
+.scroll-box label{
+    margin:0;
+    font-size:.68rem;
+}
+
+.flex-row{
+    display:contents;
+}
+
+.entry-unit{
+    font-size:.57rem!important;
+    color:#729b7d!important;
+}
+
+#gridEditorSection{
+    background:#0f1b16;
+    border:1px solid #2c4b3d;
+    padding:8px;
+    border-radius:10px;
+    margin-top:8px;
+}
+
+.grid-controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:7px;
+}
+
+.grid-controls button{
+    background:#244638;
+    color:#aee9ba;
+    border:1px solid #39614f;
+    padding:7px 8px;
+    border-radius:7px;
+    font-size:.64rem;
+    font-weight:800;
+}
+
+.matrix-grid-container{
+    max-height:360px;
+    overflow:auto;
+    padding:4px;
+    border:1px solid #28483a;
+    border-radius:8px;
+    background:#09110d;
+}
+
+.matrix-row-wrapper{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    justify-content:center;
+    margin-bottom:4px;
+}
+
+.matrix-row{
+    display:flex;
+    gap:3px;
+}
+
+.matrix-cell{
+    width:32px;
+    height:32px;
+    background:#183026;
+    border:1px solid #315443;
+    color:#8fe19d;
+    font-weight:800;
+    font-size:.72rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    border-radius:4px;
+    flex-shrink:0;
+}
+
+.matrix-cell.active{
+    background:#4caf50;
+    color:#102015;
+    border-color:#8ee49a;
+}
+
+.btn-row-del,
+.btn-col-del{
+    background:#633b3b;
+    color:#ffd1ca;
+    border:0;
+    font-weight:800;
+    border-radius:4px;
+    cursor:pointer;
+    flex-shrink:0;
+}
+
+.btn-row-del{
+    width:25px;
+    height:32px;
+}
+
+.btn-col-del{
+    width:32px;
+    height:21px;
+    font-size:.6rem;
+}
+
+.col-del-row{
+    display:flex;
+    gap:3px;
+    justify-content:center;
+    margin-left:0;
+    margin-bottom:4px;
+}
+
+.save-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-top:7px;
+}
+
+.save-row button{
+    border:0;
+    border-radius:8px;
+    padding:8px;
+    font-weight:800;
+    color:#fff;
+    cursor:pointer;
+}
+
+.save-row .save{
+    background:#338e47;
+}
+
+.save-row .preview{
+    background:#217eaf;
+}
+
+.main-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin-top:8px;
+}
+
+.main-actions button{
+    width:100%;
+}
+
+.main-actions .wide{
+    grid-column:1/-1;
+}
+
+.menu-panel{
+    display:none;
+    margin-top:8px;
+    animation:panelIn .18s ease;
+}
+
+.menu-panel.active{
+    display:block;
+}
+
+@keyframes panelIn{
+    from{
+        opacity:0;
+        transform:translateY(5px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.info-box{
+    background:#0e1b16;
+    border:1px solid #28483a;
+    border-radius:9px;
+    padding:9px;
+    font-size:.72rem;
+    line-height:1.55;
+}
+
+.info-box b{
+    color:#9be4a8;
+}
+
+/* FULLSCREEN 3D */
+
+.fs-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    background:#000;
+    z-index:999999;
+    flex-direction:column;
+}
+
+.fs-header{
+    height:54px;
+    min-height:54px;
+    padding:7px 9px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#14251e;
+    border-bottom:1px solid #345947;
+}
+
+.fs-title{
+    color:#9be4a8;
+    font-size:.85rem;
+    font-weight:900;
+}
+
+.fs-header-actions{
+    display:flex;
+    gap:6px;
+}
+
+.fs-header button{
+    border:0;
+    border-radius:7px;
+    padding:8px 11px;
+    color:#fff;
+    font-weight:800;
+    font-size:.7rem;
+    cursor:pointer;
+}
+
+.fs-content{
+    flex:1;
+    width:100%;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#000;
+    touch-action:none;
+    position:relative;
+}
+
+.fs-content canvas{
+    width:100%;
+    height:100%;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    cursor:grab;
+    display:block;
+    transform-origin:center center;
+    will-change:transform;
+}
+
+.fs-hint{
+    position:absolute;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(20,37,30,.85);
+    color:#b8d8bf;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:.62rem;
+    pointer-events:none;
+    white-space:nowrap;
+}
+
+/* PRINT */
+
+.print-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    z-index:1000000;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+}
+
+.print-sheet{
+    background:#fff;
+    color:#000;
+    padding:15px;
+    border-radius:7px;
+    width:100%;
+    max-width:600px;
+    max-height:95vh;
+    overflow:auto;
+}
+
+.print-controls{
+    display:flex;
+    gap:7px;
+    justify-content:flex-end;
+    margin-top:10px;
+}
+
+.print-controls button{
+    border:0;
+    padding:8px 12px;
+    border-radius:6px;
+    color:#fff;
+    font-weight:bold;
+}
+
+.print-card{
+    display:none!important;
+}
+
+@media(max-width:430px){
+
+    body{
+        padding:5px;
+    }
+
+    .header{
+        padding:10px;
+    }
+
+    .card{
+        padding:9px;
+    }
+
+    .container{
+        gap:6px;
+    }
+
+    .scroll-box{
+        max-height:230px;
+    }
+
+    .matrix-grid-container{
+        max-height:430px;
+    }
+
+    .matrix-cell{
+        width:30px;
+        height:30px;
+    }
+
+    .main-actions{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .main-actions .wide{
+        grid-column:1/-1;
+    }
+
+    .fs-header{
+        height:50px;
+        min-height:50px;
+        padding:6px;
+    }
+
+    .fs-title{
+        font-size:.74rem;
+    }
+
+    .fs-header button{
+        padding:7px 9px;
+        font-size:.64rem;
+    }
+
+    .fs-hint{
+        font-size:.55rem;
+        bottom:8px;
+    }
+}
+
+@media print{
+
+    @page{
+        margin:10mm;
+    }
+
+    body{
+        background:#fff!important;
+        color:#000!important;
+        padding:0!important;
+    }
+
+    .container{
+        max-width:none;
+    }
+
+    .header,
+    .card:not(.print-card),
+    .print-hide,
+    #fsModal{
+        display:none!important;
+    }
+
+    body.printing-graph #printModalBox{
+        display:flex!important;
+        position:static!important;
+        background:#fff!important;
+        padding:0!important;
+    }
+
+    .print-sheet{
+        box-shadow:none!important;
+        max-width:100%!important;
+    }
+
+    body.printing-design .print-card{
+        display:block!important;
+        background:#fff!important;
+        border:none!important;
+        color:#000!important;
+        box-shadow:none!important;
+    }
+
+    body.printing-design #designPrintImage{
+        display:block!important;
+        width:100%!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card print-hide" style="padding:10px;margin-bottom:2px;">
+    <button
+        class="btn btn-dark"
+        onclick="window.location.href='dashboard.html'"
+        style="display:inline-flex;align-items:center;padding:8px 14px;min-height:auto;width:auto;">
+        ← Back to Menu
+    </button>
+</div>
+
+<div class="header">
+    <h1>🧵 3D Weave Simulation Pro</h1>
+    <p>வார்ப் & வெஃப்ட் டிசைனை எளிதாக பார்க்கும் நெசவு சிமுலேட்டர்</p>
+</div>
+
+<!-- DESIGN -->
+
+<div class="card">
+
+    <label>🎨 Design</label>
+
+    <select id="designSelect" onchange="loadSelectedDesign()">
+        <option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>
+    </select>
+
+    <div class="active-design">
+        <span class="active-dot"></span>
+        <span id="activeDesignText">Design loading...</span>
+    </div>
+
+    <div class="cloud-actions">
+
+        <button class="btn btn-dark" onclick="importFromFirebase(true)">
+            🔄 Refresh
+        </button>
+
+        <button class="btn btn-green" onclick="saveCurrentDesign()">
+            ☁️ Save / Update
+        </button>
+
+    </div>
+
+    <div id="designStatus" class="status">
+        ⚡ Loading...
+    </div>
+
+</div>
+
+<!-- YARN -->
+
+<div class="card">
+
+    <div class="step">
+
+        <div class="step-no">2</div>
+
+        <div>
+            <h3>நூல் விவரங்கள்</h3>
+            <p>Warp / Weft நிறம் மற்றும் அளவு</p>
+        </div>
+
+    </div>
+
+    <div class="yarn-tabs">
+
+        <button class="yarn-tab active" id="warpTab"
+                onclick="showYarnTab('warp')">
+            🧵 WARP <span id="warpTabCount">10</span>
+        </button>
+
+        <button class="yarn-tab" id="weftTab"
+                onclick="showYarnTab('weft')">
+            🪢 WEFT <span id="weftTabCount">6</span>
+        </button>
+
+    </div>
+
+    <div class="yarn-summary">
+
+        <span>
+            நிறங்கள்:
+            <b id="activeYarnCount">0 / 10</b>
+        </span>
+
+        <span id="activeYarnHint">
+            Ends உள்ளிடவும்
+        </span>
+
+    </div>
+
+    <div id="warpPanel" class="yarn-panel active">
+
+        <label>
+            WARP — <span id="warpCountDisplay">10</span> வரிகள்
+        </label>
+
+        <div id="warpInputsContainer" class="scroll-box"></div>
+
+    </div>
+
+    <div id="weftPanel" class="yarn-panel">
+
+        <label>
+            WEFT — <span id="weftCountDisplay">6</span> வரிகள்
+        </label>
+
+        <div id="weftInputsContainer" class="scroll-box"></div>
+
+    </div>
+
+</div>
+
+<!-- WEAVE -->
+
+<div class="card">
+
+    <div class="step">
+
+        <div class="step-no">3</div>
+
+        <div>
+            <h3>Weave அமைப்பு</h3>
+            <p>Graph edit செய்ய Custom தேர்வு செய்யவும்</p>
+        </div>
+
+    </div>
+
+    <label>Weave Type</label>
+
+    <select id="weaveType" onchange="onWeaveChange()">
+
+        <option value="plain">
+            Plain Weave (1 / 1)
+        </option>
+
+        <option value="twill">
+            Twill 2/2
+        </option>
+
+        <option value="custom">
+            🛠️ Custom Graph Grid
+        </option>
+
+    </select>
+
+    <div id="gridEditorSection" style="display:none">
+
+        <div style="
+            font-size:.72rem;
+            color:#a9d6b2;
+            font-weight:800;
+            margin-bottom:7px">
+            ⚙️ Graph Editor — click cells to toggle 0 / 1
+        </div>
+
+        <div class="grid-controls">
+
+            <button onclick="addCol()">➕ Column</button>
+            <button onclick="addRowTop()">➕ Row</button>
+            <button onclick="removeLastRow()">➖ Row</button>
+            <button onclick="removeLastCol()">➖ Column</button>
+            <button onclick="duplicateSet()">⏬ Duplicate</button>
+            <button onclick="triggerGraphScan()">📸 Scan</button>
+
+        </div>
+
+        <div id="matrixGridContainer"
+             class="matrix-grid-container"></div>
+
+        <div style="
+            font-size:.64rem;
+            color:#8fb99a;
+            text-align:center;
+            margin-top:5px">
+            1 = Warp Up • 0 = Weft Up • Graph direction → 3D-லும் அதே direction
+        </div>
+
+        <div class="save-row">
+
+            <button class="save" onclick="saveCurrentDesign()">
+                💾 Save in Same Design
+            </button>
+
+            <button class="preview" onclick="openGraphPrintPreview()">
+                🖨️ Print Graph
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="main-actions">
+
+        <button class="btn btn-green" onclick="openFullscreen()">
+            🧊 3D VIEW
+        </button>
+
+        <button class="btn btn-blue" onclick="openMenu('denting')">
+            📐 DENTING
+        </button>
+
+        <button class="btn btn-dark wide" onclick="printDesign()">
+            🖨️ PRINT DESIGN
+        </button>
+
+    </div>
+
+    <div id="dentingPanel" class="menu-panel">
+
+        <div class="preview-title">
+            📐 Denting / Drawing
+        </div>
+
+        <div class="info-box" id="dentingInfo">
+            Denting data loading...
+        </div>
+
+    </div>
+
+</div>
+
+<!-- PRINT CARD -->
+
+<div class="card print-card" id="designPrintCard">
+
+    <h3 style="color:#000;margin-bottom:8px;text-align:center;">
+        Weave Design
+    </h3>
+
+    <img
+        id="designPrintImage"
+        alt="Print Preview"
+        style="width:100%;max-width:800px;height:auto;display:block;margin:auto;">
+
+</div>
+
+</div>
+
+<!-- FULLSCREEN -->
+
+<div id="fsModal" class="fs-modal">
+
+    <div class="fs-header">
+
+        <div class="fs-title">
+            🧊 3D Weave Preview
+        </div>
+
+        <div class="fs-header-actions">
+
+            <button style="background:#217eaf"
+                    onclick="refreshFullscreen3D()">
+                🔄 Refresh
+            </button>
+
+            <button style="background:#633b3b"
+                    onclick="closeFullscreen()">
+                ✖ Close
+            </button>
+
+        </div>
+
+    </div>
+
+    <div id="fsContent" class="fs-content">
+
+        <canvas id="weaveCanvas"
+                width="720"
+                height="520"></canvas>
+
+        <div class="fs-hint">
+            👆 Drag • 🤏 Pinch Zoom
+        </div>
+
+    </div>
+
+</div>
+
+<!-- GRAPH PRINT -->
+
+<div id="printModalBox" class="print-modal">
+
+    <div class="print-sheet">
+
+        <h3 style="text-align:center;margin-bottom:10px">
+            Weave Graph Matrix Design
+        </h3>
+
+        <div id="printTableContainer"></div>
+
+        <div class="print-controls print-hide">
+
+            <button style="background:#2e7d32"
+                    onclick="window.print()">
+                Print Graph
+            </button>
+
+            <button style="background:#5c3a3a"
+                    onclick="closeGraphPrintPreview()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+let currentWarpCount = 10;
+let currentWeftCount = 6;
+
+let activeDesignObj = null;
+let allCloudDesigns = [];
+
+let weavePatterns = {
+
+    plain:[
+        [1,0],
+        [0,1]
+    ],
+
+    twill:[
+        [0,0,1,1],
+        [0,1,1,0],
+        [1,1,0,0],
+        [1,0,0,1]
+    ],
+
+    custom:[
+        [0,0,1,1],
+        [0,1,1,0],
+        [1,1,0,0],
+        [1,0,0,1]
+    ]
+
+};
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function safeJSON(key,fallback=null){
+
+    try{
+
+        const raw=localStorage.getItem(key);
+
+        return raw ? JSON.parse(raw) : fallback;
+
+    }catch(e){
+
+        return fallback;
+
+    }
+
+}
+
+function clone(x){
+
+    return JSON.parse(JSON.stringify(x));
+
+}
+
+function designName(d){
+
+    return String(
+
+        d?.designNo ??
+        d?.design_no ??
+        d?.designNumber ??
+        d?.design_number ??
+        d?.name ??
+        d?.design ??
+        d?.id ??
+        "Unnamed"
+
+    );
+
+}
+
+function setStatus(x){
+
+    const el=$("designStatus");
+
+    if(el)
+        el.textContent=x;
+
+}
+
+function colorName(n){
+
+    if(!n)
+        return "#ffffff";
+
+    let s=String(n).toLowerCase().trim();
+
+    if(/^#[0-9a-f]{6}$/i.test(s))
+        return s;
+
+    if(/^#[0-9a-f]{3}$/i.test(s)){
+
+        return "#"+
+            s[1]+s[1]+
+            s[2]+s[2]+
+            s[3]+s[3];
+
+    }
+
+    let m=[
+
+        ["black","#111827"],
+        ["கருப்பு","#111827"],
+
+        ["white","#f8fafc"],
+        ["வெள்ளை","#f8fafc"],
+
+        ["red","#ef4444"],
+        ["சிவப்பு","#ef4444"],
+
+        ["green","#22c55e"],
+        ["blue","#3b82f6"],
+
+        ["navy","#1e3a8a"],
+        ["yellow","#eab308"],
+        ["gold","#fbbf24"],
+
+        ["orange","#f97316"],
+        ["brown","#92400e"],
+        ["maroon","#9f1239"],
+
+        ["pink","#ec4899"],
+        ["purple","#8b5cf6"],
+        ["violet","#8b5cf6"],
+
+        ["grey","#64748b"],
+        ["gray","#64748b"],
+        ["சாம்பல்","#64748b"],
+
+        ["d. grey","#334155"],
+        ["d. gray","#334155"],
+        ["d. கிரே","#334155"],
+
+        ["l. grey","#94a3b8"],
+        ["l. gray","#94a3b8"],
+        ["l. கிரே","#94a3b8"],
+
+        ["cream","#fdfbf7"],
+        ["கிரீம்","#fdfbf7"],
+
+        ["1/2 salavai","#fdfbf7"],
+        ["1/2 சலவை","#fdfbf7"],
+        ["t. salavai","#fdfbf7"],
+        ["t. சலவை","#fdfbf7"]
+
+    ];
+
+    for(let [a,b] of m){
+
+        if(s.includes(a))
+            return b;
+
+    }
+
+    return "#94a3b8";
+
+}
+
+function normLine(x,warp){
+
+    x=x||{};
+
+    let color=
+        x.color ??
+        x.colour ??
+        x.Color ??
+        x.Colour ??
+        x.col ??
+        x.colourName;
+
+    let amount=warp
+        ?(
+            x.ends ??
+            x.end ??
+            x.count ??
+            x.qty ??
+            x.orderEnds
+        )
+        :(
+            x.picks ??
+            x.pick ??
+            x.count ??
+            x.qty ??
+            x.orderPicks
+        );
+
+    return {
+        color:colorName(color),
+        amount:parseInt(amount)||0
+    };
+
+}
+
+/* =========================================================
+   MERGE
+========================================================= */
+
+function mergeDesigns(items){
+
+    let map=new Map();
+
+    (items||[])
+        .filter(Boolean)
+        .forEach(d=>{
+
+            let n=designName(d);
+
+            if(!n || n==="Unnamed")
+                return;
+
+            let old=map.get(n);
+
+            if(!old){
+
+                map.set(n,d);
+
+            }else{
+
+                map.set(
+                    n,
+                    {
+                        ...old,
+                        ...d,
+
+                        warpLines:
+                            d.warpLines?.length
+                            ?d.warpLines
+                            :old.warpLines,
+
+                        weftLines:
+                            d.weftLines?.length
+                            ?d.weftLines
+                            :old.weftLines,
+
+                        customMatrix:
+                            d.customMatrix?.length
+                            ?d.customMatrix
+                            :old.customMatrix
+                    }
+                );
+
+            }
+
+        });
+
+    return [...map.values()];
+
+}
+
+/* =========================================================
+   YARN
+========================================================= */
+
+function renderUIWithData(w=[],f=[]){
+
+    let wc=Math.max(10,w.length);
+    let fc=Math.max(6,f.length);
+
+    currentWarpCount=wc;
+    currentWeftCount=fc;
+
+    $("warpCountDisplay").textContent=wc;
+    $("weftCountDisplay").textContent=fc;
+
+    $("warpTabCount").textContent=wc;
+    $("weftTabCount").textContent=fc;
+
+    let wh="";
+    let fh="";
+
+    for(let i=0;i<wc;i++){
+
+        let x=w[i]
+            ?normLine(w[i],true)
+            :{
+                color:i ? "#334155" : "#f8fafc",
+                amount:0
+            };
+
+        wh+=`
+
+        <div>
+
+            <label>Warp ${i+1}</label>
+
+            <input
+                type="color"
+                id="wC${i+1}"
+                value="${x.color}">
+
+            <div class="flex-row">
+
+                <input
+                    type="number"
+                    id="wE${i+1}"
+                    value="${x.amount}"
+                    min="0"
+                    inputmode="numeric"
+                    oninput="
+                        updateYarnSummary('warp');
+                        calculateDenting();
+                        autoRefresh3D();
+                    ">
+
+                <span class="entry-unit">
+                    Ends
+                </span>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+    for(let i=0;i<fc;i++){
+
+        let x=f[i]
+            ?normLine(f[i],false)
+            :{
+                color:i ? "#334155" : "#f8fafc",
+                amount:0
+            };
+
+        fh+=`
+
+        <div>
+
+            <label>Weft ${i+1}</label>
+
+            <input
+                type="color"
+                id="weftC${i+1}"
+                value="${x.color}">
+
+            <div class="flex-row">
+
+                <input
+                    type="number"
+                    id="weftP${i+1}"
+                    value="${x.amount}"
+                    min="0"
+                    inputmode="numeric"
+                    oninput="
+                        updateYarnSummary('weft');
+                        autoRefresh3D();
+                    ">
+
+                <span class="entry-unit">
+                    Picks
+                </span>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+    $("warpInputsContainer").innerHTML=wh;
+    $("weftInputsContainer").innerHTML=fh;
+
+    updateYarnSummary("warp");
+    calculateDenting();
+
+}
+
+function updateYarnSummary(type){
+
+    let total=
+        type==="warp"
+        ?currentWarpCount
+        :currentWeftCount;
+
+    let filled=0;
+
+    for(let i=1;i<=total;i++){
+
+        let id=
+            type==="warp"
+            ?"wE"+i
+            :"weftP"+i;
+
+        let v=parseInt($(id)?.value)||0;
+
+        if(v>0)
+            filled++;
+
+    }
+
+    $("activeYarnCount").textContent=
+        filled+" / "+total;
+
+    $("activeYarnHint").textContent=
+        type==="warp"
+        ?"Ends உள்ளிடவும்"
+        :"Picks உள்ளிடவும்";
+
+}
+
+function showYarnTab(t){
+
+    $("warpPanel").classList.toggle(
+        "active",
+        t==="warp"
+    );
+
+    $("weftPanel").classList.toggle(
+        "active",
+        t==="weft"
+    );
+
+    $("warpTab").classList.toggle(
+        "active",
+        t==="warp"
+    );
+
+    $("weftTab").classList.toggle(
+        "active",
+        t==="weft"
+    );
+
+    updateYarnSummary(t);
+
+}
+
+/* =========================================================
+   DESIGN SELECT
+========================================================= */
+
+function populateDesignSelect(auto=true){
+
+    let s=$("designSelect");
+
+    let cur=
+        activeDesignObj
+        ?designName(activeDesignObj)
+        :safeJSON("weave_last_design_name","");
+
+    s.innerHTML=
+        '<option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>';
+
+    allCloudDesigns.forEach((d,i)=>{
+
+        let o=document.createElement("option");
+
+        o.value=i;
+        o.textContent="🎨 "+designName(d);
+
+        s.appendChild(o);
+
+    });
+
+    if(auto && allCloudDesigns.length){
+
+        let i=
+            allCloudDesigns.findIndex(
+                d=>designName(d)===cur
+            );
+
+        if(i<0)
+            i=0;
+
+        s.value=i;
+
+        loadSelectedDesign();
+
+    }
+
+}
+
+/* =========================================================
+   FIREBASE SAFE CHECK
+========================================================= */
+
+function isFirebaseFirestoreReady(){
+
+    return (
+        typeof window.firebase !== "undefined" &&
+        Array.isArray(window.firebase.apps) &&
+        window.firebase.apps.length > 0 &&
+        typeof window.firebase.firestore === "function"
+    );
+
+}
+
+function getSafeFirestore(){
+
+    if(!isFirebaseFirestoreReady())
+        return null;
+
+    try{
+
+        return window.firebase.firestore();
+
+    }catch(e){
+
+        console.warn(
+            "Firestore unavailable:",
+            e
+        );
+
+        return null;
+
+    }
+
+}
+
+/* =========================================================
+   FIREBASE / CLOUD LOAD
+   FIXED: firebase.firestore IS NEVER CALLED
+   WITHOUT CHECKING IT FIRST
+========================================================= */
+
+async function importFromFirebase(manual=false){
+
+    try{
+
+        setStatus(
+            manual
+            ?"🔄 Local + Cloud refresh..."
+            :"⚡ Loading designs..."
+        );
+
+        /* LOCAL FIRST */
+
+        let local=[];
+
+        [
+            "design_masters_data",
+            "weave_designs",
+            "weave_designs_cache",
+            "warp_entry_data",
+            "warping_data"
+        ].forEach(k=>{
+
+            let a=safeJSON(k,[]);
+
+            if(Array.isArray(a))
+                local.push(...a);
+
+        });
+
+        allCloudDesigns=mergeDesigns(local);
+
+        populateDesignSelect(true);
+
+
+        /* FIREBASE SAFE CHECK */
+
+        let db=getSafeFirestore();
+
+        if(!db){
+
+            console.warn(
+                "⚠️ Firebase Firestore unavailable. Local mode."
+            );
+
+            setStatus(
+                allCloudDesigns.length
+                ?"💾 Local designs ready"
+                :"ℹ️ Design இல்லை"
+            );
+
+            return;
+
+        }
+
+
+        /* CLOUD LOAD */
+
+        let cloud=[];
+
+        for(
+            let col of [
+                "weaves",
+                "design_masters_data"
+            ]
+        ){
+
+            try{
+
+                let snap=
+                    await db
+                        .collection(col)
+                        .get();
+
+                snap.forEach(doc=>{
+
+                    cloud.push({
+                        id:doc.id,
+                        ...doc.data()
+                    });
+
+                });
+
+            }catch(e){
+
+                console.warn(
+                    "Cloud collection skipped:",
+                    col,
+                    e
+                );
+
+            }
+
+        }
+
+
+        /* MERGE */
+
+        if(cloud.length){
+
+            allCloudDesigns=
+                mergeDesigns(
+                    allCloudDesigns.concat(cloud)
+                );
+
+            localStorage.setItem(
+                "weave_designs_cache",
+                JSON.stringify(allCloudDesigns)
+            );
+
+            populateDesignSelect(true);
+
+            setStatus(
+                "☁️ Cloud designs ready"
+            );
+
+        }else{
+
+            setStatus(
+                allCloudDesigns.length
+                ?"💾 Local designs ready"
+                :"ℹ️ Design இல்லை"
+            );
+
+        }
+
+    }catch(e){
+
+        console.error(
+            "IMPORT / REFRESH ERROR:",
+            e
+        );
+
+        setStatus(
+            allCloudDesigns.length
+            ?"💾 Local designs ready"
+            :"ℹ️ Design இல்லை"
+        );
+
+    }
+
+}
+
+/* =========================================================
+   LOAD DESIGN
+========================================================= */
+
+function loadSelectedDesign(){
+
+    let i=parseInt(
+        $("designSelect").value
+    );
+
+    if(
+        isNaN(i) ||
+        !allCloudDesigns[i]
+    )
+        return;
+
+    activeDesignObj=
+        clone(allCloudDesigns[i]);
+
+    localStorage.setItem(
+        "weave_last_design_name",
+        designName(activeDesignObj)
+    );
+
+    $("activeDesignText").textContent=
+        "Active Design: "+
+        designName(activeDesignObj);
+
+    let w=
+        activeDesignObj.warpLines ||
+        activeDesignObj.warp ||
+        [];
+
+    let f=
+        activeDesignObj.weftLines ||
+        activeDesignObj.weft ||
+        [];
+
+    renderUIWithData(w,f);
+
+    let type=
+        activeDesignObj.type ||
+        "plain";
+
+    if(activeDesignObj.customMatrix?.length){
+
+        weavePatterns.custom=
+            clone(activeDesignObj.customMatrix);
+
+        if(activeDesignObj.type==="custom")
+            type="custom";
+
+    }
+
+    if(!weavePatterns[type])
+        type="plain";
+
+    $("weaveType").value=type;
+
+    onWeaveChange(false);
+
+    closeAllMenus();
+
+    calculateDenting();
+
+}
+
+/* =========================================================
+   CURRENT DATA
+========================================================= */
+
+function getCurrentData(){
+
+    let w=[];
+    let f=[];
+
+    for(
+        let i=1;
+        i<=currentWarpCount;
+        i++
+    ){
+
+        let c=$("wC"+i);
+        let e=$("wE"+i);
+
+        if(
+            c &&
+            e &&
+            (parseInt(e.value)||0)>0
+        ){
+
+            w.push({
+                color:c.value,
+                ends:parseInt(e.value)||0
+            });
+
+        }
+
+    }
+
+    for(
+        let i=1;
+        i<=currentWeftCount;
+        i++
+    ){
+
+        let c=$("weftC"+i);
+        let p=$("weftP"+i);
+
+        if(
+            c &&
+            p &&
+            (parseInt(p.value)||0)>0
+        ){
+
+            f.push({
+                color:c.value,
+                picks:parseInt(p.value)||0
+            });
+
+        }
+
+    }
+
+    let selectedType=
+        $("weaveType").value;
+
+    return {
+
+        warpLines:w,
+        weftLines:f,
+
+        customMatrix:
+            clone(weavePatterns.custom),
+
+        type:selectedType
+
+    };
+
+}
+
+/* =========================================================
+   SAVE SAME DESIGN
+   FIXED FIREBASE HANDLING
+========================================================= */
+
+async function saveCurrentDesign(){
+
+    try{
+
+        let currentInputData=
+            getCurrentData();
+
+        let data=
+            activeDesignObj
+            ?clone(activeDesignObj)
+            :{};
+
+        Object.assign(
+            data,
+            currentInputData
+        );
+
+        let name=
+            activeDesignObj
+            ?designName(activeDesignObj)
+            :null;
+
+        if(
+            !name ||
+            name==="Unnamed"
+        ){
+
+            name=prompt(
+                "Design Number / Name",
+                "Design_01"
+            );
+
+        }
+
+        if(!name)
+            return;
+
+        if(activeDesignObj?.id)
+            data.id=activeDesignObj.id;
+
+        data.designNo=name;
+        data.name=name;
+        data.timestamp=
+            new Date().toISOString();
+
+
+        /* =====================================================
+           LOCAL SAVE
+        ===================================================== */
+
+        let local=
+            safeJSON(
+                "design_masters_data",
+                []
+            );
+
+        if(!Array.isArray(local))
+            local=[];
+
+        local=
+            local.filter(
+                x=>designName(x)!==name
+            );
+
+        local.push(clone(data));
+
+        localStorage.setItem(
+            "design_masters_data",
+            JSON.stringify(local)
+        );
+
+
+        /* CACHE */
+
+        let cache=
+            Array.isArray(allCloudDesigns)
+            ?allCloudDesigns.filter(
+                x=>designName(x)!==name
+            )
+            :[];
+
+        cache.push(clone(data));
+
+        allCloudDesigns=
+            mergeDesigns(cache);
+
+        localStorage.setItem(
+            "weave_designs_cache",
+            JSON.stringify(allCloudDesigns)
+        );
+
+
+        activeDesignObj=
+            clone(data);
+
+        localStorage.setItem(
+            "weave_last_design_name",
+            name
+        );
+
+        if($("activeDesignText")){
+
+            $("activeDesignText").textContent=
+                "Active Design: "+name;
+
+        }
+
+        populateDesignSelect(false);
+
+        let idx=
+            allCloudDesigns.findIndex(
+                x=>designName(x)===name
+            );
+
+        if(
+            idx>=0 &&
+            $("designSelect")
+        ){
+
+            $("designSelect").value=idx;
+
+        }
+
+
+        /* =====================================================
+           SAFE CLOUD SAVE
+        ===================================================== */
+
+        let db=getSafeFirestore();
+
+        if(db){
+
+            try{
+
+                let docId=
+                    data.id || name;
+
+                await db
+                    .collection("weaves")
+                    .doc(String(docId))
+                    .set(
+                        data,
+                        {merge:true}
+                    );
+
+                try{
+
+                    await db
+                        .collection("design_masters_data")
+                        .doc(String(docId))
+                        .set(
+                            data,
+                            {merge:true}
+                        );
+
+                }catch(e){
+
+                    console.warn(
+                        "design_masters_data cloud save skipped:",
+                        e
+                    );
+
+                }
+
+                setStatus(
+                    "✅ Saved Successfully — Cloud + Local"
+                );
+
+            }catch(cloudError){
+
+                console.warn(
+                    "Cloud save failed. Local save kept.",
+                    cloudError
+                );
+
+                setStatus(
+                    "✅ Saved Successfully — Local"
+                );
+
+            }
+
+        }else{
+
+            setStatus(
+                "✅ Saved Successfully — Local"
+            );
+
+        }
+
+
+        calculateDenting();
+        draw3DWeave();
+
+        alert(
+            "✅ Design வெற்றிகரமாக Save / Update ஆகிவிட்டது!"
+        );
+
+    }catch(error){
+
+        console.error(
+            "SAVE SAME DESIGN ERROR:",
+            error
+        );
+
+        setStatus(
+            "⚠️ Save Error: "+error.message
+        );
+
+        alert(
+            "Save செய்யும்போது Error ஏற்பட்டுள்ளது.\n\n"+
+            error.message
+        );
+
+    }
+
+}
+
+/* =========================================================
+   WEAVE CHANGE
+========================================================= */
+
+function onWeaveChange(){
+
+    let t=$("weaveType").value;
+
+    if(t==="plain"){
+
+        weavePatterns.custom=
+            clone(weavePatterns.plain);
+
+        $("gridEditorSection")
+            .style.display="none";
+
+    }
+
+    else if(t==="twill"){
+
+        weavePatterns.custom=
+            clone(weavePatterns.twill);
+
+        $("gridEditorSection")
+            .style.display="none";
+
+    }
+
+    else{
+
+        $("gridEditorSection")
+            .style.display="block";
+
+        buildGridEditor();
+
+    }
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    ){
+
+        draw3DWeave();
+
+    }
+
+}
+
+/* =========================================================
+   GRAPH EDITOR
+========================================================= */
+
+function buildGridEditor(){
+
+    let box=$("matrixGridContainer");
+
+    let m=weavePatterns.custom;
+
+    if(
+        !Array.isArray(m) ||
+        !m.length
+    ){
+
+        weavePatterns.custom=[
+            [1,0],
+            [0,1]
+        ];
+
+        m=weavePatterns.custom;
+
+    }
+
+    box.innerHTML="";
+
+    let top=
+        document.createElement("div");
+
+    top.className="col-del-row";
+
+    for(
+        let c=0;
+        c<(m[0]?.length||0);
+        c++
+    ){
+
+        let b=
+            document.createElement("button");
+
+        b.className="btn-col-del";
+        b.textContent="✕";
+
+        b.onclick=()=>removeCol(c);
+
+        top.appendChild(b);
+
+    }
+
+    box.appendChild(top);
+
+    m.forEach((row,r)=>{
+
+        let wrap=
+            document.createElement("div");
+
+        wrap.className=
+            "matrix-row-wrapper";
+
+        let rd=
+            document.createElement("div");
+
+        rd.className="matrix-row";
+
+        row.forEach((v,c)=>{
+
+            let cell=
+                document.createElement("div");
+
+            cell.className=
+                "matrix-cell"+
+                (v===1 ? " active" : "");
+
+            cell.textContent=v;
+
+            cell.onclick=()=>{
+
+                m[r][c]=
+                    m[r][c]
+                    ?0
+                    :1;
+
+                buildGridEditor();
+
+                if(
+                    $("fsModal")?.style.display==="flex"
+                )
+                    draw3DWeave();
+
+            };
+
+            rd.appendChild(cell);
+
+        });
+
+        wrap.appendChild(rd);
+
+        let del=
+            document.createElement("button");
+
+        del.className="btn-row-del";
+        del.textContent="✕";
+
+        del.onclick=()=>removeRow(r);
+
+        wrap.appendChild(del);
+
+        box.appendChild(wrap);
+
+    });
+
+}
+
+function addCol(){
+
+    weavePatterns.custom.forEach(
+        r=>r.push(0)
+    );
+
+    buildGridEditor();
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    )
+        draw3DWeave();
+
+}
+
+function removeCol(c){
+
+    if(
+        !weavePatterns.custom.length ||
+        weavePatterns.custom[0].length<=2
+    )
+        return;
+
+    weavePatterns.custom.forEach(
+        r=>r.splice(c,1)
+    );
+
+    buildGridEditor();
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    )
+        draw3DWeave();
+
+}
+
+function addRowTop(){
+
+    let cols=
+        weavePatterns.custom[0]?.length ||
+        4;
+
+    weavePatterns.custom.unshift(
+        new Array(cols).fill(0)
+    );
+
+    buildGridEditor();
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    )
+        draw3DWeave();
+
+}
+
+function removeRow(i){
+
+    if(
+        weavePatterns.custom.length<=2
+    )
+        return;
+
+    weavePatterns.custom.splice(i,1);
+
+    buildGridEditor();
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    )
+        draw3DWeave();
+
+}
+
+function removeLastRow(){
+
+    removeRow(
+        weavePatterns.custom.length-1
+    );
+
+}
+
+function removeLastCol(){
+
+    removeCol(
+        (
+            weavePatterns.custom[0]?.length||1
+        )-1
+    );
+
+}
+
+function duplicateSet(){
+
+    let m=weavePatterns.custom;
+
+    let p=prompt(
+        "Rows duplicate range (example 1-4)",
+        "1-"+m.length
+    );
+
+    if(!p)
+        return;
+
+    let a=p.split("-").map(Number);
+
+    if(
+        a.length!==2 ||
+        a[0]<1 ||
+        a[1]>m.length ||
+        a[0]>a[1]
+    ){
+
+        alert(
+            "❌ 1-4 போன்ற format கொடுக்கவும்"
+        );
+
+        return;
+
+    }
+
+    let selected=
+        m.slice(
+            a[0]-1,
+            a[1]
+        ).map(r=>[...r]);
+
+    weavePatterns.custom=
+        selected.concat(
+            m.map(r=>[...r])
+        );
+
+    buildGridEditor();
+
+    if(
+        $("fsModal")?.style.display==="flex"
+    )
+        draw3DWeave();
+
+}
+
+/* =========================================================
+   GRAPH SCAN
+========================================================= */
+
+function triggerGraphScan(){
+
+    let inp=
+        document.createElement("input");
+
+    inp.type="file";
+    inp.accept="image/*";
+
+    inp.onchange=e=>{
+
+        let f=e.target.files[0];
+
+        if(!f)
+            return;
+
+        let rd=
+            new FileReader();
+
+        rd.onload=x=>{
+
+            let im=
+                new Image();
+
+            im.onload=()=>{
+                processGraphImage(im);
+            };
+
+            im.src=x.target.result;
+
+        };
+
+        rd.readAsDataURL(f);
+
+    };
+
+    inp.click();
+
+}
+
+function processGraphImage(img){
+
+    let r_str=prompt(
+        "இந்த படத்தில் உள்ள கட்டங்களை (Grid) மட்டும் கட் (crop) செய்திருக்க வேண்டும்.\n\nஎத்தனை வரிசைகள் (Picks/Rows) உள்ளன? (உதாரணம்: 4)",
+        "4"
+    );
+
+    if(!r_str)
+        return;
+
+    let c_str=prompt(
+        "எத்தனை நெடுக்கைகள் (Ends/Cols) உள்ளன? (உதாரணம்: 4)",
+        "4"
+    );
+
+    if(!c_str)
+        return;
+
+    let rows=parseInt(r_str);
+    let cols=parseInt(c_str);
+
+    if(
+        !rows ||
+        !cols ||
+        isNaN(rows) ||
+        isNaN(cols)
+    ){
+
+        alert("தவறான உள்ளீடு!");
+        return;
+
+    }
+
+    let c=document.createElement("canvas");
+    let x=c.getContext("2d");
+
+    c.width=img.width;
+    c.height=img.height;
+
+    x.drawImage(img,0,0);
+
+    let cellW=c.width/cols;
+    let cellH=c.height/rows;
+
+    let cellAverages=[];
+    let rawMatrix=[];
+
+    for(let r=0;r<rows;r++){
+
+        let rowData=[];
+
+        for(let k=0;k<cols;k++){
+
+            let startX=
+                Math.floor(
+                    k*cellW+
+                    cellW*.25
+                );
+
+            let startY=
+                Math.floor(
+                    r*cellH+
+                    cellH*.25
+                );
+
+            let w=
+                Math.floor(cellW*.5)||1;
+
+            let h=
+                Math.floor(cellH*.5)||1;
+
+            let imgData=
+                x.getImageData(
+                    startX,
+                    startY,
+                    w,
+                    h
+                ).data;
+
+            let sum=0;
+
+            for(
+                let i=0;
+                i<imgData.length;
+                i+=4
+            ){
+
+                sum+=
+                    .299*imgData[i]+
+                    .587*imgData[i+1]+
+                    .114*imgData[i+2];
+
+            }
+
+            let avg=
+                sum/(w*h);
+
+            rowData.push(avg);
+            cellAverages.push(avg);
+
+        }
+
+        rawMatrix.push(rowData);
+
+    }
+
+    let minAvg=
+        Math.min(...cellAverages);
+
+    let maxAvg=
+        Math.max(...cellAverages);
+
+    let threshold=
+        (minAvg+maxAvg)/2;
+
+    let nw=[];
+
+    for(let r=0;r<rows;r++){
+
+        let finalRow=[];
+
+        for(let k=0;k<cols;k++){
+
+            finalRow.push(
+                rawMatrix[r][k]<threshold
+                ?1
+                :0
+            );
+
+        }
+
+        nw.push(finalRow);
+
+    }
+
+    weavePatterns.custom=nw;
+
+    $("weaveType").value="custom";
+    $("gridEditorSection").style.display="block";
+
+    buildGridEditor();
+    draw3DWeave();
+
+    alert(
+        "✅ புகைப்படம் வெற்றிகரமாக ஸ்கேன் செய்யப்பட்டு Graph-ஆக மாற்றப்பட்டது!"
+    );
+
+}
+
+/* =========================================================
+   GRAPH → 3D
+========================================================= */
+
+function isWarpUp(r,c,type){
+
+    let m=
+        type==="custom"
+        ?weavePatterns.custom
+        :(
+            weavePatterns[type] ||
+            weavePatterns.custom
+        );
+
+    if(
+        !m ||
+        !m.length ||
+        !m[0]?.length
+    )
+        return true;
+
+    let rr=
+        (m.length-1)-
+        (r%m.length);
+
+    let cc=
+        c%m[0].length;
+
+    return m[rr][cc]===1;
+
+}
+
+/* =========================================================
+   COLOR
+========================================================= */
+
+function rgb(hex){
+
+    hex=hex||"#fff";
+
+    if(
+        !/^#[0-9a-f]{6}$/i.test(hex)
+    )
+        hex="#ffffff";
+
+    return {
+
+        r:
+            parseInt(
+                hex.slice(1,3),
+                16
+            )||255,
+
+        g:
+            parseInt(
+                hex.slice(3,5),
+                16
+            )||255,
+
+        b:
+            parseInt(
+                hex.slice(5,7),
+                16
+            )||255
+
+    };
+
+}
+
+function shade(a,f){
+
+    return `rgb(
+        ${Math.max(
+            0,
+            Math.min(
+                255,
+                Math.round(a.r*f)
+            )
+        )},
+        ${Math.max(
+            0,
+            Math.min(
+                255,
+                Math.round(a.g*f)
+            )
+        )},
+        ${Math.max(
+            0,
+            Math.min(
+                255,
+                Math.round(a.b*f)
+            )
+        )}
+    )`;
+
+}
+
+/* =========================================================
+   3D DRAW ENGINE
+========================================================= */
+
+let drawFramePending=false;
+
+function draw3DWeave(){
+
+    if(drawFramePending)
+        return;
+
+    drawFramePending=true;
+
+    requestAnimationFrame(()=>{
+
+        drawFramePending=false;
+
+        let c=$("weaveCanvas");
+
+        if(!c)
+            return;
+
+        let ctx=
+            c.getContext(
+                "2d",
+                {alpha:false}
+            );
+
+        let warp=[];
+        let weft=[];
+
+        /* WARP */
+
+        for(
+            let i=1;
+            i<=currentWarpCount;
+            i++
+        ){
+
+            let co=$("wC"+i);
+            let e=$("wE"+i);
+
+            if(!co||!e)
+                continue;
+
+            let n=
+                Math.max(
+                    0,
+                    parseInt(e.value)||0
+                );
+
+            if(n>0){
+
+                let color=rgb(co.value);
+
+                for(let j=0;j<n;j++)
+                    warp.push(color);
+
+            }
+
+        }
+
+        /* WEFT */
+
+        for(
+            let i=1;
+            i<=currentWeftCount;
+            i++
+        ){
+
+            let co=$("weftC"+i);
+            let p=$("weftP"+i);
+
+            if(!co||!p)
+                continue;
+
+            let n=
+                Math.max(
+                    0,
+                    parseInt(p.value)||0
+                );
+
+            if(n>0){
+
+                let color=rgb(co.value);
+
+                for(let j=0;j<n;j++)
+                    weft.push(color);
+
+            }
+
+        }
+
+        let realWarpLength=warp.length;
+        let realWeftLength=weft.length;
+
+        if(!warp.length)
+            warp=[rgb("#f8fafc")];
+
+        if(!weft.length)
+            weft=[rgb("#dbe4df")];
+
+        const RULER=32;
+
+        const availW=
+            c.width-RULER;
+
+        const availH=
+            c.height-RULER;
+
+        let uiReed=
+            parseFloat(
+                document.getElementById("infoReed")?.value
+            );
+
+        let uiPick=
+            parseFloat(
+                document.getElementById("infoPick")?.value
+            );
+
+        let reed=
+            uiReed ||
+            parseFloat(
+                activeDesignObj?.finishedReed ||
+                activeDesignObj?.reed
+            ) ||
+            64;
+
+        let pick=
+            uiPick ||
+            parseFloat(
+                activeDesignObj?.finishedPick ||
+                activeDesignObj?.finishPick ||
+                activeDesignObj?.pick ||
+                activeDesignObj?.weftPick ||
+                activeDesignObj?.weft
+            ) ||
+            48;
+
+        let physW_mm=
+            (realWarpLength/reed)*25.4;
+
+        let physH_mm=
+            (realWeftLength/pick)*25.4;
+
+        let px_per_mm=
+            Math.min(
+                availW/(physW_mm*2||1),
+                availH/(physH_mm*2||1)
+            );
+
+        if(px_per_mm>25)
+            px_per_mm=25;
+
+        if(px_per_mm<1.5)
+            px_per_mm=1.5;
+
+        let cw=
+            (25.4/reed)*px_per_mm;
+
+        let ch=
+            (25.4/pick)*px_per_mm;
+
+        const ends=
+            Math.ceil(availW/cw);
+
+        const picks=
+            Math.ceil(availH/ch);
+
+        let actualDrawW=availW;
+        let actualDrawH=availH;
+
+        let offsetX=RULER;
+
+        ctx.fillStyle="#09110d";
+
+        ctx.fillRect(
+            RULER,
+            0,
+            availW,
+            availH
+        );
+
+        const type=
+            $("weaveType")?.value ||
+            "plain";
+
+        const useGradient=
+            cw>=4 &&
+            ch>=4;
+
+        for(let r=0;r<picks;r++){
+
+            for(let col=0;col<ends;col++){
+
+                const up=
+                    isWarpUp(
+                        r,
+                        col,
+                        type
+                    );
+
+                const base=
+                    up
+                    ?warp[col%warp.length]
+                    :weft[r%weft.length];
+
+                const x=
+                    offsetX+
+                    col*cw;
+
+                const y=
+                    availH-
+                    ((r+1)*ch);
+
+                if(useGradient){
+
+                    let g;
+
+                    if(up){
+
+                        g=
+                            ctx.createLinearGradient(
+                                x,
+                                y,
+                                x+cw,
+                                y
+                            );
+
+                    }else{
+
+                        g=
+                            ctx.createLinearGradient(
+                                x,
+                                y,
+                                x,
+                                y+ch
+                            );
+
+                    }
+
+                    g.addColorStop(
+                        0,
+                        shade(base,.55)
+                    );
+
+                    g.addColorStop(
+                        .35,
+                        shade(base,1.08)
+                    );
+
+                    g.addColorStop(
+                        .65,
+                        shade(base,1.18)
+                    );
+
+                    g.addColorStop(
+                        1,
+                        shade(base,.55)
+                    );
+
+                    ctx.fillStyle=g;
+
+                }else{
+
+                    ctx.fillStyle=
+                        shade(
+                            base,
+                            up?.95:.82
+                        );
+
+                }
+
+                ctx.fillRect(
+                    x,
+                    y,
+                    cw+.8,
+                    ch+.8
+                );
+
+            }
+
+        }
+
+        /* GRID */
+
+        if(cw>=5&&ch>=5){
+
+            ctx.globalAlpha=.12;
+            ctx.strokeStyle="#ffffff";
+            ctx.lineWidth=.35;
+
+            for(
+                let ix=offsetX;
+                ix<=offsetX+actualDrawW+.1;
+                ix+=cw
+            ){
+
+                ctx.beginPath();
+
+                ctx.moveTo(ix,0);
+                ctx.lineTo(ix,availH);
+
+                ctx.stroke();
+
+            }
+
+            for(
+                let iy=0;
+                iy<=availH+.1;
+                iy+=ch
+            ){
+
+                ctx.beginPath();
+
+                ctx.moveTo(RULER,iy);
+                ctx.lineTo(
+                    offsetX+actualDrawW,
+                    iy
+                );
+
+                ctx.stroke();
+
+            }
+
+            ctx.globalAlpha=1;
+
+        }
+
+        /* RULERS */
+
+        ctx.fillStyle="#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            RULER,
+            c.height
+        );
+
+        ctx.fillRect(
+            0,
+            availH,
+            c.width,
+            RULER
+        );
+
+        ctx.fillStyle="#f1f5f9";
+
+        ctx.fillRect(
+            0,
+            availH,
+            RULER,
+            RULER
+        );
+
+        ctx.beginPath();
+
+        ctx.strokeStyle="#334155";
+        ctx.lineWidth=1;
+
+        ctx.moveTo(
+            RULER+.5,
+            0
+        );
+
+        ctx.lineTo(
+            RULER+.5,
+            availH+.5
+        );
+
+        ctx.lineTo(
+            c.width,
+            availH+.5
+        );
+
+        ctx.stroke();
+
+        let max_mm_x=
+            actualDrawW/px_per_mm;
+
+        let max_mm_y=
+            actualDrawH/px_per_mm;
+
+        ctx.fillStyle="#000000";
+        ctx.font="10px Arial,sans-serif";
+
+        /* X RULER */
+
+        ctx.textAlign="center";
+        ctx.textBaseline="top";
+
+        for(
+            let mm=0;
+            mm<=max_mm_x;
+            mm++
+        ){
+
+            let isCm=
+                mm%10===0;
+
+            let isHalf=
+                mm%5===0 &&
+                !isCm;
+
+            if(
+                !isCm &&
+                !isHalf &&
+                px_per_mm<2.5
+            )
+                continue;
+
+            let x=
+                offsetX+
+                mm*px_per_mm;
+
+            if(
+                x>
+                offsetX+actualDrawW
+            )
+                break;
+
+            let drawX=
+                Math.floor(x)+.5;
+
+            let tickLen=
+                isCm
+                ?12
+                :(isHalf?7:4);
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                drawX,
+                availH
+            );
+
+            ctx.lineTo(
+                drawX,
+                availH+tickLen
+            );
+
+            ctx.lineWidth=1;
+
+            ctx.strokeStyle=
+                isCm
+                ?"#000000"
+                :"#64748b";
+
+            ctx.stroke();
+
+            if(isCm&&mm>0){
+
+                let cmVal=mm/10;
+
+                let cmWidthPx=
+                    10*px_per_mm;
+
+                let skipLabel=false;
+
+                if(
+                    cmWidthPx<18 &&
+                    cmVal%2!==0
+                )
+                    skipLabel=true;
+
+                if(
+                    cmWidthPx<9 &&
+                    cmVal%5!==0
+                )
+                    skipLabel=true;
+
+                if(!skipLabel)
+                    ctx.fillText(
+                        cmVal,
+                        drawX,
+                        availH+14
+                    );
+
+            }
+
+        }
+
+        /* Y RULER */
+
+        ctx.textAlign="right";
+        ctx.textBaseline="middle";
+
+        for(
+            let mm=0;
+            mm<=max_mm_y;
+            mm++
+        ){
+
+            let isCm=
+                mm%10===0;
+
+            let isHalf=
+                mm%5===0 &&
+                !isCm;
+
+            if(
+                !isCm &&
+                !isHalf &&
+                px_per_mm<2.5
+            )
+                continue;
+
+            let y=
+                availH-
+                mm*px_per_mm;
+
+            if(y<0)
+                break;
+
+            let drawY=
+                Math.floor(y)+.5;
+
+            let tickLen=
+                isCm
+                ?12
+                :(isHalf?7:4);
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                RULER,
+                drawY
+            );
+
+            ctx.lineTo(
+                RULER-tickLen,
+                drawY
+            );
+
+            ctx.lineWidth=1;
+
+            ctx.strokeStyle=
+                isCm
+                ?"#000000"
+                :"#64748b";
+
+            ctx.stroke();
+
+            if(isCm&&mm>0){
+
+                let cmVal=mm/10;
+
+                let cmWidthPx=
+                    10*px_per_mm;
+
+                let skipLabel=false;
+
+                if(
+                    cmWidthPx<18 &&
+                    cmVal%2!==0
+                )
+                    skipLabel=true;
+
+                if(
+                    cmWidthPx<9 &&
+                    cmVal%5!==0
+                )
+                    skipLabel=true;
+
+                if(!skipLabel){
+
+                    ctx.fillText(
+                        cmVal,
+                        RULER-14,
+                        drawY
+                    );
+
+                }
+
+            }
+
+        }
+
+        /* CM LABEL */
+
+        ctx.fillStyle="#000000";
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+
+        ctx.fillText(
+            "cm",
+            RULER/2,
+            availH+RULER/2
+        );
+
+        /* PROOF BOX */
+
+        let repeat_width_mm=
+            (realWarpLength/reed)*25.4;
+
+        let repeat_height_mm=
+            (realWeftLength/pick)*25.4;
+
+        let text1=
+            `W: (${realWarpLength} ÷ ${reed}) × 25.4 = ${repeat_width_mm.toFixed(2)} mm`;
+
+        let text2=
+            `H: (${realWeftLength} ÷ ${pick}) × 25.4 = ${repeat_height_mm.toFixed(2)} mm`;
+
+        ctx.font=
+            "bold 11px Arial,sans-serif";
+
+        let tw1=
+            ctx.measureText(text1).width;
+
+        let tw2=
+            ctx.measureText(text2).width;
+
+        let maxTw=
+            Math.max(tw1,tw2);
+
+        let boxWidth=
+            maxTw+30;
+
+        let boxX=
+            c.width-boxWidth-10;
+
+        ctx.fillStyle=
+            "rgba(0,0,0,.85)";
+
+        ctx.strokeStyle="#ffffff";
+        ctx.lineWidth=1.5;
+
+        ctx.fillRect(
+            boxX,
+            10,
+            boxWidth,
+            46
+        );
+
+        ctx.strokeRect(
+            boxX,
+            10,
+            boxWidth,
+            46
+        );
+
+        ctx.fillStyle="#ffffff";
+        ctx.textAlign="right";
+
+        ctx.fillText(
+            text1,
+            c.width-25,
+            26
+        );
+
+        ctx.fillText(
+            text2,
+            c.width-25,
+            44
+        );
+
+    });
+
+}
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+let refreshTimer=null;
+
+function autoRefresh3D(){
+
+    clearTimeout(refreshTimer);
+
+    if(
+        $("fsModal")?.style.display!=="flex"
+    )
+        return;
+
+    refreshTimer=
+        setTimeout(
+            draw3DWeave,
+            120
+        );
+
+}
+
+/* =========================================================
+   DENTING
+========================================================= */
+
+function calculateDenting(){
+
+    let total=0;
+
+    for(
+        let i=1;
+        i<=currentWarpCount;
+        i++
+    ){
+
+        total+=
+            parseInt(
+                $("wE"+i)?.value
+            )||0;
+
+    }
+
+    if(total===0){
+
+        let el=$("dentingInfo");
+
+        if(el)
+            el.innerHTML="டேட்டா இல்லை";
+
+        return;
+
+    }
+
+    let dents=
+        Math.ceil(total/2);
+
+    $("dentingInfo").innerHTML=`
+
+        <b>பாவு மொத்தம்:</b>
+        ${total} Ends
+
+        <br>
+
+        <b>Denting:</b>
+        ஒரு Dent-க்கு 2 Ends அடிப்படையில்
+        சுமார்
+        <b>${dents}</b>
+        Dent தேவை.
+
+        <br>
+
+        <b>Drawing:</b>
+        Frame 1 → 2 → 3 → 4
+        என்ற வரிசையில் repeat செய்யலாம்.
+
+    `;
+
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+function closeAllMenus(){
+
+    const denting=$("dentingPanel");
+
+    if(denting)
+        denting.classList.remove("active");
+
+}
+
+function openMenu(type){
+
+    closeAllMenus();
+
+    if(type==="view3d"){
+
+        openFullscreen();
+        return;
+
+    }
+
+    if(type==="denting"){
+
+        const panel=$("dentingPanel");
+
+        if(panel)
+            panel.classList.add("active");
+
+        calculateDenting();
+
+    }
+
+}
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+let scale=1;
+let pointX=0;
+let pointY=0;
+
+let panning=false;
+
+let startX=0;
+let startY=0;
+
+let lastDist=0;
+
+function openFullscreen(){
+
+    const modal=$("fsModal");
+
+    if(!modal)
+        return;
+
+    modal.style.display="flex";
+
+    scale=1;
+    pointX=0;
+    pointY=0;
+    panning=false;
+
+    requestAnimationFrame(()=>{
+
+        draw3DWeave();
+        updateTransform();
+
+    });
+
+}
+
+function refreshFullscreen3D(){
+
+    scale=1;
+    pointX=0;
+    pointY=0;
+
+    draw3DWeave();
+    updateTransform();
+
+}
+
+function closeFullscreen(){
+
+    const modal=$("fsModal");
+
+    if(!modal)
+        return;
+
+    modal.style.display="none";
+
+    const c=$("weaveCanvas");
+
+    if(c){
+
+        const ctx=c.getContext("2d");
+
+        ctx.clearRect(
+            0,
+            0,
+            c.width,
+            c.height
+        );
+
+        c.style.transform=
+            "translate(0px,0px) scale(1)";
+
+    }
+
+    scale=1;
+    pointX=0;
+    pointY=0;
+    panning=false;
+    lastDist=0;
+
+}
+
+function updateTransform(){
+
+    const c=$("weaveCanvas");
+
+    if(!c)
+        return;
+
+    c.style.transform=
+        `translate(${pointX}px,${pointY}px) scale(${scale})`;
+
+}
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+const fsContent=$("fsContent");
+
+if(fsContent){
+
+    fsContent.addEventListener(
+        "touchstart",
+        e=>{
+
+            if(e.touches.length===1){
+
+                panning=true;
+
+                startX=
+                    e.touches[0].clientX-pointX;
+
+                startY=
+                    e.touches[0].clientY-pointY;
+
+            }
+
+            else if(e.touches.length===2){
+
+                panning=false;
+
+                lastDist=
+                    Math.hypot(
+                        e.touches[0].clientX-
+                        e.touches[1].clientX,
+
+                        e.touches[0].clientY-
+                        e.touches[1].clientY
+                    );
+
+            }
+
+        },
+        {passive:false}
+    );
+
+    fsContent.addEventListener(
+        "touchmove",
+        e=>{
+
+            e.preventDefault();
+
+            if(
+                e.touches.length===1 &&
+                panning
+            ){
+
+                pointX=
+                    e.touches[0].clientX-
+                    startX;
+
+                pointY=
+                    e.touches[0].clientY-
+                    startY;
+
+                updateTransform();
+
+            }
+
+            else if(
+                e.touches.length===2
+            ){
+
+                let d=
+                    Math.hypot(
+                        e.touches[0].clientX-
+                        e.touches[1].clientX,
+
+                        e.touches[0].clientY-
+                        e.touches[1].clientY
+                    );
+
+                if(lastDist){
+
+                    scale=
+                        Math.max(
+                            1,
+                            Math.min(
+                                5,
+                                scale*d/lastDist
+                            )
+                        );
+
+                }
+
+                lastDist=d;
+
+                updateTransform();
+
+            }
+
+        },
+        {passive:false}
+    );
+
+    fsContent.addEventListener(
+        "touchend",
+        ()=>{
+
+            panning=false;
+            lastDist=0;
+
+        }
+    );
+
+}
+
+/* =========================================================
+   ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            e.key==="Escape" &&
+            $("fsModal")?.style.display==="flex"
+        ){
+
+            closeFullscreen();
+
+        }
+
+    }
+);
+
+/* =========================================================
+   GRAPH PRINT
+========================================================= */
+
+function openGraphPrintPreview(){
+
+    let type=$("weaveType").value;
+
+    let m=
+        type==="custom"
+        ?weavePatterns.custom
+        :weavePatterns[type];
+
+    if(!m||!m.length)
+        return;
+
+    let html=
+        '<table style="border-collapse:collapse;margin:auto;text-align:center;color:#000">';
+
+    for(
+        let r=0;
+        r<m.length;
+        r++
+    ){
+
+        html+=
+            `<tr>
+                <td style="
+                    padding:5px;
+                    font-weight:bold">
+                    ${m.length-r}
+                </td>`;
+
+        for(
+            let c=0;
+            c<m[r].length;
+            c++
+        ){
+
+            html+=
+                `<td style="
+                    width:30px;
+                    height:30px;
+                    border:1px solid #000;
+                    font-size:20px;
+                    font-weight:bold">
+                    ${m[r][c]?"×":""}
+                </td>`;
+
+        }
+
+        html+="</tr>";
+
+    }
+
+    html+="<tr><td></td>";
+
+    for(
+        let c=1;
+        c<=m[0].length;
+        c++
+    ){
+
+        html+=
+            `<td style="
+                padding:6px;
+                font-weight:bold">
+                ${c}
+            </td>`;
+
+    }
+
+    html+="</tr></table>";
+
+    $("printTableContainer").innerHTML=html;
+
+    $("printModalBox").style.display="flex";
+
+    document.body.classList.add(
+        "printing-graph"
+    );
+
+}
+
+function closeGraphPrintPreview(){
+
+    $("printModalBox").style.display="none";
+
+    document.body.classList.remove(
+        "printing-graph"
+    );
+
+}
+
+/* =========================================================
+   PRINT DESIGN
+========================================================= */
+
+function printDesign(){
+
+    const sourceCanvas=$("weaveCanvas");
+
+    if(!sourceCanvas)
+        return;
+
+    draw3DWeave();
+
+    setTimeout(()=>{
+
+        const dataUrl=
+            sourceCanvas.toDataURL("image/png");
+
+        const printImg=
+            $("designPrintImage");
+
+        if(printImg){
+
+            printImg.onload=function(){
+
+                document.body.classList.add(
+                    "printing-design"
+                );
+
+                setTimeout(()=>{
+
+                    window.print();
+
+                    setTimeout(()=>{
+
+                        document.body.classList.remove(
+                            "printing-design"
+                        );
+
+                    },500);
+
+                },100);
+
+            };
+
+            printImg.src=dataUrl;
+
+        }
+
+    },150);
+
+}
+
+/* =========================================================
+   AFTER PRINT
+========================================================= */
+
+window.addEventListener(
+    "afterprint",
+    ()=>{
+
+        document.body.classList.remove(
+            "printing-graph",
+            "printing-design"
+        );
+
+        $("printModalBox").style.display="none";
+
+    }
+);
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+window.addEventListener(
+    "load",
+    async()=>{
+
+        renderUIWithData([],[]);
+
+        let cache=
+            safeJSON(
+                "weave_designs_cache",
+                []
+            );
+
+        let local=
+            safeJSON(
+                "design_masters_data",
+                []
+            );
+
+        allCloudDesigns=
+            mergeDesigns([
+
+                ...(Array.isArray(cache)
+                    ?cache
+                    :[]),
+
+                ...(Array.isArray(local)
+                    ?local
+                    :[])
+
+            ]);
+
+        if(allCloudDesigns.length){
+
+            populateDesignSelect(true);
+
+        }else{
+
+            setStatus(
+                "ℹ️ Design இல்லை — முதலில் Design data save செய்யவும்"
+            );
+
+        }
+
+        /*
+         * Firebase is loaded only after
+         * local UI is ready.
+         *
+         * IMPORTANT:
+         * importFromFirebase() now safely
+         * falls back to LocalStorage.
+         */
+
+        await importFromFirebase(false);
+
+    }
+);
+
+</script>
+
+</body>
+</html>

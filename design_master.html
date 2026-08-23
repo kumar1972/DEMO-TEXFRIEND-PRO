@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Design Masiter - TEXFRIEND ERP</title>
+    <!-- IMPORTANT: config.js must load first -->
+    <script src="config.js"></script>
+    <script src="translator.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        
+        html, body { width: 100%; min-height: 100vh; background: #030712; color: #1E2B23; }
+        body { padding: 12px; display: flex; flex-direction: column; align-items: center; }
+        
+        .main-card {
+            width: 100%; max-width: 800px; margin: 0; background: #FFFFFF;
+            border-radius: 20px; padding: 20px; box-shadow: 0 10px 35px rgba(30, 43, 35, 0.06);
+            border: 1px solid rgba(82, 110, 81, 0.15); display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 5px; color: #FFFFFF;
+            text-decoration: none; font-weight: 600; font-size: 12px; background: #1A1; 
+            padding: 10px 18px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover { background: #000000; transform: translateY(-2px); }
+
+        h2.card-header {
+            font-size: 18px; font-weight: 800; color: #2F4F38; text-align: left;
+            position: relative; padding-left: 12px; margin-bottom: 5px;
+        }
+        h2.card-header::before {
+            content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 5px;
+            background: #4A7C59; border-radius: 4px;
+        }
+
+        .form-section { 
+            background: #F8FAF8; border: 1px solid #E2E8E2; border-radius: 14px; 
+            padding: 20px 15px 15px 15px; margin-bottom: 5px; position: relative; 
+            display: flex; flex-direction: column; gap: 12px; 
+        }
+        
+        .form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 11px; color: #4A554A; font-weight: 600; white-space: nowrap; }
+        
+        input, select { 
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #D1DED1; 
+            background: #FFFFFF; color: #1E2B23; font-size: 12px; font-weight: 600; 
+            transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(30, 43, 35, 0.02); 
+        }
+        input:focus, select:focus { border-color: #4A7C59; outline: none; box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.15); }
+        
+        .custom-upload-btn {
+            background: #F4F7F4; border: 1px dashed #4A7C59; color: #2F4F38; padding: 12px;
+            border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; text-align: center;
+            display: block; transition: background 0.2s; width: 100%;
+        }
+        .custom-upload-btn:hover { background: #EAF0EA; }
+
+        .btn-add { background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(30, 43, 35, 0.1); }
+        .btn-del { background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(30, 43, 35, 0.1); }
+        .btn-edit { background: linear-gradient(135deg, #Aa3B82, #1D44a8); width: 100%; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(30, 43, 35, 0.15); margin-top: 10px; text-transform: uppercase; }
+        .btn-add:hover, .btn-del:hover, .btn-edit:hover { transform: translateY(-2px); }
+
+        #bitmapPreviewBox { background: #FFFFFF; padding: 12px; border-radius: 12px; border: 1px solid #D1DED1; box-shadow: 0 4px 12px rgba(30, 43, 35, 0.05); margin-top: 5px; text-align: center; display: none; }
+        #bitmapImgTag { width: 100%; max-height: 280px; object-fit: contain; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); cursor: zoom-in; }
+
+        /* Modals */
+        .choice-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(18, 25, 20, 0.85); backdrop-filter: blur(4px); z-index: 99999;
+            justify-content: center; align-items: center; padding: 15px;
+        }
+        .choice-content {
+            background: #FFFFFF; width: 100%; max-width: 320px; border-radius: 16px;
+            padding: 20px; display: flex; flex-direction: column; gap: 10px; text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        .choice-btn { background: #4A7C59; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; text-align: center; display: block; }
+        .choice-btn.gallery { background: #3B82F6; }
+        .choice-btn.cancel { background: #EF4444; }
+
+        /* FULL SCREEN IMAGE MODAL */
+        .fullscreen-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0, 0, 0, 0.95); z-index: 999999; justify-content: center; align-items: center; padding: 0; margin: 0;
+        }
+        .fullscreen-modal img { 
+            width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; object-fit: contain; border-radius: 0; display: block;
+        }
+        .close-fullscreen { 
+            position: fixed; top: 20px; right: 20px; background: #EF4444; color: white; border: none; 
+            padding: 10px 18px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; z-index: 1000000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
+
+        .hidden-file-input { opacity: 0; position: absolute; z-index: -1; width: 0; height: 0; }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="top-nav">
+        <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <h2 class=.card-header {
+    color: #FFFFF; /* Inga unga color-a change pannikalam */
+}
+>🎨 Design Setup Master</h2>
+
+    <div class="form-section">
+        <div class="form-row">
+            <select id="designSelect" onchange="selectDesign(this.value)" style="flex:2;"></select>
+            <button class="btn-del" id="delBtn" onclick="deleteDesign()">Delete</button>
+        </div>
+        <div class="form-row">
+            <input type="text" id="newDesign" placeholder="Enter New Design No" style="flex:2;">
+            <button class="btn-add" id="addBtn" onclick="addDesign()">+ Add</button>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group"><label>Warp 1 (Grnd / Base)</label><input type="text" id="warpCount" placeholder="2/60"></div>
+            <div class="form-group"><label>Warp 2 (Top Beam)</label><input type="text" id="warpCount2" placeholder="2/40"></div>
+            <div class="form-group"><label>Weft 1</label><input type="text" id="weftCount" placeholder="40s"></div>
+            <div class="form-group"><label>Weft 2</label><input type="text" id="weftCount2" placeholder="-"></div>
+        </div>
+        
+        <div class="form-row">
+            <!-- 🟢 Finish Inputs -->
+            <div class="form-group"><label>Finish Reed</label><input type="number" id="reed" oninput="updateFinishReed()"></div>
+            <div class="form-group"><label>Finish Pick</label><input type="number" id="pick" oninput="updateFinishPick()"></div>
+            <div class="form-group"><label>Finish Width</label><input type="number" id="width" placeholder="66" step="0.01" oninput="updateFinishWidth()"></div>
+            <div class="form-group"><label>Weave</label><input type="text" id="weave"></div>
+        </div>
+
+        <div class="form-row">
+            <!-- 🟢 Onloom Inputs Auto-Calculate -->
+            <div class="form-group"><label>Onloom Reed</label><input type="number" id="onloomReed" oninput="calcOnloomWidth()"></div>
+            <div class="form-group"><label>Onloom Pick</label><input type="number" id="onloomPick"></div>
+            <div class="form-group"><label>Onloom Width</label><input type="number" id="onloomWidth" step="0.01"></div>
+            <div class="form-group"><label>Type of Process</label><input type="text" id="typeOfProcess" placeholder="e.g., Bleaching, Dyeing"></div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 10px;">
+            <label>Design Bitmap / Photo Upload</label>
+            <button type="button" class="custom-upload-btn" onclick="openChoiceModal()">📷 Take Photo / 🖼️ Choose from Gallery</button>
+            
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden-file-input" onchange="handleFileSelect(this)">
+            <input type="file" id="galleryInput" accept="image/*" class="hidden-file-input" onchange="handleFileSelect(this)">
+        </div>
+
+        <div id="bitmapPreviewBox">
+            <img id="bitmapImgTag" src="" alt="Bitmap" onclick="openFullscreenImage(this.src)">
+        </div>
+        
+        <button class="btn-edit" id="editBtn" onclick="updateDesign()">✏️ Update / Edit Design</button>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="choiceModal" class="choice-modal">
+    <div class="choice-content">
+        <h4>Select Image Source</h4>
+        <label for="cameraInput" class="choice-btn" onclick="setTimeout(closeChoiceModal, 100)">📷 Camera</label>
+        <label for="galleryInput" class="choice-btn gallery" onclick="setTimeout(closeChoiceModal, 100)">🖼️ Gallery</label>
+        <button class="choice-btn cancel" onclick="closeChoiceModal()">Cancel</button>
+    </div>
+</div>
+
+<div id="fullscreenModal" class="fullscreen-modal" onclick="closeFullscreenImage()">
+    <button class="close-fullscreen" onclick="closeFullscreenImage()">Close ✕</button>
+    <img id="fullscreenImg" src="" alt="Fullscreen Preview">
+</div>
+
+<script>
+    let designList = [];
+    let tempBitmapData = "";
+
+    function checkUserPermission() {
+        let userRole = localStorage.getItem('erp_logged_role') || localStorage.getItem('user_role');
+        if (userRole !== 'Administrator' && userRole !== 'Admin') {
+            let permissions = JSON.parse(localStorage.getItem('user_permissions') || '{}');
+            if (permissions['design_master.html'] === false || permissions['design_master'] === false) { return false; }
+        }
+        return true; 
+    }
+
+    function cleanDesignName(str) { return str ? str.toString().replace('#', '').trim().toLowerCase() : ''; }
+    
+    function getSpecKey(designNo) {
+        let specs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let clean = cleanDesignName(designNo);
+        let foundKey = Object.keys(specs).find(k => cleanDesignName(k) === clean);
+        return foundKey ? foundKey : designNo;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!checkUserPermission()) {
+            alert("Access Denied! You do not have permission to access this page. ❌");
+            window.location.href = "dashboard.html";
+            return;
+        }
+
+        let preDesigns = JSON.parse(localStorage.getItem('pre_design_numbers')) || [];
+        let specs = JSON.parse(localStorage.getItem('design_specs')) || {};
+        let masters = JSON.parse(localStorage.getItem('design_masters_data')) || [];
+        
+        let masterNames = Array.isArray(masters) ? masters.map(d => d.name || d.designNo).filter(Boolean) : [];
+        designList = Array.from(new Set([...preDesigns, ...masterNames, ...Object.keys(specs)]));
+        loadDesignDropdown();
+    });
+
+    // 🟢 AUTO CALCULATION LOGIC 🟢
+    function updateFinishReed() {
+        let fReed = parseFloat(document.getElementById('reed').value) || 0;
+        if(fReed > 0) {
+            document.getElementById('onloomReed').value = fReed - 8;
+        } else {
+            document.getElementById('onloomReed').value = '';
+        }
+        calcOnloomWidth();
+    }
+
+    function updateFinishPick() {
+        let fPick = parseFloat(document.getElementById('pick').value) || 0;
+        if(fPick > 0) {
+            document.getElementById('onloomPick').value = fPick - 4;
+        } else {
+            document.getElementById('onloomPick').value = '';
+        }
+    }
+
+    function updateFinishWidth() {
+        calcOnloomWidth();
+    }
+
+    function calcOnloomWidth() {
+        let fReed = parseFloat(document.getElementById('reed').value) || 0;
+        let fWidth = parseFloat(document.getElementById('width').value) || 0;
+        let oReed = parseFloat(document.getElementById('onloomReed').value) || 0;
+        
+        if(fWidth > 0 && fReed > 0 && oReed > 0) {
+            document.getElementById('onloomWidth').value = ((fReed * fWidth) / oReed).toFixed(2);
+        } else if (fWidth > 0) {
+            document.getElementById('onloomWidth').value = fWidth.toFixed(2);
+        } else {
+            document.getElementById('onloomWidth').value = '';
+        }
+    }
+
+    window.openChoiceModal = () => document.getElementById('choiceModal').style.display = 'flex';
+    window.closeChoiceModal = () => document.getElementById('choiceModal').style.display = 'none';
+
+    window.openFullscreenImage = (src) => { 
+        if(!src || src === '' || src === 'null') return;
+        document.getElementById('fullscreenImg').src = src; 
+        document.getElementById('fullscreenModal').style.display = 'flex'; 
+    };
+    window.closeFullscreenImage = () => { document.getElementById('fullscreenModal').style.display = 'none'; };
+
+    window.handleFileSelect = function(input) {
+        if (input.files && input.files[0]) {
+            compressImage(input.files[0], 800, 800, 0.8, function(compressedB64) {
+                tempBitmapData = compressedB64;
+                document.getElementById('bitmapImgTag').src = tempBitmapData;
+                document.getElementById('bitmapPreviewBox').style.display = 'block';
+                input.value = ''; 
+            });
+        }
+    };
+
+    function compressImage(file, maxWidth, maxHeight, quality, callback) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+            let img = new Image();
+            img.src = event.target.result;
+            img.onload = function() {
+                let canvas = document.createElement('canvas');
+                let width = img.width; let height = img.height;
+                if (width > height && width > maxWidth) { height = Math.round((height *= maxWidth / width)); width = maxWidth; } 
+                else if (height > maxHeight) { width = Math.round((width *= maxHeight / height)); height = maxHeight; }
+                canvas.width = width; canvas.height = height;
+                let ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', quality));
+            };
+        };
+    }
+
+    async function syncDesignMasterToCloud(updatedList, updatedSpecs, activeDesignNo) {
+        let designMasters = Array.isArray(JSON.parse(localStorage.getItem('design_masters_data'))) ? JSON.parse(localStorage.getItem('design_masters_data')) : [];
+        
+        if (activeDesignNo) {
+            let specKey = getSpecKey(activeDesignNo);
+            let s = updatedSpecs[specKey] || {};
+            let mIndex = designMasters.findIndex(m => cleanDesignName(m.name || m.designNo) === cleanDesignName(activeDesignNo));
+            let masterObj = {
+                name: activeDesignNo,
+                designNo: activeDesignNo,
+                warp1: s.warp || '',
+                baseBeamCount: s.warp || '',
+                warp2: s.warp2 || '',
+                topBeamCount: s.warp2 || '',
+                weftCount: s.weft || '',
+                weft2: s.weft2 || '',
+                width: s.width || '',
+                reed: s.reed || '',
+                pick: s.pick || '',
+                onloomReed: s.onloomReed || '', 
+                onloomPick: s.onloomPick || '', 
+                onloomWidth: s.onloomWidth || '', 
+                weave: s.weave || '',
+                typeOfProcess: s.typeOfProcess || '',
+                status: s.status || 'running',
+                bitmap: s.bitmap || ''
+            };
+
+            if (mIndex > -1) {
+                designMasters[mIndex] = { ...designMasters[mIndex], ...masterObj };
+            } else {
+                designMasters.push(masterObj);
+            }
+        }
+
+        localStorage.setItem('pre_design_numbers', JSON.stringify(updatedList));
+        localStorage.setItem('design_specs', JSON.stringify(updatedSpecs));
+        localStorage.setItem('design_masters_data', JSON.stringify(designMasters));
+        if(activeDesignNo) localStorage.setItem('selected_design_number', activeDesignNo);
+
+        if (window.firebaseSave) {
+            await window.firebaseSave('pre_design_numbers', updatedList);
+            await window.firebaseSave('design_specs', updatedSpecs);
+            await window.firebaseSave('design_masters_data', designMasters);
+        }
+        if (window.firebaseSaveIndividual && activeDesignNo) {
+            let key = getSpecKey(activeDesignNo);
+            await window.firebaseSaveIndividual(key, updatedSpecs[key]);
+        }
+    }
+
+    window.addDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('newDesign').value.trim();
+        if(!designNo) { alert("Design Number type pannu"); return; }
+
+        let cleanDNo = cleanDesignName(designNo);
+        let alreadyExists = designList.some(d => cleanDesignName(d) === cleanDNo);
+
+        if(alreadyExists) {
+            if(!confirm("இந்த டிசைனுக்கு ஏற்கனவே என்ட்ரி செய்யப்பட்டுள்ளது. மீண்டும் ரீ-என்ட்ரி செய்ய வேண்டுமா?")) return;
+            designList = designList.filter(d => cleanDesignName(d) !== cleanDNo);
+        }
+
+        document.getElementById('addBtn').innerText = "Saving...⏳";
+        designList.push(designNo);
+        
+        let warp1 = document.getElementById('warpCount').value.trim();
+        let warp2 = document.getElementById('warpCount2').value.trim();
+        let weft1 = document.getElementById('weftCount').value.trim();
+        let weft2 = document.getElementById('weftCount2').value.trim();
+
+        let specs = { 
+            warp: warp1,
+            baseBeamCount: warp1,
+            warp2: warp2,
+            topBeamCount: warp2,
+            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1,
+            weft: weft1, 
+            weftCount: weft1, 
+            weft2: weft2,
+            width: document.getElementById('width').value.trim(), 
+            reed: document.getElementById('reed').value.trim(), 
+            pick: document.getElementById('pick').value.trim(), 
+            onloomReed: document.getElementById('onloomReed').value.trim(),
+            onloomPick: document.getElementById('onloomPick').value.trim(),
+            onloomWidth: document.getElementById('onloomWidth').value.trim(),
+            weave: document.getElementById('weave').value.trim(), 
+            weaveType: document.getElementById('weave').value.trim(), 
+            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), 
+            status: 'running', 
+            bitmap: tempBitmapData 
+        };
+        
+        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let key = getSpecKey(designNo);
+        designSpecs[key] = specs; 
+        
+        try {
+            await syncDesignMasterToCloud(designList, designSpecs, designNo);
+
+            tempBitmapData = ""; 
+            loadDesignDropdown();
+            document.getElementById('newDesign').value = '';
+            
+            if(window.showNotification) window.showNotification("Design Saved Successfully!");
+        } catch (err) {
+            if(window.showNotification) window.showNotification("Error saving: " + err.message, "error");
+        } finally {
+            document.getElementById('addBtn').innerText = "+ Add";
+        }
+    };
+
+    window.updateDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('designSelect').value;
+        if(!designNo) { alert("Select Design First!"); return; }
+        
+        document.getElementById('editBtn').innerText = "Updating...⏳";
+        
+        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let key = getSpecKey(designNo);
+        let existing = designSpecs[key] || {};
+        
+        let finalBitmap = (tempBitmapData && tempBitmapData !== "") ? tempBitmapData : (existing.bitmap || "");
+
+        let warp1 = document.getElementById('warpCount').value.trim();
+        let warp2 = document.getElementById('warpCount2').value.trim();
+        let weft1 = document.getElementById('weftCount').value.trim();
+        let weft2 = document.getElementById('weftCount2').value.trim();
+
+        let updatedSpecs = { 
+            ...existing,
+            warp: warp1, 
+            baseBeamCount: warp1,
+            warp2: warp2, 
+            topBeamCount: warp2,
+            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1,
+            weft: weft1, 
+            weftCount: weft1, 
+            weft2: weft2,
+            width: document.getElementById('width').value.trim(), 
+            reed: document.getElementById('reed').value.trim(), 
+            pick: document.getElementById('pick').value.trim(), 
+            onloomReed: document.getElementById('onloomReed').value.trim(),
+            onloomPick: document.getElementById('onloomPick').value.trim(),
+            onloomWidth: document.getElementById('onloomWidth').value.trim(),
+            weave: document.getElementById('weave').value.trim(), 
+            weaveType: document.getElementById('weave').value.trim(), 
+            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), 
+            status: existing.status || 'running',
+            bitmap: finalBitmap 
+        };
+
+        designSpecs[key] = updatedSpecs;
+        
+        try {
+            await syncDesignMasterToCloud(designList, designSpecs, designNo);
+            tempBitmapData = ""; 
+            
+            if(window.showNotification) window.showNotification("Design Updated Successfully!");
+        } catch (err) {
+            if(window.showNotification) window.showNotification("Error updating! " + err.message, "error");
+        } finally {
+            document.getElementById('editBtn').innerText = "✏️ Update / Edit Design";
+        }
+    };
+
+    window.deleteDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('designSelect').value;
+        if(!designNo) {
+            alert("Delete செய்ய ஒரு Design-ஐ தேர்ந்தெடுக்கவும்!");
+            return;
+        }
+        
+        if(confirm(designNo + " delete pannalama?")){
+            document.getElementById('delBtn').innerText = "Del...⏳";
+            
+            designList = designList.filter(x => cleanDesignName(x) !== cleanDesignName(designNo));
+            
+            let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+            let key = getSpecKey(designNo);
+            if(designSpecs[key]) delete designSpecs[key];
+
+            let designMasters = JSON.parse(localStorage.getItem('design_masters_data')) || [];
+            if(Array.isArray(designMasters)) {
+                designMasters = designMasters.filter(m => cleanDesignName(m.name || m.designNo) !== cleanDesignName(designNo));
+                localStorage.setItem('design_masters_data', JSON.stringify(designMasters));
+                if (window.firebaseSave) await window.firebaseSave('design_masters_data', designMasters);
+            }
+            
+            try {
+                localStorage.removeItem('selected_design_number');
+                await syncDesignMasterToCloud(designList, designSpecs, null);
+
+                loadDesignDropdown();
+                clearForm();
+                
+                if(window.showNotification) window.showNotification("Design deleted successfully!");
+            } catch (err) {
+                if(window.showNotification) window.showNotification("Error deleting! " + err.message, "error");
+            } finally {
+                document.getElementById('delBtn').innerText = "Delete";
+            }
+        }
+    };
+
+    function loadDesignDropdown() {
+        let select = document.getElementById('designSelect');
+        let html = '<option value="">Select Design</option>';
+        designList.forEach(d => { html += `<option value="${d}">${d}</option>`; });
+        select.innerHTML = html;
+        
+        let active = localStorage.getItem('selected_design_number');
+        if(active && designList.includes(active)) { select.value = active; window.selectDesign(active); } 
+        else if(designList.length > 0) { select.value = designList[0]; window.selectDesign(designList[0]); } 
+        else { clearForm(); }
+    }
+
+    window.selectDesign = function(val){
+        localStorage.setItem('selected_design_number', val);
+        tempBitmapData = ""; 
+
+        if(val) {
+            let specs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+            let key = getSpecKey(val);
+            let data = specs[key] || {};
+
+            document.getElementById('warpCount').value = data.warp || data.baseBeamCount || '';
+            document.getElementById('warpCount2').value = data.warp2 || data.topBeamCount || '';
+            document.getElementById('weftCount').value = data.weft || data.weftCount || '';
+            document.getElementById('weftCount2').value = data.weft2 || '';
+            
+            let fReed = data.reed || '';
+            let fPick = data.pick || '';
+            let fWidth = data.width || '';
+
+            document.getElementById('reed').value = fReed;
+            document.getElementById('pick').value = fPick;
+            document.getElementById('width').value = fWidth;
+            
+            let oReed = data.onloomReed || '';
+            let oPick = data.onloomPick || '';
+            let oWidth = data.onloomWidth || '';
+
+            // Auto Calculation on Load if Data is Missing
+            let parsedFReed = parseFloat(fReed) || 0;
+            let parsedFPick = parseFloat(fPick) || 0;
+            let parsedFWidth = parseFloat(fWidth) || 0;
+
+            if (!oReed && parsedFReed > 0) oReed = parsedFReed - 8;
+            if (!oPick && parsedFPick > 0) oPick = parsedFPick - 4;
+            
+            if (!oWidth && parsedFWidth > 0 && parsedFReed > 0 && parseFloat(oReed) > 0) {
+                oWidth = ((parsedFReed * parsedFWidth) / parseFloat(oReed)).toFixed(2);
+            } else if (!oWidth && parsedFWidth > 0) {
+                oWidth = parsedFWidth.toFixed(2);
+            }
+
+            document.getElementById('onloomReed').value = oReed;
+            document.getElementById('onloomPick').value = oPick;
+            document.getElementById('onloomWidth').value = oWidth;
+
+            document.getElementById('weave').value = data.weave || data.weaveType || '';
+            document.getElementById('typeOfProcess').value = data.typeOfProcess || '';
+            
+            if(data.bitmap && data.bitmap !== "") {
+                document.getElementById('bitmapImgTag').src = data.bitmap;
+                document.getElementById('bitmapPreviewBox').style.display = 'block';
+            } else { 
+                document.getElementById('bitmapImgTag').src = "";
+                document.getElementById('bitmapPreviewBox').style.display = 'none'; 
+            }
+        } else { clearForm(); }
+    };
+
+    function clearForm() {
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(el => el.value = '');
+        tempBitmapData = ""; 
+        document.getElementById('bitmapImgTag').src = "";
+        document.getElementById('bitmapPreviewBox').style.display = 'none';
+    }
+</script>
+</body>
+</html>

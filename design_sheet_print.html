@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
+
+<title> Design Sheet Print - TEXFRIEND</title>
+
+<script src="config.js"></script>
+<script src="translator.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Poppins',sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    background:#ffffff !important;
+    color:#1E2B23;
+}
+
+body{
+    padding:8px;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.main-card{
+    width:100%;
+    max-width:980px;
+    margin:0 auto;
+    background:#ffffff;
+    border:1px solid #e2e8e2;
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+}
+
+/* =========================================================
+   TOP NAV
+========================================================= */
+
+.top-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+}
+
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    color:#ffffff;
+    text-decoration:none;
+    font-weight:600;
+    font-size:11px;
+    background:#1A2421;
+    padding:7px 14px;
+    border-radius:8px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:2px solid #10B981;
+    padding-bottom:6px;
+    margin-bottom:7px;
+}
+
+.header-bar h3{
+    font-size:13px;
+    color:#DAA520;
+    font-weight:700;
+}
+
+.preview-btn,
+.print-btn{
+    border:0;
+    color:white;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.preview-btn{
+    background:linear-gradient(135deg,#3B82F6,#1D4ED8);
+}
+
+.print-btn{
+    background:linear-gradient(135deg,#10B981,#059669);
+}
+
+.close-btn{
+    background:#FEE2E2;
+    color:#DC2626;
+    border:0;
+    padding:7px 12px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:700;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.top-form-row-single{
+    background:#F8FAF8;
+    border:1px solid #E2E8E2;
+    border-radius:7px;
+    padding:7px 10px;
+    margin-bottom:7px;
+}
+
+.form-group label{
+    display:block;
+    font-size:10px;
+    font-weight:600;
+    color:#4A554A;
+    margin-bottom:4px;
+}
+
+select{
+    width:100%;
+    padding:7px 10px;
+    border-radius:6px;
+    border:1px solid #D1DED1;
+    background:#ffffff;
+    color:#1E2B23;
+    font-size:11px;
+    font-weight:600;
+    outline:none;
+}
+
+/* =========================================================
+   COMPANY HEADER
+========================================================= */
+
+.company-header{
+    text-align:center;
+    border-bottom:2px solid #4A7C59;
+    padding-bottom:5px;
+    margin-bottom:7px;
+}
+
+.company-header h1{
+    font-size:16px;
+    color:#DAA520;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.company-header p{
+    font-size:9px;
+    color:#DAA520;
+    white-space:pre-line;
+}
+
+/* =========================================================
+   DESIGN INFO
+========================================================= */
+
+.design-info-box,
+.weft-info-box{
+    background:#F8FAF8;
+    border:1px solid #D1DED1;
+    border-radius:6px;
+    padding:7px 8px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+    font-size:9px;
+    font-weight:600;
+    color:#2F4F38;
+    margin-bottom:6px;
+}
+
+.design-info-box div span,
+.weft-info-box div span{
+    color:#4A7C59;
+    font-weight:700;
+}
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title{
+    font-size:10px;
+    color:#ffffff;
+    background:#4A7C59;
+    padding:5px 8px;
+    border-radius:6px;
+    display:inline-block;
+    margin-top:3px;
+    margin-bottom:4px;
+    font-weight:700;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.dual-table-wrapper{
+    display:flex;
+    gap:8px;
+    width:100%;
+}
+
+.single-table-col{
+    flex:1;
+    min-width:0;
+}
+
+.table-container{
+    width:100%;
+    overflow:hidden;
+    border-radius:5px;
+    border:1px solid #CBD5CB;
+    background:#ffffff;
+    margin-bottom:4px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:9px;
+    text-align:center;
+    background:#ffffff;
+}
+
+th,
+td{
+    padding:5px 4px;
+    color:#1E2B23;
+    border:1px solid #CBD5CB;
+    background:#ffffff;
+}
+
+th{
+    background:#EAF0EA;
+    color:#2F4F38;
+    font-weight:700;
+    font-size:8px;
+}
+
+.col-no{
+    width:10%;
+    text-align:center;
+}
+
+.col-count{
+    width:17%;
+    text-align:center;
+}
+
+.col-color{
+    width:35%;
+    text-align:left;
+    padding-left:6px;
+}
+
+.col-val{
+    width:18%;
+    text-align:center;
+    font-weight:700;
+}
+
+.col-set{
+    width:20%;
+    text-align:center;
+    font-weight:700;
+}
+
+.dash-sep{
+    color:#889988;
+    font-size:7px;
+    letter-spacing:1px;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary-box{
+    background:#F4F7F4;
+    border:1px solid #CBD5CB;
+    border-radius:6px;
+    padding:6px 8px;
+    text-align:left;
+    font-size:9px;
+    font-weight:600;
+    color:#2F4F38;
+    margin-bottom:8px;
+    line-height:1.6;
+}
+
+.summary-box .line-1{
+    border-bottom:1px dashed #CBD5CB;
+    padding-bottom:2px;
+    margin-bottom:2px;
+}
+
+.summary-box b{
+    color:#1E2B23;
+}
+
+/* =========================================================
+   PREVIEW MODAL
+========================================================= */
+
+.overlay-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.75);
+    z-index:99999;
+    flex-direction:column;
+}
+
+.overlay-modal.show{
+    display:flex;
+}
+
+.modal-content{
+    background:#ffffff;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.modal-header{
+    padding:10px 12px;
+    background:#F4F7F4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #E2E8E2;
+    flex-shrink:0;
+}
+
+.modal-header h3{
+    font-size:13px;
+    color:#2F4F38;
+}
+
+.modal-actions{
+    display:flex;
+    gap:5px;
+}
+
+.modal-body{
+    padding:10px;
+    overflow-y:auto;
+    flex:1;
+    background:#ffffff !important;
+    width:100%;
+    max-width:1000px;
+    margin:0 auto;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    body{
+        padding:5px;
+        background:#ffffff !important;
+    }
+
+    .main-card{
+        padding:7px;
+        border-radius:8px;
+        box-shadow:none;
+    }
+
+    .header-bar h3{
+        font-size:11px;
+    }
+
+    .preview-btn{
+        font-size:10px;
+        padding:6px 10px;
+    }
+
+    .design-info-box,
+    .weft-info-box{
+        grid-template-columns:repeat(4,1fr);
+        font-size:7px;
+        gap:3px;
+        padding:5px;
+    }
+
+    .section-title{
+        font-size:8px;
+        padding:4px 6px;
+    }
+
+    .dual-table-wrapper{
+        gap:5px;
+    }
+
+    table{
+        font-size:7px;
+    }
+
+    th{
+        font-size:7px;
+    }
+
+    th,
+    td{
+        padding:4px 2px;
+    }
+
+    .dash-sep{
+        font-size:5px;
+        letter-spacing:0;
+    }
+
+    .summary-box{
+        font-size:7px;
+        padding:5px;
+    }
+}
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print{
+
+    @page{
+        size:A4 portrait;
+        margin:8mm;
+    }
+
+    html,
+    body{
+        width:100% !important;
+        min-height:0 !important;
+        height:auto !important;
+        margin:0 !important;
+        padding:0 !important;
+        background:#ffffff !important;
+        color:#000000 !important;
+    }
+
+    body{
+        display:block !important;
+    }
+
+    body *{
+        visibility:hidden !important;
+    }
+
+    #previewModal,
+    #previewModal *{
+        visibility:visible !important;
+    }
+
+    #previewModal{
+        display:block !important;
+        position:absolute !important;
+        inset:0 !important;
+        width:100% !important;
+        height:auto !important;
+        background:#ffffff !important;
+        z-index:999999 !important;
+    }
+
+    .modal-content{
+        width:100% !important;
+        height:auto !important;
+        display:block !important;
+        background:#ffffff !important;
+    }
+
+    .modal-header{
+        display:none !important;
+    }
+
+    .modal-body{
+        width:100% !important;
+        max-width:none !important;
+        height:auto !important;
+        overflow:visible !important;
+        padding:0 !important;
+        margin:0 !important;
+        background:#ffffff !important;
+    }
+
+    .no-print{
+        display:none !important;
+    }
+
+    .company-header{
+        display:block !important;
+    }
+
+    table{
+        width:100% !important;
+        border-collapse:collapse !important;
+        background:#ffffff !important;
+    }
+
+    th,
+    td{
+        border:1px solid #888888 !important;
+        background:#ffffff !important;
+        color:#000000 !important;
+        padding:5px !important;
+    }
+
+    th{
+        background:#EAF0EA !important;
+        color:#000000 !important;
+    }
+
+    .section-title{
+        background:#4A7C59 !important;
+        color:#ffffff !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    .summary-box{
+        background:#F4F7F4 !important;
+        color:#000000 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    .design-info-box,
+    .weft-info-box{
+        background:#F8FAF8 !important;
+        color:#000000 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    .page-break{
+        page-break-before:always;
+        break-before:page;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     MAIN PAGE
+========================================================= -->
+
+<div class="main-card">
+
+    <div class="top-nav no-print">
+        <a href="dashboard.html" class="back-btn">
+            ← மெனுவிற்குச் செல்ல
+        </a>
+    </div>
+
+    <div class="header-bar">
+
+        <h3>📋 டிசைன் ஷீட் பிரிண்ட்</h3>
+
+        <button
+            class="preview-btn no-print"
+            onclick="openPreviewModal()">
+            👁️ Preview
+        </button>
+
+    </div>
+
+    <!-- COMPANY -->
+    <div class="company-header" id="companyHeaderPrint">
+
+        <h1 id="printCompName">
+            TEXFRIEND
+        </h1>
+
+        <p id="printCompAddr">
+            -
+        </p>
+
+    </div>
+
+    <!-- DESIGN SELECT -->
+    <div class="top-form-row-single no-print">
+
+        <div class="form-group">
+
+            <label>
+                டிசைன் எண்ணைத் தேர்ந்தெடுக்கவும்
+            </label>
+
+            <select
+                id="designNumber"
+                onchange="loadDesignDetails()">
+
+                <option value="">
+                    டிசைனைத் தேர்ந்தெடுக்கவும்
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         WARP HEADER
+    ====================================================== -->
+
+    <div
+        id="designHeaderBox"
+        class="design-info-box"
+        style="display:none;">
+
+        <div>
+            டிசைன்:
+            <span id="hdrDesign">-</span>
+        </div>
+
+        <div>
+            கவுண்ட்ஸ்:
+            <span id="hdrCounts">-</span>
+        </div>
+
+        <div>
+            ஆர்டர் மீட்டர்:
+            <span id="hdrMtr">-</span>
+        </div>
+
+        <div>
+            டாப் பீம்:
+            <span id="hdrTopBeam">-</span>
+        </div>
+
+        <div>
+            வகை:
+            <span id="hdrType">-</span>
+        </div>
+
+        <div>
+            O.ரீட்:
+            <span id="hdrReed">-</span>
+        </div>
+
+        <div>
+            O.பிக்:
+            <span id="hdrPick">-</span>
+        </div>
+
+        <div>
+            O.அகலம்:
+            <span id="hdrWidth">-</span>
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         WARP
+    ====================================================== -->
+
+    <div id="warpSection">
+
+        <h3 class="section-title">
+            🧵 வார்ப் பேட்டர்ன் பிரிவ்யூ
+        </h3>
+
+        <div id="warpContainerWrapper">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th class="col-no">எண்</th>
+                            <th class="col-count">கவுண்ட்</th>
+                            <th class="col-color">நிறம்</th>
+                            <th class="col-val">எண்ட்ஸ்</th>
+                            <th class="col-set">செட்</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="warpTableBody">
+
+                        <tr>
+                            <td colspan="5">
+                                தரவுகள் இல்லை
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div
+            id="warpSummaryBox"
+            class="summary-box"
+            style="display:none;">
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         WEFT
+    ====================================================== -->
+
+    <div id="weftSection">
+
+        <h3 class="section-title">
+            🧶 வெப்ட் பேட்டர்ன் பிரிவ்யூ
+        </h3>
+
+        <!-- WEFT HEADER -->
+
+        <div
+            id="weftHeaderBox"
+            class="weft-info-box"
+            style="display:none;">
+
+            <div>
+                Design:
+                <span id="weftHdrDesign">-</span>
+            </div>
+
+            <div>
+                Weft Count:
+                <span id="weftHdrCount">-</span>
+            </div>
+
+            <div>
+                Weft Width:
+                <span id="weftHdrWidth">-</span>
+            </div>
+
+            <div>
+                Pick:
+                <span id="weftHdrPick">-</span>
+            </div>
+
+            <div style="grid-column:span 4;">
+                Weave:
+                <span id="weftHdrWeave">-</span>
+            </div>
+
+        </div>
+
+        <div id="weftContainerWrapper">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th class="col-no">எண்</th>
+                            <th class="col-count">கவுண்ட்</th>
+                            <th class="col-color">நிறம்</th>
+                            <th class="col-val">பிக்ஸ்</th>
+                            <th class="col-set">செட்</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="weftTableBody">
+
+                        <tr>
+                            <td colspan="5">
+                                தரவுகள் இல்லை
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div
+            id="weftSummaryBox"
+            class="summary-box"
+            style="display:none;">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PREVIEW MODAL
+========================================================= -->
+
+<div id="previewModal" class="overlay-modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header no-print">
+
+            <h3>
+                👁️ Design Sheet Print Preview
+            </h3>
+
+            <div class="modal-actions">
+
+                <button
+                    class="print-btn"
+                    onclick="printPreview()">
+                    🖨️ Print
+                </button>
+
+                <button
+                    class="close-btn"
+                    onclick="closePreviewModal()">
+                    Close ✕
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="previewContent">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    initDropdown();
+    loadCompanySettings();
+
+});
+
+
+/* =========================================================
+   COMPANY SETTINGS
+========================================================= */
+
+function loadCompanySettings(){
+
+    let savedAddr =
+        localStorage.getItem("company_full_address") ||
+        localStorage.getItem("set_comp_addr") ||
+        localStorage.getItem("company_address") ||
+        "";
+
+    let savedCompName =
+        localStorage.getItem("app_heading_name") ||
+        localStorage.getItem("company_name") ||
+        "TEXFRIEND";
+
+    let nameEl =
+        document.getElementById("printCompName");
+
+    let addrEl =
+        document.getElementById("printCompAddr");
+
+    if(nameEl){
+        nameEl.innerText = savedCompName;
+    }
+
+    if(addrEl){
+
+        if(savedAddr.trim() !== ""){
+
+            addrEl.innerHTML =
+                savedAddr
+                .replace(/\n/g,"<br>");
+
+        }else{
+
+            addrEl.innerText =
+                "முகவரி கிடைக்கவில்லை";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAN DESIGN NAME
+========================================================= */
+
+function cleanDesignName(str){
+
+    if(!str) return "";
+
+    return String(str)
+        .replace("#","")
+        .trim()
+        .toLowerCase();
+
+}
+
+
+/* =========================================================
+   COLOR TRANSLATION
+========================================================= */
+
+function translateColorToTamil(colorName){
+
+    if(!colorName)
+        return "-";
+
+    let original =
+        String(colorName).trim();
+
+    let c =
+        original.toLowerCase();
+
+    let map = {
+
+        "gold":"கோல்டு",
+        "l. olive":"L. ஆலிவ்",
+        "d. olive":"D. ஆலிவ்",
+        "grey":"கிரே",
+        "gray":"கிரே",
+        "t.salavai":"T. சலவை",
+        "t. salavai":"T. சலவை",
+        "t. white":"T. சலவை",
+        "1/2 salavai":"1/2 சலவை",
+        "1/2 white":"1/2 சலவை",
+        "white":"வெள்ளை",
+        "black":"கருப்பு",
+        "blue":"ப்ளூ",
+        "yellow":"மஞ்சள்",
+        "red":"ரெட்",
+        "green":"கிரீன்",
+        "p. green":"கிளி பச்சை",
+        "brown":"பிரவுன்",
+        "khaki":"காக்கி",
+        "l. khaki":"L. காக்கி",
+        "d. khaki":"D. காக்கி",
+        "rose":"ரோஸ்",
+        "orange":"ஆரஞ்சு",
+        "violet":"வைலட்",
+        "pink":"பிங்க்",
+        "navy":"நேவி",
+        "l. navy":"L. நேவி",
+        "d. navy":"D. நேவி",
+        "maroon":"மெரூன்",
+        "olive":"ஆலிவ்",
+        "l. blue":"L. ப்ளூ",
+        "r. blue":"R. ப்ளூ",
+        "turq":"டர்க்",
+        "purple":"பர்புள்",
+        "cream":"கிரீம்",
+        "beige":"பேஜ்",
+        "biscuit":"பிஸ்கட்",
+        "majenda":"மெஜந்தா"
+
+    };
+
+    if(map[c])
+        return map[c];
+
+    return original;
+
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+function initDropdown(){
+
+    let preDesignList =
+        JSON.parse(
+            localStorage.getItem("pre_design_numbers")
+        ) || [];
+
+    let designMastersList =
+        JSON.parse(
+            localStorage.getItem("design_masters_data")
+        ) || [];
+
+    let specs =
+        JSON.parse(
+            localStorage.getItem("design_specs")
+        ) || {};
+
+    let masterNames =
+        Array.isArray(designMastersList)
+        ? designMastersList
+            .map(d => d.name || d.designNo)
+            .filter(Boolean)
+        : [];
+
+    let combined =
+        Array.from(
+            new Set([
+                ...preDesignList,
+                ...masterNames,
+                ...Object.keys(specs)
+            ])
+        );
+
+    let select =
+        document.getElementById("designNumber");
+
+    if(!select)
+        return;
+
+    select.innerHTML =
+        `<option value="">
+            டிசைனைத் தேர்ந்தெடுக்கவும்
+         </option>`;
+
+    combined.forEach(function(d){
+
+        if(d){
+
+            let option =
+                document.createElement("option");
+
+            option.value = d;
+            option.textContent = d;
+
+            select.appendChild(option);
+
+        }
+
+    });
+
+    let activeDesign =
+        localStorage.getItem(
+            "selected_design_number"
+        );
+
+    if(
+        activeDesign &&
+        combined.includes(activeDesign)
+    ){
+
+        select.value = activeDesign;
+        loadDesignDetails();
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD DESIGN
+========================================================= */
+
+function loadDesignDetails(){
+
+    let select =
+        document.getElementById("designNumber");
+
+    let dName =
+        select ? select.value : "";
+
+    if(!dName){
+
+        document.getElementById(
+            "designHeaderBox"
+        ).style.display = "none";
+
+        document.getElementById(
+            "weftHeaderBox"
+        ).style.display = "none";
+
+        document.getElementById(
+            "warpSummaryBox"
+        ).style.display = "none";
+
+        document.getElementById(
+            "weftSummaryBox"
+        ).style.display = "none";
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        "selected_design_number",
+        dName
+    );
+
+    let cleanDNo =
+        cleanDesignName(dName);
+
+
+    /* -----------------------------------------------------
+       MASTER
+    ----------------------------------------------------- */
+
+    let designMastersList =
+        JSON.parse(
+            localStorage.getItem(
+                "design_masters_data"
+            )
+        ) || [];
+
+    let foundMaster =
+        Array.isArray(designMastersList)
+        ? designMastersList.find(
+            d =>
+            cleanDesignName(
+                d.name || d.designNo
+            ) === cleanDNo
+          ) || {}
+        : {};
+
+
+    /* -----------------------------------------------------
+       SPECS
+    ----------------------------------------------------- */
+
+    let specs =
+        JSON.parse(
+            localStorage.getItem("design_specs")
+        ) || {};
+
+    let specKey =
+        Object.keys(specs).find(
+            k =>
+            cleanDesignName(k) === cleanDNo
+        );
+
+    let sp =
+        specKey ? specs[specKey] : {};
+
+
+    /* -----------------------------------------------------
+       ORDERS
+    ----------------------------------------------------- */
+
+    let orders =
+        JSON.parse(
+            localStorage.getItem(
+                "party_orders_data"
+            )
+        ) || [];
+
+    let foundOrder =
+        Array.isArray(orders)
+        ? orders.find(
+            o =>
+            cleanDesignName(
+                o.designNumber ||
+                o.designNo
+            ) === cleanDNo
+          ) || {}
+        : {};
+
+
+    /* -----------------------------------------------------
+       REED / PICK / WIDTH
+    ----------------------------------------------------- */
+
+    let finishReed =
+        parseFloat(
+            foundMaster.reed ||
+            sp.reed ||
+            foundOrder.reed
+        ) || 0;
+
+    let finishPick =
+        parseFloat(
+            foundMaster.pick ||
+            sp.pick ||
+            foundOrder.pick
+        ) || 0;
+
+    let finishWidth =
+        parseFloat(
+            foundMaster.width ||
+            sp.width ||
+            sp.finishWidth ||
+            foundOrder.width
+        ) || 0;
+
+
+    let onloomReedVal =
+        foundMaster.onloomReed ||
+        sp.onloomReed ||
+        (
+            finishReed > 0
+            ? finishReed - 8
+            : "-"
+        );
+
+
+    let onloomPickVal =
+        foundMaster.onloomPick ||
+        sp.onloomPick ||
+        (
+            finishPick > 0
+            ? finishPick - 4
+            : "-"
+        );
+
+
+    let onloomWidthVal =
+        foundMaster.onloomWidth ||
+        sp.onloomWidth;
+
+
+    if(
+        !onloomWidthVal &&
+        finishWidth > 0 &&
+        finishReed > 0 &&
+        parseFloat(onloomReedVal) > 0
+    ){
+
+        onloomWidthVal =
+            (
+                finishReed *
+                finishWidth /
+                parseFloat(onloomReedVal)
+            ).toFixed(2);
+
+    }
+    else if(
+        !onloomWidthVal &&
+        finishWidth > 0
+    ){
+
+        onloomWidthVal =
+            finishWidth.toFixed(2);
+
+    }
+
+
+    /* -----------------------------------------------------
+       COUNTS
+    ----------------------------------------------------- */
+
+    let warp1 =
+        foundMaster.warp1 ||
+        sp.baseBeamCount ||
+        sp.warp ||
+        sp.baseCount ||
+        foundMaster.counts ||
+        sp.counts ||
+        foundOrder.baseBeamCount ||
+        "-";
+
+
+    let warp2 =
+        foundMaster.warp2 ||
+        sp.topBeamCount ||
+        sp.warp2 ||
+        sp.topBeam ||
+        foundOrder.topBeamCount ||
+        "";
+
+
+    let warpCountsDisplay =
+        warp2 && warp2 !== "-"
+        ? `${warp1}, ${warp2}`
+        : warp1;
+
+
+    let weft1 =
+        foundMaster.weftCount ||
+        foundMaster.weft ||
+        sp.weftCount ||
+        sp.weft ||
+        foundOrder.weftCount ||
+        "-";
+
+
+    let weft2 =
+        foundMaster.weft2 ||
+        sp.weft2 ||
+        foundOrder.weft2 ||
+        "";
+
+
+    let weftCountsDisplay =
+        weft2 && weft2 !== "-"
+        ? `${weft1}, ${weft2}`
+        : weft1;
+
+
+    /* -----------------------------------------------------
+       ORDER METER
+    ----------------------------------------------------- */
+
+    let orderMeterVal =
+        foundOrder.orderMtr ||
+        foundOrder.productionMeter ||
+        foundOrder.prodMtr ||
+        foundMaster.orderMtr ||
+        sp.yarnOrderMtr ||
+        sp.orderMtr ||
+        foundMaster.meters ||
+        "-";
+
+
+    /* -----------------------------------------------------
+       HEADER DISPLAY
+    ----------------------------------------------------- */
+
+    document.getElementById(
+        "hdrDesign"
+    ).innerText = dName;
+
+    document.getElementById(
+        "hdrCounts"
+    ).innerText = warpCountsDisplay;
+
+    document.getElementById(
+        "hdrMtr"
+    ).innerText = orderMeterVal;
+
+    document.getElementById(
+        "hdrTopBeam"
+    ).innerText =
+        warp2 && warp2 !== "-"
+        ? warp2
+        : "-";
+
+    document.getElementById(
+        "hdrType"
+    ).innerText =
+        foundMaster.type ||
+        sp.type ||
+        foundOrder.weaveType ||
+        sp.weaveType ||
+        "Plain";
+
+    document.getElementById(
+        "hdrReed"
+    ).innerText =
+        onloomReedVal || "-";
+
+    document.getElementById(
+        "hdrPick"
+    ).innerText =
+        onloomPickVal || "-";
+
+    document.getElementById(
+        "hdrWidth"
+    ).innerText =
+        onloomWidthVal || "-";
+
+    document.getElementById(
+        "designHeaderBox"
+    ).style.display = "grid";
+
+
+    /* -----------------------------------------------------
+       WEFT HEADER
+    ----------------------------------------------------- */
+
+    let weftWidthVal =
+        parseFloat(onloomWidthVal) > 0
+        ? (
+            parseFloat(onloomWidthVal) + 3
+          ).toFixed(2)
+        : "-";
+
+
+    let storedWeftWidth =
+        foundMaster.weftWidth ||
+        sp.weftWidth;
+
+
+    let finalWeftWidthDisplay =
+        storedWeftWidth
+        ? storedWeftWidth + '"'
+        : (
+            weftWidthVal !== "-"
+            ? weftWidthVal + '"'
+            : "-"
+          );
+
+
+    document.getElementById(
+        "weftHdrDesign"
+    ).innerText = dName;
+
+    document.getElementById(
+        "weftHdrCount"
+    ).innerText =
+        weftCountsDisplay;
+
+    document.getElementById(
+        "weftHdrWidth"
+    ).innerText =
+        finalWeftWidthDisplay;
+
+    document.getElementById(
+        "weftHdrPick"
+    ).innerText =
+        onloomPickVal || "-";
+
+    document.getElementById(
+        "weftHdrWeave"
+    ).innerText =
+        foundOrder.weaveType ||
+        foundMaster.weaveType ||
+        foundMaster.type ||
+        sp.weave ||
+        sp.type ||
+        "Plain";
+
+    document.getElementById(
+        "weftHeaderBox"
+    ).style.display = "grid";
+
+
+    /* -----------------------------------------------------
+       LINES
+    ----------------------------------------------------- */
+
+    let warpLines =
+        foundMaster.warpLines ||
+        sp.warpLines ||
+        [];
+
+    let warpRanges =
+        foundMaster.warpRanges ||
+        sp.warpRanges ||
+        [];
+
+    let weftLines =
+        foundMaster.weftLines ||
+        sp.weftLines ||
+        [];
+
+    let weftRanges =
+        foundMaster.weftRanges ||
+        sp.weftRanges ||
+        [];
+
+
+    /* -----------------------------------------------------
+       RENDER
+    ----------------------------------------------------- */
+
+    renderSplitPreviewTable(
+        "warp",
+        warpLines,
+        warpRanges,
+        "warpContainerWrapper",
+        "warpSummaryBox",
+        "Ends",
+        foundMaster,
+        sp,
+        onloomReedVal,
+        onloomWidthVal,
+        onloomPickVal
+    );
+
+
+    renderSplitPreviewTable(
+        "weft",
+        weftLines,
+        weftRanges,
+        "weftContainerWrapper",
+        "weftSummaryBox",
+        "Picks",
+        foundMaster,
+        sp,
+        onloomReedVal,
+        onloomWidthVal,
+        onloomPickVal
+    );
+
+}
+
+
+/* =========================================================
+   RENDER TABLE
+========================================================= */
+
+function renderSplitPreviewTable(
+    type,
+    lines,
+    ranges,
+    wrapperId,
+    summaryId,
+    unitName,
+    foundMaster,
+    sp,
+    onloomReed,
+    onloomWidth,
+    onloomPick
+){
+
+    let wrapper =
+        document.getElementById(wrapperId);
+
+    let summaryBox =
+        document.getElementById(summaryId);
+
+
+    if(
+        !Array.isArray(lines) ||
+        lines.length === 0
+    ){
+
+        wrapper.innerHTML = `
+            <div class="table-container">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                தரவுகள் இல்லை
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        summaryBox.style.display = "none";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       RANGE MAP
+    ----------------------------------------------------- */
+
+    let rangeMap = {};
+
+    if(
+        Array.isArray(ranges) &&
+        ranges.length > 0
+    ){
+
+        ranges.forEach(function(r){
+
+            let start =
+                parseInt(r.start) || 0;
+
+            let end =
+                parseInt(r.end) || 0;
+
+            let set =
+                parseFloat(r.set) || 1;
+
+            for(
+                let j=start;
+                j<=end;
+                j++
+            ){
+
+                rangeMap[j] = {
+
+                    start:start,
+                    end:end,
+                    set:set,
+                    isStart:j === start,
+                    isEnd:j === end
+
+                };
+
+            }
+
+        });
+
+    }
+
+
+    /* -----------------------------------------------------
+       TOTALS
+    ----------------------------------------------------- */
+
+    let rowsData = [];
+
+    let countTotals = {};
+
+    let totalMultiplierSum = 0;
+
+    let totalSetsSum = 0;
+
+    let remainderSum = 0;
+
+    let pureSum = 0;
+
+    let rangeCoveredSum = 0;
+
+    let rangeLineIndices =
+        new Set();
+
+
+    if(
+        Array.isArray(ranges) &&
+        ranges.length > 0
+    ){
+
+        ranges.forEach(function(r){
+
+            let start =
+                parseInt(r.start) || 0;
+
+            let end =
+                parseInt(r.end) || 0;
+
+            for(
+                let k=start;
+                k<=end;
+                k++
+            ){
+
+                rangeLineIndices.add(k);
+
+            }
+
+        });
+
+    }
+
+
+    lines.forEach(function(item,index){
+
+        let rowNum =
+            index + 1;
+
+        let val =
+            parseFloat(
+                type === "warp"
+                ? item.ends
+                : item.picks
+            ) || 0;
+
+        pureSum += val;
+
+        if(
+            rangeLineIndices.has(rowNum)
+        ){
+
+            rangeCoveredSum += val;
+
+        }
+
+    });
+
+
+    remainderSum =
+        pureSum - rangeCoveredSum;
+
+
+    /* -----------------------------------------------------
+       ROW DATA
+    ----------------------------------------------------- */
+
+    lines.forEach(function(item,index){
+
+        let rowNum =
+            index + 1;
+
+        let val =
+            parseFloat(
+                type === "warp"
+                ? item.ends
+                : item.picks
+            ) || 0;
+
+        let cText =
+            item.count
+            ? String(item.count).trim()
+            : "-";
+
+        let clrText =
+            translateColorToTamil(
+                item.color
+            );
+
+
+        let setHtml = "";
+
+        let rInfo =
+            rangeMap[rowNum];
+
+
+        if(rInfo){
+
+            if(rInfo.isStart){
+
+                let rangeSum = 0;
+
+                for(
+                    let k=rInfo.start;
+                    k<=rInfo.end;
+                    k++
+                ){
+
+                    let subItem =
+                        lines[k-1];
+
+                    rangeSum +=
+                        parseFloat(
+                            type === "warp"
+                            ? subItem.ends
+                            : subItem.picks
+                        ) || 0;
+
+                }
+
+
+                let totalProduct =
+                    rangeSum * rInfo.set;
+
+
+                totalMultiplierSum +=
+                    totalProduct;
+
+                totalSetsSum +=
+                    rInfo.set;
+
+
+                let spanRows =
+                    (
+                        rInfo.end -
+                        rInfo.start
+                    ) + 1;
+
+
+                setHtml = `
+                    <td
+                        rowspan="${spanRows}"
+                        class="col-set"
+                        style="vertical-align:middle;">
+
+                        X ${rInfo.set}
+                        = ${totalProduct}
+
+                    </td>
+                `;
+
+            }
+            else{
+
+                setHtml = null;
+
+            }
+
+
+            countTotals[cText] =
+                (
+                    countTotals[cText] || 0
+                ) +
+                (
+                    val * rInfo.set
+                );
+
+        }
+        else{
+
+            setHtml =
+                `<td class="col-set"></td>`;
+
+            countTotals[cText] =
+                (
+                    countTotals[cText] || 0
+                ) + val;
+
+        }
+
+
+        rowsData.push({
+
+            rowNum:rowNum,
+            count:cText,
+            color:clrText,
+            val:val,
+            setHtml:setHtml
+
+        });
+
+    });
+
+
+    /* -----------------------------------------------------
+       HEADER
+    ----------------------------------------------------- */
+
+    let headerHtml = `
+        <tr>
+
+            <th class="col-no">
+                எண்
+            </th>
+
+            <th class="col-count">
+                கவுண்ட்
+            </th>
+
+            <th class="col-color">
+                நிறம்
+            </th>
+
+            <th class="col-val">
+                ${
+                    unitName === "Ends"
+                    ? "எண்ட்ஸ்"
+                    : "பிக்ஸ்"
+                }
+            </th>
+
+            <th class="col-set">
+                செட்
+            </th>
+
+        </tr>
+    `;
+
+
+    /* -----------------------------------------------------
+       SPLIT AFTER 35
+    ----------------------------------------------------- */
+
+    let col1 =
+        rowsData.slice(0,35);
+
+    let col2 =
+        rowsData.slice(35);
+
+
+    let t1 =
+        buildTableRowsHtml(col1);
+
+    let t2 =
+        buildTableRowsHtml(col2);
+
+
+    let secondTable = "";
+
+    if(t2 !== ""){
+
+        secondTable = `
+            <div class="single-table-col">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            ${headerHtml}
+                        </thead>
+
+                        <tbody>
+                            ${t2}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+    wrapper.innerHTML = `
+
+        <div class="dual-table-wrapper">
+
+            <div class="single-table-col">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            ${headerHtml}
+                        </thead>
+
+                        <tbody>
+                            ${t1}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            ${secondTable}
+
+        </div>
+
+    `;
+
+
+    /* -----------------------------------------------------
+       GRAND TOTAL
+    ----------------------------------------------------- */
+
+    let finalGrandTotal = 0;
+
+
+    if(type === "warp"){
+
+        let reed =
+            parseFloat(onloomReed) ||
+            parseFloat(
+                foundMaster.reed ||
+                sp.reed
+            ) || 0;
+
+        let width =
+            parseFloat(onloomWidth) ||
+            parseFloat(
+                foundMaster.width ||
+                sp.width
+            ) || 0;
+
+
+        if(
+            reed > 0 &&
+            width > 0
+        ){
+
+            finalGrandTotal =
+                Math.round(
+                    reed * width
+                );
+
+        }
+        else{
+
+            finalGrandTotal =
+                totalMultiplierSum +
+                remainderSum;
+
+            if(finalGrandTotal === 0){
+
+                finalGrandTotal =
+                    pureSum;
+
+            }
+
+        }
+
+    }
+    else{
+
+        let weftWidth =
+            parseFloat(
+                foundMaster.weftWidth ||
+                sp.weftWidth
+            ) ||
+            (
+                parseFloat(onloomWidth) > 0
+                ? parseFloat(onloomWidth) + 3
+                : 67.44
+            );
+
+
+        let pickNum =
+            parseFloat(onloomPick) ||
+            60;
+
+
+        finalGrandTotal =
+            weftWidth * pickNum;
+
+    }
+
+
+    /* -----------------------------------------------------
+       SUMMARY
+    ----------------------------------------------------- */
+
+    let summaryHtml = "";
+
+
+    if(type === "weft"){
+
+        let storedWidthVal =
+            parseFloat(
+                foundMaster.weftWidth ||
+                sp.weftWidth
+            ) ||
+            (
+                parseFloat(onloomWidth) > 0
+                ? parseFloat(onloomWidth) + 3
+                : 67.44
+            );
+
+
+        let pickNum =
+            parseFloat(onloomPick) ||
+            60;
+
+
+        summaryHtml += `
+
+            <div class="line-1">
+
+                Total Pattern Picks:
+                <b>${pureSum}</b>
+
+            </div>
+
+            <div>
+
+                Weft Width
+                ${storedWidthVal}
+                X Pick
+                ${pickNum}
+                =
+                <b>
+                    ${finalGrandTotal.toFixed(2)}
+                    Total Pick
+                </b>
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        let calculatedPatternEnds =
+            totalMultiplierSum +
+            remainderSum;
+
+
+        if(
+            calculatedPatternEnds === 0
+        ){
+
+            calculatedPatternEnds =
+                pureSum;
+
+        }
+
+
+        summaryHtml += `
+
+            <div class="line-1">
+
+                Total Pattern Ends:
+                <b>${calculatedPatternEnds}</b>
+
+            </div>
+
+        `;
+
+
+        if(
+            ranges &&
+            ranges.length > 0
+        ){
+
+            summaryHtml += `
+
+                <div class="line-1">
+
+                    ${totalSetsSum}
+                    Set +
+                    ${remainderSum}
+                    Ends =
+                    <b>
+                        ${finalGrandTotal}
+                        Total Ends
+                    </b>
+
+                </div>
+
+            `;
+
+        }
+        else{
+
+            summaryHtml += `
+
+                <div class="line-1">
+
+                    Total Ends:
+                    <b>${finalGrandTotal}</b>
+
+                </div>
+
+            `;
+
+        }
+
+
+        let countSummaryArr = [];
+
+        for(
+            let c in countTotals
+        ){
+
+            countSummaryArr.push(
+                `<b>${c}:</b>
+                 ${countTotals[c]}`
+            );
+
+        }
+
+
+        summaryHtml += `
+
+            <div>
+
+                COUNT WISE TOTAL:
+                ${countSummaryArr.join(" | ")}
+
+            </div>
+
+        `;
+
+    }
+
+
+    summaryBox.innerHTML =
+        summaryHtml;
+
+    summaryBox.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   BUILD TABLE ROWS
+========================================================= */
+
+function buildTableRowsHtml(rows){
+
+    if(
+        !rows ||
+        rows.length === 0
+    ){
+
+        return "";
+
+    }
+
+
+    let html = "";
+
+
+    rows.forEach(function(r){
+
+        html += `
+
+            <tr>
+
+                <td class="col-no">
+
+                    <b>${r.rowNum}</b>
+
+                </td>
+
+                <td class="col-count">
+
+                    ${r.count}
+
+                </td>
+
+                <td class="col-color">
+
+                    ${r.color}
+
+                </td>
+
+                <td class="col-val">
+
+                    <b>${r.val}</b>
+
+                </td>
+
+                ${
+                    r.setHtml !== null
+                    ? r.setHtml
+                    : ""
+                }
+
+            </tr>
+
+        `;
+
+    });
+
+
+    return html;
+
+}
+
+
+/* =========================================================
+   OPEN PREVIEW
+========================================================= */
+
+function openPreviewModal(){
+
+    let dNum =
+        document.getElementById(
+            "designNumber"
+        ).value;
+
+
+    if(!dNum){
+
+        alert(
+            "முதலில் டிசைன் எண்ணைத் தேர்ந்தெடுக்கவும்!"
+        );
+
+        return;
+
+    }
+
+
+    let compName =
+        document.getElementById(
+            "printCompName"
+        ).innerText;
+
+
+    let compAddr =
+        document.getElementById(
+            "printCompAddr"
+        ).innerHTML;
+
+
+    let headerBox =
+        document.getElementById(
+            "designHeaderBox"
+        ).outerHTML;
+
+
+    let warpSec =
+        document.getElementById(
+            "warpSection"
+        ).outerHTML;
+
+
+    let weftSec =
+        document.getElementById(
+            "weftSection"
+        ).outerHTML;
+
+
+    /* =====================================================
+       IMPORTANT:
+       NO BLACK BACKGROUND HERE
+    ====================================================== */
+
+    let html = `
+
+        <div
+            style="
+                background:#ffffff;
+                color:#000000;
+                width:100%;
+            "
+        >
+
+            <!-- COMPANY -->
+
+            <div
+                style="
+                    text-align:center;
+                    margin-bottom:8px;
+                    border-bottom:2px solid #4A7C59;
+                    padding-bottom:5px;
+                "
+            >
+
+                <h2
+                    style="
+                        margin:0;
+                        font-size:16px;
+                        color:#2F4F38;
+                    "
+                >
+                    ${compName}
+                </h2>
+
+                <p
+                    style="
+                        margin:2px 0 0;
+                        font-size:9px;
+                        color:#4A554A;
+                    "
+                >
+                    ${compAddr}
+                </p>
+
+            </div>
+
+
+            <!-- DESIGN HEADER -->
+
+            ${headerBox.replace(
+                'style="display:none;"',
+                'style="display:grid;"'
+            )}
+
+
+            <!-- WARP -->
+
+            ${warpSec}
+
+
+            <!-- PAGE BREAK -->
+
+            <div class="page-break"></div>
+
+
+            <!-- WEFT -->
+
+            ${weftSec}
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "previewContent"
+    ).innerHTML = html;
+
+
+    let modal =
+        document.getElementById(
+            "previewModal"
+        );
+
+
+    modal.style.display = "flex";
+
+
+    setTimeout(function(){
+
+        modal.classList.add("show");
+
+    },20);
+
+}
+
+
+/* =========================================================
+   CLOSE PREVIEW
+========================================================= */
+
+function closePreviewModal(){
+
+    let modal =
+        document.getElementById(
+            "previewModal"
+        );
+
+    modal.classList.remove("show");
+
+    setTimeout(function(){
+
+        modal.style.display = "none";
+
+    },150);
+
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+function printPreview(){
+
+    window.print();
+
+}
+
+</script>
+
+</body>
+</html>
