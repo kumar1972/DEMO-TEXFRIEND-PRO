@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Advanced Denting & Drawing Editor</title>
+<title>Advanced Denting, Drawing & Graph Editor</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
@@ -11,7 +11,6 @@
 <script src="config.js"></script>
 
 <style>
-    /* ================= GLOBAL STYLES ================= */
     :root {
         --bg: #0d1713; --card: #14251e; --card2: #192d25;
         --line: #2c4b3d; --text: #edf7ef; --muted: #9fc5aa;
@@ -20,33 +19,31 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     
     html, body { min-height: 100%; background: var(--bg); color: var(--text); padding: 0; margin: 0; }
-    .container { width: 100%; max-width: 100%; min-height: 100vh; margin: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; }
+    .container { width: 100%; max-width: 100%; min-height: 100vh; margin: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; transition: 0.3s; }
     
     .header { background: linear-gradient(145deg, #183328, #102019); border: 1px solid var(--line); border-radius: 10px; padding: 12px; text-align: center; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
     .header h1 { font-size: 1rem; color: #f59e0b; margin: 0 auto;}
     .back-btn { background: #244638; color: #aee9ba; border: 1px solid #39614f; border-radius: 6px; padding: 8px 12px; font-size: 0.75rem; font-weight: bold; cursor: pointer; text-decoration: none; }
 
-    /* ACTION BAR */
-    .action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-    .action-bar button { border: 0; border-radius: 8px; padding: 12px 5px; font-size: 0.8rem; font-weight: 900; color: #fff; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-    .btn-save { background: #2d9148; }
-    .btn-undo { background: #217eaf; }
+    .action-bar { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr 1fr; gap: 6px; margin-bottom: 4px; }
+    .action-bar button { border: 0; border-radius: 8px; padding: 10px 4px; font-size: 0.7rem; font-weight: 900; color: #fff; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); text-align: center; }
+    .btn-save-dent { background: #15803d; }
+    .btn-save-graph { background: #0284c7; }
+    .btn-undo { background: #475569; }
     .btn-reset { background: #dc2626; }
 
-    /* FORM & TABS */
     .pm-form-box { background: #172b23; padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px dashed #395648; }
     .pm-label-w { font-size: 0.75rem; color: #9be4a8; margin-bottom: 8px; display: block; font-weight: bold; }
     input[type="text"], input[type="number"], select { width: 100%; background: #14251e; color: #fff; border: 1px solid #3c6752; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; outline: none; }
     select { appearance: auto; cursor: pointer; }
     
-    .denting-tabs { display: flex; gap: 8px; margin: 6px 0 10px; position: sticky; top: 0; z-index: 3; background: var(--bg); padding-bottom: 8px; }
-    .denting-tab { flex: 1; border: 1px solid #39614f; background: #203b30; color: #b8d8bf; border-radius: 8px; padding: 12px 4px; font-weight: 900; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+    .denting-tabs { display: flex; gap: 5px; margin: 6px 0 10px; position: sticky; top: 0; z-index: 3; background: var(--bg); padding-bottom: 8px; overflow-x: auto; }
+    .denting-tab { flex: 1; min-width: 95px; border: 1px solid #39614f; background: #203b30; color: #b8d8bf; border-radius: 8px; padding: 10px 4px; font-weight: 900; font-size: 0.7rem; cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center; }
     .denting-tab.active { background: #2d9148; color: #fff; border-color: #9be4a8; }
     .denting-pane { display: none; }
     .denting-pane.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* GRIDS & ROWS */
     .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
     .preset-grid button, .preset-grid select { border: 1px solid #39614f; background: #244638; color: #aee9ba; border-radius: 8px; padding: 10px 4px; font-size: 0.7rem; font-weight: 900; cursor: pointer; text-align: center; }
 
@@ -57,6 +54,54 @@
     .btn-add { background: #2f9147; color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
 
     #dentingResultDisplay { background: #09110d; border: 1px dashed #4a7c59; padding: 14px; border-radius: 10px; font-size: 0.85rem; color: #b8d8bf; line-height: 1.8; margin-top: 10px; }
+
+    /* ================= GRAPH EDITOR STYLES ================= */
+    #graphPaneBox { display: flex; flex-direction: column; transition: 0.3s; }
+    #gridEditorSection { background: #0f1b16; border: 1px solid #2c4b3d; padding: 10px; border-radius: 10px; margin-top: 10px; display: flex; flex-direction: column; flex: 1; }
+    .grid-controls { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; justify-content: center; }
+    .grid-controls button { background: #244638; color: #aee9ba; border: 1px solid #39614f; padding: 8px 10px; border-radius: 7px; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+    
+    .matrix-grid-container { height: 60vh; overflow: auto; padding: 10px; border: 1px solid #28483a; border-radius: 8px; background: #050a08; display: flex; flex-direction: column; gap: 4px; }
+    .matrix-row-wrapper { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 4px; padding: 4px; }
+    .row-num { width: 30px; text-align: right; color: #f59e0b; font-weight: 900; font-size: 0.8rem; }
+    .matrix-row { display: flex; gap: 3px; }
+    .matrix-cell { width: 32px; height: 32px; background: #183026; border: 1px solid #315443; color: #8fe19d; font-weight: 900; font-size: 0.8rem; display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 5px; flex-shrink: 0; transition: 0.1s; }
+    .matrix-cell.active { background: #4caf50; color: #102015; border-color: #8ee49a; box-shadow: 0 0 5px rgba(76,175,80,0.5); }
+    
+    .row-actions { display: flex; gap: 4px; margin-left: 6px; }
+    .btn-action { display: flex; justify-content: center; align-items: center; width: 32px; height: 32px; border: 0; font-weight: 800; border-radius: 6px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; }
+    .btn-action.del { background: #dc2626; color: #fff; border: 1px solid #991b1b; }
+    
+    .col-del-row { display: flex; gap: 3px; justify-content: center; margin-left: 38px; margin-bottom: 6px; padding-right: 40px; }
+    .col-ctrl-box { width: 32px; display: flex; flex-direction: column; gap: 2px; }
+    .btn-col-act { border: 0; font-weight: 900; border-radius: 4px; cursor: pointer; font-size: 0.65rem; height: 18px; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .btn-col-act.copy { background: #217eaf; flex: 1; }
+    .btn-col-act.paste { background: #0f766e; flex: 1; }
+    .btn-col-act.del { background: #dc2626; width: 100%; height: 18px; }
+
+    /* FULL SCREEN MODE CHECKBOX STYLING */
+    body.full-graph-mode .header,
+    body.full-graph-mode .action-bar,
+    body.full-graph-mode .denting-tabs,
+    body.full-graph-mode .pm-form-box:not(#graphPaneBox) { display: none !important; }
+    body.full-graph-mode { padding: 0; margin: 0; }
+    body.full-graph-mode .container { padding: 0; height: 100vh; max-width: 100%; }
+    body.full-graph-mode #graphPaneBox { height: 100vh; margin: 0; border-radius: 0; border: none; }
+    body.full-graph-mode .matrix-grid-container { flex: 1; height: auto; max-height: none; }
+
+    /* PRINT MODAL */
+    .print-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000000; justify-content: center; align-items: center; padding: 10px; }
+    .print-sheet { background: #fff; color: #000; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; max-height: 95vh; overflow: auto; }
+    .print-controls { display: flex; gap: 8px; justify-content: flex-end; margin-top: 15px; }
+    .print-controls button { border: 0; padding: 10px 15px; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer; }
+
+    @media print {
+        body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+        .container, .header, .action-bar, .denting-tabs, .pm-form-box { display: none !important; }
+        body.printing-graph #printModalBox { display: flex !important; position: static !important; background: #fff !important; padding: 0 !important; }
+        .print-sheet { box-shadow: none !important; max-width: 100% !important; }
+        .print-hide { display: none !important; }
+    }
 </style>
 </head>
 <body>
@@ -64,18 +109,19 @@
 <div class="container">
     <div class="header">
         <a href="dashboard.html" class="back-btn">← Back</a>
-        <h1>📐 Denting & Drawing Editor</h1>
+        <h1>📐 Denting, Drawing & Graph Editor</h1>
         <div style="width: 60px;"></div>
     </div>
 
     <!-- ACTION BAR -->
     <div class="action-bar">
-        <button class="btn-save" onclick="saveData()">💾 Save</button>
+        <button class="btn-save-dent" onclick="saveDentingDrawingData()">💾 Save Dent/Draw</button>
+        <button class="btn-save-graph" onclick="saveGraphDataOnly()">💾 Save Graph</button>
         <button class="btn-undo" onclick="undoData()">↩️ Undo</button>
         <button class="btn-reset" onclick="resetData()">🗑️ Reset</button>
     </div>
 
-    <!-- 2. DESIGN DROPDOWN LIST -->
+    <!-- DESIGN DROPDOWN LIST -->
     <div class="pm-form-box">
         <label class="pm-label-w">🎨 Select Design</label>
         <select id="designSelect" onchange="loadSelectedDesign()">
@@ -89,9 +135,10 @@
     </div>
 
     <div class="denting-tabs">
-        <button class="denting-tab active" id="dentTabBtn" onclick="showDentingPane('dent')">📐 Denting Order</button>
-        <button class="denting-tab" id="drawTabBtn" onclick="showDentingPane('draw')">🧵 Drawing Order</button>
-        <button class="denting-tab" id="advTabBtn" onclick="showDentingPane('adv')">📊 Summary & Results</button>
+        <button class="denting-tab active" id="dentTabBtn" onclick="showDentingPane('dent')">📐 Denting</button>
+        <button class="denting-tab" id="drawTabBtn" onclick="showDentingPane('draw')">🧵 Drawing</button>
+        <button class="denting-tab" id="graphTabBtn" onclick="showDentingPane('graph')">🕸️ Weave Graph</button>
+        <button class="denting-tab" id="advTabBtn" onclick="showDentingPane('adv')">📊 Summary</button>
     </div>
 
     <!-- DENTING PANE -->
@@ -99,9 +146,10 @@
         <div class="pm-form-box">
             <label class="pm-label-w">Denting Pattern (Short-hand)</label>
             <input type="text" id="dentingPatternInput" value="2" oninput="saveHistory(); calculateAdvancedDenting(); buildManualDentingEditor();">
-            <div class="preset-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="preset-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                 <button onclick="setDentPreset('2')">2 per Dent</button>
                 <button onclick="setDentPreset('3')">3 per Dent</button>
+                <button onclick="setDentPreset('4')">4 per Dent</button>
             </div>
             <div style="font-size:.7rem; color:#b8d8bf; line-height:1.6; margin-top:10px;">
                 <b>0</b> = Missing / Empty Dent. நேரடியாக உங்கள் பார்முலாவை (உதாரணம்: <b>2,2,0,3</b>) மேலே டைப் செய்யவும்.
@@ -113,7 +161,6 @@
                 <button class="btn-add" onclick="addDentingManualRow()">➕ Add Dent</button>
             </div>
             <div id="dentingManualRows"></div>
-            <div style="font-size:0.65rem; color:#9fc5aa; margin-top:10px;">ஒவ்வொரு Dent-க்கும் தனித்தனியாக மாற்றிக்கொள்ளலாம்.</div>
         </div>
     </div>
 
@@ -124,7 +171,6 @@
             <input type="text" id="drawingPatternInput" value="1,2,3,4" oninput="saveHistory(); calculateAdvancedDenting(); buildManualDrawingEditor();">
             <div class="preset-grid">
                 <button onclick="setDrawingPreset('1,2,3,4')">1-2-3-4</button>
-                
                 <select id="frameDropdown" onchange="generateFramesFromDropdown()">
                     <option value="">-- Select Frames --</option>
                     <option value="1">1 Frame</option>
@@ -142,7 +188,6 @@
                     <option value="13">13 Frames</option>
                     <option value="14">14 Frames</option>
                 </select>
-
                 <button onclick="setDrawingPreset('1,2,3,4,3,2')">Return</button>
             </div>
         </div>
@@ -152,7 +197,54 @@
                 <button class="btn-add" onclick="addDrawingManualRow()">➕ Add Frame</button>
             </div>
             <div id="drawingManualRows"></div>
-            <div style="font-size:0.65rem; color:#9fc5aa; margin-top:10px;">Frame order-ஐ தனித்தனியாக edit செய்யலாம்.</div>
+        </div>
+    </div>
+
+    <!-- GRAPH PANE -->
+    <div id="graphPane" class="denting-pane">
+        <div class="pm-form-box" id="graphPaneBox" style="margin-bottom: 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label class="pm-label-w" style="margin:0;">Weave Type / Full Page Graph Editor</label>
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; color:#78d18a; font-size:0.75rem; margin:0;">
+                    <input type="checkbox" id="fsGraphCheck" onchange="toggleGraphFullscreen()" style="width:16px; height:16px; accent-color:#2d9148; cursor:pointer;"> Full Screen
+                </label>
+            </div>
+            <select id="weaveType" onchange="onWeaveChange()" style="margin-top:8px;">
+                <option value="plain">Plain Weave (1 / 1)</option>
+                <option value="twill">Twill 2/2</option>
+                <option value="custom">🛠️ Custom Graph Grid</option>
+            </select>
+
+            <div id="gridEditorSection" style="display:flex;">
+                <div class="grid-controls">
+                    <button onclick="addCol()">➕ Col</button>
+                    <button onclick="addRowTop()">➕ Row</button>
+                    <button onclick="removeLastRow()">➖ Row</button>
+                    <button onclick="removeLastCol()">➖ Col</button>
+                    <button onclick="triggerGraphScan()" style="background:#217eaf; border-color:#38bdf8;">📸 Scan Graph</button>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; background:#0a1410; padding:10px; border-radius:8px; border:1px solid #1a2f24;">
+                    <div>
+                        <label class="pm-label-w" style="color:#f59e0b; font-size:0.65rem;">↔️ Weft (Pick) Repeats</label>
+                        <input type="text" id="pickPatternInput" placeholder="(4-8)*4" style="font-size:0.8rem; padding:6px;" oninput="saveHistory(); buildGridEditor();">
+                    </div>
+                    <div>
+                        <label class="pm-label-w" style="color:#38bdf8; font-size:0.65rem;">↕️ Warp (Ends) Repeats</label>
+                        <input type="text" id="warpGraphPatternInput" placeholder="(1-3)*2" style="font-size:0.8rem; padding:6px;" oninput="saveHistory(); buildGridEditor();">
+                    </div>
+                </div>
+
+                <div id="matrixGridContainer" class="matrix-grid-container"></div>
+                
+                <div style="font-size:.65rem; color:#8fb99a; text-align:center; margin-top:8px;">
+                    1 = Warp Up • 0 = Weft Up • Column-ல் C=Copy, P=Paste
+                </div>
+
+                <div class="action-bar" style="grid-template-columns: 1fr; margin-top:10px;">
+                    <button style="background:#0284c7;" onclick="openGraphPrintPreview()">🖨️ Print Full Graph & Brackets</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -165,16 +257,43 @@
     </div>
 </div>
 
+<!-- GRAPH PRINT MODAL -->
+<div id="printModalBox" class="print-modal">
+    <div class="print-sheet">
+        <h3 style="text-align:center;margin-bottom:15px;color:#000;">Weave Graph Matrix Design</h3>
+        <div id="printTableContainer"></div>
+        <div class="print-controls print-hide">
+            <button style="background:#2e7d32" onclick="window.print()">Print Graph</button>
+            <button style="background:#5c3a3a" onclick="closeGraphPrintPreview()">Close</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // --- History System for UNDO ---
     let historyStack = [];
     let allCloudDesigns = [];
     let activeDesignObj = null;
+    let copiedColData = null;
+
+    let weavePatterns = {
+        plain: [[1,0], [0,1]],
+        twill: [
+            [0,0,1,1],
+            [0,1,1,0],
+            [1,1,0,0],
+            [1,0,0,1]
+        ],
+        custom: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]]
+    };
     
     function saveHistory() {
         historyStack.push({
             dent: document.getElementById("dentingPatternInput").value,
-            draw: document.getElementById("drawingPatternInput").value
+            draw: document.getElementById("drawingPatternInput").value,
+            pick: document.getElementById("pickPatternInput").value,
+            warpG: document.getElementById("warpGraphPatternInput").value,
+            type: document.getElementById("weaveType").value,
+            matrix: JSON.parse(JSON.stringify(weavePatterns.custom))
         });
         if(historyStack.length > 20) historyStack.shift(); 
     }
@@ -184,6 +303,11 @@
             let lastState = historyStack.pop();
             document.getElementById("dentingPatternInput").value = lastState.dent;
             document.getElementById("drawingPatternInput").value = lastState.draw;
+            document.getElementById("pickPatternInput").value = lastState.pick || "";
+            document.getElementById("warpGraphPatternInput").value = lastState.warpG || "";
+            document.getElementById("weaveType").value = lastState.type;
+            weavePatterns.custom = lastState.matrix;
+            onWeaveChange();
             updateAll();
         } else {
             alert("Nothing to undo!");
@@ -191,15 +315,41 @@
     }
 
     function resetData() {
-        if(confirm("Are you sure you want to delete/reset the pattern?")) {
+        if(confirm("Are you sure you want to delete/reset the pattern & graph?")) {
             saveHistory();
             document.getElementById("dentingPatternInput").value = "2";
             document.getElementById("drawingPatternInput").value = "1,2,3,4";
+            document.getElementById("pickPatternInput").value = "";
+            document.getElementById("warpGraphPatternInput").value = "";
+            document.getElementById("weaveType").value = "plain";
+            weavePatterns.custom = [[1,0], [0,1]];
+            onWeaveChange();
             updateAll();
         }
     }
 
-    // --- 2. Design Data & Total Ends Calculation ---
+    function showDentingPane(name) {
+        ["dent","draw","graph","adv"].forEach(x => {
+            let pane = document.getElementById(x+"Pane");
+            if(pane) pane.classList.toggle("active", x === name);
+        });
+        document.getElementById("dentTabBtn").classList.toggle("active", name === "dent");
+        document.getElementById("drawTabBtn").classList.toggle("active", name === "draw");
+        document.getElementById("graphTabBtn").classList.toggle("active", name === "graph");
+        document.getElementById("advTabBtn").classList.toggle("active", name === "adv");
+        
+        if(name === 'graph') onWeaveChange();
+    }
+
+    function toggleGraphFullscreen() {
+        let chk = document.getElementById("fsGraphCheck");
+        if(chk.checked) {
+            document.body.classList.add('full-graph-mode');
+        } else {
+            document.body.classList.remove('full-graph-mode');
+        }
+    }
+
     function loadDesignList() {
         let local = JSON.parse(localStorage.getItem("design_masters_data") || "[]");
         let cache = JSON.parse(localStorage.getItem("weave_designs_cache") || "[]");
@@ -213,9 +363,10 @@
         allCloudDesigns = Array.from(map.values());
         
         let sel = document.getElementById("designSelect");
+        sel.innerHTML = '<option value="">-- Load Saved Design --</option>';
         allCloudDesigns.forEach((d, i) => {
             let n = d.designNo || d.name || "Unnamed";
-            sel.innerHTML += `<option value="${i}">${n}</option>`;
+            sel.innerHTML += `<option value="${i}">🎨 ${n}</option>`;
         });
 
         let last = localStorage.getItem("selected_design_number") || localStorage.getItem("weave_last_design_name");
@@ -236,9 +387,19 @@
         if(activeDesignObj) {
             let total = calculateWarpEnds(activeDesignObj);
             if(total > 0) document.getElementById("totalWarpEnds").value = total;
-
             if(activeDesignObj.dentingPattern) document.getElementById("dentingPatternInput").value = activeDesignObj.dentingPattern;
             if(activeDesignObj.drawingPattern) document.getElementById("drawingPatternInput").value = activeDesignObj.drawingPattern;
+            if(activeDesignObj.pickPattern) document.getElementById("pickPatternInput").value = activeDesignObj.pickPattern;
+            if(activeDesignObj.warpGraphPattern) document.getElementById("warpGraphPatternInput").value = activeDesignObj.warpGraphPattern;
+            
+            let type = activeDesignObj.type || "plain";
+            if(activeDesignObj.customMatrix?.length) {
+                weavePatterns.custom = JSON.parse(JSON.stringify(activeDesignObj.customMatrix));
+                if(activeDesignObj.type === "custom") type = "custom";
+            }
+            if(!weavePatterns[type]) type = "plain";
+            document.getElementById("weaveType").value = type;
+            onWeaveChange();
         }
         updateAll();
     }
@@ -247,19 +408,16 @@
         let total = 0;
         let warpLines = d.warpLines || d.warp || [];
         let wRanges = d.warpRanges || [];
-        
         if (warpLines.length === 0) {
             for(let i=1; i<=30; i++) {
                 let ends = d[`warpEnds${i}`] || d[`warpEnd${i}`];
                 if(ends) warpLines.push({ends: ends});
             }
         }
-
         let i = 0;
         while(i < warpLines.length) {
             let lineNum = i + 1;
             let range = wRanges.find(r => parseInt(r.start) === lineNum);
-            
             if (range && range.end >= range.start && range.set > 1) {
                 let setSum = 0;
                 for(let j = range.start - 1; j < range.end && j < warpLines.length; j++) {
@@ -277,7 +435,7 @@
         return total;
     }
 
-    function saveData() {
+    async function saveDentingDrawingData() {
         let dentStr = document.getElementById("dentingPatternInput").value;
         let drawStr = document.getElementById("drawingPatternInput").value;
         
@@ -286,169 +444,383 @@
 
         let sel = document.getElementById("designSelect").value;
         if(sel !== "" && allCloudDesigns[sel]) {
-            allCloudDesigns[sel].dentingPattern = dentStr;
-            allCloudDesigns[sel].drawingPattern = drawStr;
-            let name = allCloudDesigns[sel].designNo || allCloudDesigns[sel].name;
+            let d = allCloudDesigns[sel];
+            d.dentingPattern = dentStr;
+            d.drawingPattern = drawStr;
+            updateDesignStorage(d);
+        }
+        alert("✅ Denting & Drawing Saved Successfully!");
+    }
+
+    async function saveGraphDataOnly() {
+        let pickStr = document.getElementById("pickPatternInput").value;
+        let warpGStr = document.getElementById("warpGraphPatternInput").value;
+        let wType = document.getElementById("weaveType").value;
+        let matrix = JSON.parse(JSON.stringify(weavePatterns.custom));
+        
+        localStorage.setItem("saved_pick_pattern", pickStr);
+        localStorage.setItem("saved_warp_graph_pattern", warpGStr);
+
+        let sel = document.getElementById("designSelect").value;
+        if(sel !== "" && allCloudDesigns[sel]) {
+            let d = allCloudDesigns[sel];
+            d.pickPattern = pickStr;
+            d.warpGraphPattern = warpGStr;
+            d.type = wType;
+            d.customMatrix = matrix;
+            updateDesignStorage(d);
+        }
+        alert("✅ Weave Graph Saved Successfully!");
+    }
+
+    async function updateDesignStorage(d) {
+        let name = d.designNo || d.name;
+        let local = JSON.parse(localStorage.getItem("design_masters_data") || "[]");
+        let idx = local.findIndex(x => (x.designNo === name || x.name === name));
+        if(idx >= 0) {
+            local[idx] = d;
+            localStorage.setItem("design_masters_data", JSON.stringify(local));
+        }
+
+        if (window.firebase && window.firebase.firestore) {
+            try {
+                let db = window.firebase.firestore();
+                let docId = d.id || name;
+                await db.collection("weaves").doc(String(docId)).set(d, {merge:true});
+                try { await db.collection("design_masters_data").doc(String(docId)).set(d, {merge:true}); } catch(e){} 
+            } catch (err) {}
+        }
+    }
+
+    function copyCol(c) {
+        copiedColData = weavePatterns.custom.map(row => row[c]);
+    }
+    
+    function pasteCol(c) {
+        if(!copiedColData) { alert("Please click 'C' (Copy) on a column first!"); return; }
+        saveHistory();
+        weavePatterns.custom.forEach((row, r) => {
+            row[c] = copiedColData[r];
+        });
+        buildGridEditor();
+    }
+
+    function onWeaveChange() {
+        let t = document.getElementById("weaveType").value;
+        if(t === "plain") { 
+            weavePatterns.custom = JSON.parse(JSON.stringify(weavePatterns.plain)); 
+        }
+        else if(t === "twill") { 
+            weavePatterns.custom = JSON.parse(JSON.stringify(weavePatterns.twill)); 
+        }
+        buildGridEditor();
+    }
+
+    function buildGridEditor() {
+        let box = document.getElementById("matrixGridContainer"); 
+        let t = document.getElementById("weaveType").value;
+        
+        // Ensure weavePatterns.custom strictly follows selected type
+        if(t === 'plain') weavePatterns.custom = JSON.parse(JSON.stringify(weavePatterns.plain));
+        if(t === 'twill') weavePatterns.custom = JSON.parse(JSON.stringify(weavePatterns.twill));
+
+        let m = weavePatterns.custom;
+        if(!Array.isArray(m) || !m.length) { weavePatterns.custom = [[1,0], [0,1]]; m = weavePatterns.custom; }
+        box.innerHTML = ""; 
+        
+        let top = document.createElement("div"); top.className = "col-del-row";
+        for(let c=0; c<(m[0]?.length||0); c++) { 
+            let ctrlBox = document.createElement("div"); ctrlBox.className = "col-ctrl-box";
             
-            let local = JSON.parse(localStorage.getItem("design_masters_data") || "[]");
-            let idx = local.findIndex(d => (d.designNo === name || d.name === name));
-            if(idx >= 0) {
-                local[idx].dentingPattern = dentStr;
-                local[idx].drawingPattern = drawStr;
-                localStorage.setItem("design_masters_data", JSON.stringify(local));
+            let btnGrp = document.createElement("div"); btnGrp.style.display = "flex"; btnGrp.style.gap = "2px";
+            let cBtn = document.createElement("button"); cBtn.className = "btn-col-act copy"; cBtn.textContent = "C"; cBtn.title = "Copy"; cBtn.onclick = () => copyCol(c);
+            let pBtn = document.createElement("button"); pBtn.className = "btn-col-act paste"; pBtn.textContent = "P"; pBtn.title = "Paste"; pBtn.onclick = () => pasteCol(c);
+            btnGrp.appendChild(cBtn); btnGrp.appendChild(pBtn);
+            
+            let dBtn = document.createElement("button"); dBtn.className = "btn-col-act del"; dBtn.textContent = "✕"; dBtn.title = "Delete"; dBtn.onclick = () => removeCol(c);
+            
+            ctrlBox.appendChild(btnGrp);
+            ctrlBox.appendChild(dBtn);
+            top.appendChild(ctrlBox); 
+        }
+        box.appendChild(top);
+
+        m.forEach((row,r) => {
+            let rowNum = m.length - r;
+            let wrap = document.createElement("div"); wrap.className = "matrix-row-wrapper"; 
+            
+            let rNum = document.createElement("div"); rNum.className = "row-num"; rNum.textContent = rowNum; 
+            wrap.appendChild(rNum);
+
+            let rd = document.createElement("div"); rd.className = "matrix-row";
+            row.forEach((v,c) => { 
+                let cell = document.createElement("div"); cell.className = "matrix-cell" + (v === 1 ? " active" : ""); cell.textContent = v;
+                cell.onclick = () => { 
+                    if(t !== 'custom') {
+                        document.getElementById("weaveType").value = 'custom';
+                    }
+                    saveHistory(); 
+                    m[r][c] = m[r][c] ? 0 : 1; 
+                    buildGridEditor(); 
+                }; 
+                rd.appendChild(cell); 
+            });
+            wrap.appendChild(rd); 
+
+            let act = document.createElement("div"); act.className = "row-actions";
+            let delBtn = document.createElement("button"); delBtn.className="btn-action del"; delBtn.innerHTML="❌"; delBtn.onclick = () => {
+                if(t !== 'custom') document.getElementById("weaveType").value = 'custom';
+                removeRow(r);
+            };
+            act.appendChild(delBtn);
+
+            wrap.appendChild(act);
+            box.appendChild(wrap);
+        });
+    }
+
+    function addCol() { 
+        if(document.getElementById("weaveType").value !== 'custom') document.getElementById("weaveType").value = 'custom';
+        saveHistory(); weavePatterns.custom.forEach(r => r.push(0)); buildGridEditor(); 
+    }
+    function removeCol(c) { 
+        if(document.getElementById("weaveType").value !== 'custom') document.getElementById("weaveType").value = 'custom';
+        saveHistory(); if(!weavePatterns.custom.length || weavePatterns.custom[0].length<=2) return; weavePatterns.custom.forEach(r => r.splice(c,1)); buildGridEditor(); 
+    }
+    function addRowTop() { 
+        if(document.getElementById("weaveType").value !== 'custom') document.getElementById("weaveType").value = 'custom';
+        saveHistory(); let cols = weavePatterns.custom[0]?.length || 4; weavePatterns.custom.unshift(new Array(cols).fill(0)); buildGridEditor(); 
+    }
+    function removeRow(i) { 
+        if(document.getElementById("weaveType").value !== 'custom') document.getElementById("weaveType").value = 'custom';
+        saveHistory(); if(weavePatterns.custom.length<=2) return; weavePatterns.custom.splice(i,1); buildGridEditor(); 
+    }
+    function removeLastRow() { removeRow(weavePatterns.custom.length-1); }
+    function removeLastCol() { removeCol((weavePatterns.custom[0]?.length||1)-1); }
+
+    function triggerGraphScan() {
+        let inp = document.createElement("input"); inp.type="file"; inp.accept="image/*";
+        inp.onchange = e => { let f = e.target.files[0]; if(!f) return; let rd = new FileReader(); rd.onload = x => { let im = new Image(); im.onload = () => processGraphImage(im); im.src = x.target.result; }; rd.readAsDataURL(f); }; inp.click();
+    }
+    function processGraphImage(img) {
+        let r_str = prompt("எத்தனை வரிசைகள் (Picks/Rows) உள்ளன? (உதாரணம்: 4)", "4"); if(!r_str) return; 
+        let c_str = prompt("எத்தனை நெடுக்கைகள் (Ends/Cols) உள்ளன? (உதாரணம்: 4)", "4"); if(!c_str) return;
+        let rows = parseInt(r_str); let cols = parseInt(c_str); if(!rows || !cols || isNaN(rows) || isNaN(cols)) { alert("தவறான உள்ளீடு!"); return; }
+        let c = document.createElement("canvas"); let x = c.getContext("2d"); c.width = img.width; c.height = img.height; x.drawImage(img,0,0);
+        let cellW = c.width/cols; let cellH = c.height/rows; let cellAverages = []; let rawMatrix = [];
+        for(let r=0; r<rows; r++) {
+            let rowData = [];
+            for(let k=0; k<cols; k++) {
+                let startX = Math.floor(k*cellW + cellW*0.25); let startY = Math.floor(r*cellH + cellH*0.25);
+                let w = Math.floor(cellW*0.5)||1; let h = Math.floor(cellH*0.5)||1; let imgData = x.getImageData(startX, startY, w, h).data;
+                let sum = 0; for(let i=0; i<imgData.length; i+=4) sum += 0.299*imgData[i] + 0.587*imgData[i+1] + 0.114*imgData[i+2];
+                let avg = sum/(w*h); rowData.push(avg); cellAverages.push(avg);
+            }
+            rawMatrix.push(rowData);
+        }
+        let threshold = (Math.min(...cellAverages) + Math.max(...cellAverages))/2; let nw = [];
+        for(let r=0; r<rows; r++) { let finalRow = []; for(let k=0; k<cols; k++) finalRow.push(rawMatrix[r][k]<threshold ? 1 : 0); nw.push(finalRow); }
+        weavePatterns.custom = nw; document.getElementById("weaveType").value = "custom"; onWeaveChange(); 
+        alert("✅ புகைப்படம் வெற்றிகரமாக Graph-ஆக மாற்றப்பட்டது!");
+    }
+
+    function getPrintBracketMap(str, isCol=false) {
+        let map = {}; let skip = {}; let isTop = {}; let isBot = {};
+        if(!str) return {map, skip, isTop, isBot};
+        let s = str.toLowerCase().replace(/\s+/g, '').replace(/[x×X*]/g, '*');
+        let parts = s.split(',');
+        for(let p of parts) {
+            let match = /(?:\()?(\d+)-(\d+)(?:\))?\*(\d+)/.exec(p);
+            if(match) {
+                let top = Math.max(parseInt(match[1]), parseInt(match[2]));
+                let bot = Math.min(parseInt(match[1]), parseInt(match[2]));
+                let span = top - bot + 1;
+                let text = `× ${parseInt(match[3])} Set`;
+                
+                if(isCol) {
+                    map[bot] = {span, text}; 
+                    isBot[bot] = true; isTop[top] = true;
+                    for(let i=bot+1; i<=top; i++) skip[i] = true;
+                } else {
+                    map[top] = {span, text}; 
+                    isTop[top] = true; isBot[bot] = true;
+                    for(let i=top-1; i>=bot; i--) skip[i] = true;
+                }
             }
         }
-        alert("✅ Pattern Saved Successfully!");
+        return {map, skip, isTop, isBot};
     }
 
-    // --- Tab Switching ---
-    function showDentingPane(name) {
-        ["dent","draw","adv"].forEach(x => {
-            document.getElementById(x+"Pane").classList.toggle("active", x === name);
-        });
-        document.getElementById("dentTabBtn").classList.toggle("active", name === "dent");
-        document.getElementById("drawTabBtn").classList.toggle("active", name === "draw");
-        document.getElementById("advTabBtn").classList.toggle("active", name === "adv");
+    function openGraphPrintPreview() {
+        let type = document.getElementById("weaveType").value; 
+        let m = type === "custom" ? weavePatterns.custom : weavePatterns[type]; 
+        if(!m || !m.length) return;
+        
+        let rowB = getPrintBracketMap(document.getElementById("pickPatternInput").value, false);
+        let colB = getPrintBracketMap(document.getElementById("warpGraphPatternInput").value, true);
+        
+        let html = '<table style="border-collapse:collapse;margin:auto;text-align:center;color:#000;background:#fff;">';
+        
+        for(let r=0; r<m.length; r++) { 
+            let rowNum = m.length - r;
+            html += `<tr><td style="padding:5px;font-weight:bold">${rowNum}</td>`; 
+            
+            for(let c=0; c<m[r].length; c++) {
+                let colNum = c + 1;
+                let bTop = rowB.isTop[rowNum] ? "3px solid #000" : "1px solid #000";
+                let bBot = rowB.isBot[rowNum] ? "3px solid #000" : "1px solid #000";
+                let bLeft = colB.isBot[colNum] ? "3px solid #000" : "1px solid #000";
+                let bRight = colB.isTop[colNum] ? "3px solid #000" : "1px solid #000";
+                let borderStyle = `border-top:${bTop}; border-bottom:${bBot}; border-left:${bLeft}; border-right:${bRight};`;
+                
+                html += `<td style="width:30px;height:30px;${borderStyle};font-size:20px;font-weight:bold">${m[r][c]?"×":""}</td>`; 
+            }
+            
+            if(rowB.map[rowNum]) {
+                let span = rowB.map[rowNum].span;
+                let text = rowB.map[rowNum].text;
+                html += `<td rowspan="${span}" style="padding-left:8px; border:none; vertical-align:middle; text-align:left;">
+                            <div style="display:flex; align-items:center; height:${span*30}px; min-height:30px;">
+                                <svg preserveAspectRatio="none" width="22" height="90%" viewBox="0 0 10 100" style="overflow:visible; min-height:40px;">
+                                    <path d="M2,0 Q8,0 8,25 T10,50 Q8,50 8,75 T2,100" fill="none" stroke="#d32f2f" stroke-width="2.5" />
+                                </svg>
+                                <span style="color:#d32f2f; font-weight:900; font-size:20px; margin-left:4px; white-space:nowrap;">} ${text}</span>
+                            </div>
+                         </td>`;
+            } else if(!rowB.skip[rowNum]) {
+                html += `<td style="border:none;"></td>`;
+            }
+            html+="</tr>"; 
+        }
+        
+        html+="<tr><td></td>"; 
+        for(let c=1; c<=m[0].length; c++) html += `<td style="padding:6px;font-weight:bold">${c}</td>`; 
+        html+="</tr>";
+
+        html+="<tr><td></td>"; 
+        for(let c=1; c<=m[0].length; c++) {
+            if(colB.map[c]) {
+                let span = colB.map[c].span;
+                html += `<td colspan="${span}" style="padding-top:4px; border:none; text-align:center;">
+                            <div style="border:3px solid #0284c7; border-top:none; height:14px; width:95%; margin:0 auto 4px;"></div>
+                            <span style="color:#0284c7; font-weight:900; font-size:18px; white-space:nowrap;">ப ${colB.map[c].text}</span>
+                         </td>`;
+                c += span - 1;
+            } else if(!colB.skip[c]) {
+                html += `<td style="border:none;"></td>`;
+            }
+        }
+        html+="</tr></table>";
+        
+        document.getElementById("printTableContainer").innerHTML = html; 
+        document.getElementById("printModalBox").style.display="flex"; 
+        document.body.classList.add("printing-graph");
     }
 
-    // ==============================================================
-    // இதுவே பிராக்கெட்டுகளைச் சரியாகப் பிரிக்கும் புதிய லாஜிக்!
-    // ==============================================================
+    function closeGraphPrintPreview() { 
+        document.getElementById("printModalBox").style.display="none"; 
+        document.body.classList.remove("printing-graph"); 
+    }
+
     function expandPattern(str) {
         if(!str) return [];
-        let s = String(str).toLowerCase().replace(/\s+/g, ''); // Space-ஐ நீக்குதல்
-        s = s.replace(/[x×X*]/g, '*'); // x, ×, X என அனைத்தையும் * ஆக மாற்றுதல்
-
-        // 1. Bracket-க்குள் உள்ளதை கண்டுபிடித்து பெருக்குதல்: (1,2,3,4)*5
+        let s = String(str).toLowerCase().replace(/\s+/g, '').replace(/[x×X*]/g, '*'); 
         let bracketRegex = /\(([^)]+)\)\*(\d+)/g;
         let match;
         while ((match = bracketRegex.exec(s)) !== null) {
-            let innerContent = match[1]; // Ex: 1,2,3,4
-            let multiplier = parseInt(match[2]); // Ex: 5
+            let innerContent = match[1]; 
+            let multiplier = parseInt(match[2]);
             let expandedStr = Array(multiplier).fill(innerContent).join(',');
             s = s.replace(match[0], expandedStr);
-            bracketRegex.lastIndex = 0; // Reset
+            bracketRegex.lastIndex = 0; 
         }
-
-        // 2. கமா (,) மற்றும் சாதாரண பெருக்கலுக்கான லாஜிக்
-        let parts = s.split(',');
-        let res = [];
+        let parts = s.split(','); let res = [];
         for(let p of parts) {
             if(!p) continue;
             if(p.includes('*')) {
-                let [val, count] = p.split('*');
-                let v = parseInt(val.replace(/[^0-9]/g, ''));
-                let c = parseInt(count.replace(/[^0-9]/g, ''));
-                if(!isNaN(v) && !isNaN(c) && c > 0) {
-                    for(let i=0; i<c; i++) res.push(v);
-                }
+                let [val, count] = p.split('*'); let v = parseInt(val.replace(/[^0-9]/g, '')); let c = parseInt(count.replace(/[^0-9]/g, ''));
+                if(!isNaN(v) && !isNaN(c) && c > 0) { for(let i=0; i<c; i++) res.push(v); }
             } else {
-                let v = parseInt(p.replace(/[^0-9]/g, ''));
-                if(!isNaN(v)) res.push(v);
+                let v = parseInt(p.replace(/[^0-9]/g, '')); if(!isNaN(v)) res.push(v);
             }
         }
         return res;
     }
 
-    // --- Presets ---
     function setDentPreset(value) { saveHistory(); document.getElementById("dentingPatternInput").value = value; updateAll(); }
     function setDrawingPreset(value) { saveHistory(); document.getElementById("drawingPatternInput").value = value; updateAll(); }
 
     function generateFramesFromDropdown() {
         let val = parseInt(document.getElementById("frameDropdown").value);
         if(!val) return;
-        saveHistory();
-        let arr = [];
-        for(let i=1; i<=val; i++) arr.push(i);
+        saveHistory(); let arr = []; for(let i=1; i<=val; i++) arr.push(i);
         document.getElementById("drawingPatternInput").value = arr.join(",");
         document.getElementById("frameDropdown").value = "";
         updateAll();
     }
 
-    // --- Core Updates ---
     function updateAll() {
         buildManualDentingEditor();
         buildManualDrawingEditor();
         calculateAdvancedDenting();
     }
 
-    // --- Manual Denting Rows ---
     function buildManualDentingEditor() {
         const box = document.getElementById("dentingManualRows"); if(!box) return;
         const arr = expandPattern(document.getElementById("dentingPatternInput").value || "2");
-        const values = arr.length ? arr : [2];
-        box.innerHTML = values.map((v,i) => `
-            <div class="manual-row">
-                <div class="num">Dent ${i+1}</div>
-                <input type="number" min="0" value="${Math.max(0,v)}" oninput="syncManualDenting()">
-                <button onclick="removeDentingManualRow(${i})">✕</button>
-            </div>`).join("");
+        box.innerHTML = (arr.length ? arr : [2]).map((v,i) => `
+            <div class="manual-row"><div class="num">Dent ${i+1}</div>
+            <input type="number" min="0" value="${Math.max(0,v)}" oninput="syncManualDenting()">
+            <button onclick="removeDentingManualRow(${i})">✕</button></div>`).join("");
     }
     
     function syncManualDenting() {
         saveHistory();
-        const box = document.getElementById("dentingManualRows");
-        const vals = [...box.querySelectorAll("input")].map(x => Math.max(0, parseInt(x.value)||0));
+        const vals = [...document.getElementById("dentingManualRows").querySelectorAll("input")].map(x => Math.max(0, parseInt(x.value)||0));
         if(vals.length) document.getElementById("dentingPatternInput").value = vals.join(",");
         calculateAdvancedDenting();
     }
 
     function addDentingManualRow() {
-        saveHistory();
-        const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
+        saveHistory(); const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
         vals.push(vals.length ? vals[vals.length-1] : 2);
-        document.getElementById("dentingPatternInput").value = vals.join(",");
-        updateAll();
+        document.getElementById("dentingPatternInput").value = vals.join(","); updateAll();
     }
 
     function removeDentingManualRow(i) {
-        saveHistory();
-        const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
-        if(vals.length <= 1) return;
-        vals.splice(i,1);
-        document.getElementById("dentingPatternInput").value = vals.join(",");
-        updateAll();
+        saveHistory(); const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
+        if(vals.length <= 1) return; vals.splice(i,1);
+        document.getElementById("dentingPatternInput").value = vals.join(","); updateAll();
     }
 
-    // --- Manual Drawing Rows ---
     function buildManualDrawingEditor() {
         const box = document.getElementById("drawingManualRows"); if(!box) return;
         const arr = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
-        const values = arr.length ? arr : [1,2,3,4];
-        box.innerHTML = values.map((v,i) => `
-            <div class="manual-row">
-                <div class="num">${i+1}</div>
-                <input type="number" min="1" value="${Math.max(1,v)}" oninput="syncManualDrawing()">
-                <button onclick="removeDrawingManualRow(${i})">✕</button>
-            </div>`).join("");
+        box.innerHTML = (arr.length ? arr : [1,2,3,4]).map((v,i) => `
+            <div class="manual-row"><div class="num">${i+1}</div>
+            <input type="number" min="1" value="${Math.max(1,v)}" oninput="syncManualDrawing()">
+            <button onclick="removeDrawingManualRow(${i})">✕</button></div>`).join("");
     }
 
     function syncManualDrawing() {
         saveHistory();
-        const box = document.getElementById("drawingManualRows");
-        const vals = [...box.querySelectorAll("input")].map(x => Math.max(1, parseInt(x.value)||1));
+        const vals = [...document.getElementById("drawingManualRows").querySelectorAll("input")].map(x => Math.max(1, parseInt(x.value)||1));
         if(vals.length) document.getElementById("drawingPatternInput").value = vals.join(",");
         calculateAdvancedDenting();
     }
 
     function addDrawingManualRow() {
-        saveHistory();
-        const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
+        saveHistory(); const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
         vals.push(vals.length ? vals[vals.length-1] : 1);
-        document.getElementById("drawingPatternInput").value = vals.join(",");
-        updateAll();
+        document.getElementById("drawingPatternInput").value = vals.join(","); updateAll();
     }
 
     function removeDrawingManualRow(i) {
-        saveHistory();
-        const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
-        if(vals.length <= 1) return;
-        vals.splice(i,1);
-        document.getElementById("drawingPatternInput").value = vals.join(",");
-        updateAll();
+        saveHistory(); const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
+        if(vals.length <= 1) return; vals.splice(i,1);
+        document.getElementById("drawingPatternInput").value = vals.join(","); updateAll();
     }
 
-    // --- Calculator Engine ---
     function calculateAdvancedDenting() {
         let totalEnds = parseInt(document.getElementById("totalWarpEnds").value) || 0;
         let dentStr = document.getElementById("dentingPatternInput").value.trim() || "2";
@@ -457,39 +829,33 @@
         let drawArr = expandPattern(drawStr); if(!drawArr.length) drawArr = [1,2,3,4];
         
         if(totalEnds === 0) { 
-            document.getElementById("dentingResultDisplay").innerHTML = "<span style='color:#ef4444;'>Warp Ends 0 ஆக உள்ளது. மேலே சரியான Ends-ஐ உள்ளிடவும் அல்லது டிசைனைத் தேர்ந்தெடுக்கவும்.</span>"; 
-            return; 
+            document.getElementById("dentingResultDisplay").innerHTML = "<span style='color:#ef4444;'>Warp Ends 0 ஆக உள்ளது.</span>"; return; 
         }
 
         let dentsUsed = 0, endsCounted = 0, emptyDents = 0, ptr = 0;
         while(endsCounted < totalEnds && ptr < 50000){
-            const n = Math.max(0, dentArr[ptr % dentArr.length]); 
-            dentsUsed++;
-            if(n === 0) emptyDents++; else endsCounted += n; 
-            ptr++;
+            const n = Math.max(0, dentArr[ptr % dentArr.length]); dentsUsed++;
+            if(n === 0) emptyDents++; else endsCounted += n; ptr++;
         }
-        const maxFrame = Math.max(...drawArr);
         
         document.getElementById("dentingResultDisplay").innerHTML = `
           <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Total Warp Ends</b><span style="font-size:1.15rem;font-weight:900;color:#fff;">${totalEnds}</span></div>
           <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Required Dents</b><span style="font-size:1.15rem;font-weight:900;color:#fff;">${dentsUsed}</span></div>
           <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Missing / Empty Dents</b><span style="color:#f59e0b;font-size:1.15rem;font-weight:900;">${emptyDents}</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><b>Frames Required</b><span style="color:#10b981;font-size:1.15rem;font-weight:900;">${maxFrame}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><b>Frames Required</b><span style="font-size:1.15rem;font-weight:900;color:#10b981;">${Math.max(...drawArr)}</span></div>
           <div style="font-size:0.8rem;color:#78d18a;margin-top:15px;line-height:1.6;background:#0d1813;padding:12px;border-radius:8px;border:1px solid #3c6752;">
-            <b style="color:#fff;">Denting Logic:</b> ${dentArr.join(", ")}<br><br>
-            <b style="color:#fff;">Drawing Logic:</b> ${drawArr.join(", ")}
+            <b style="color:#fff;">Denting Logic:</b> ${dentArr.join(", ")}<br><br><b style="color:#fff;">Drawing Logic:</b> ${drawArr.join(", ")}
           </div>`;
     }
 
-    // Initialize on load
     window.onload = () => {
         loadDesignList();
-        let savedDent = localStorage.getItem("saved_denting_pattern");
-        let savedDraw = localStorage.getItem("saved_drawing_pattern");
-        
         if(!activeDesignObj) {
-            if(savedDent) document.getElementById("dentingPatternInput").value = savedDent;
-            if(savedDraw) document.getElementById("drawingPatternInput").value = savedDraw;
+            if(localStorage.getItem("saved_denting_pattern")) document.getElementById("dentingPatternInput").value = localStorage.getItem("saved_denting_pattern");
+            if(localStorage.getItem("saved_drawing_pattern")) document.getElementById("drawingPatternInput").value = localStorage.getItem("saved_drawing_pattern");
+            if(localStorage.getItem("saved_pick_pattern")) document.getElementById("pickPatternInput").value = localStorage.getItem("saved_pick_pattern");
+            if(localStorage.getItem("saved_warp_graph_pattern")) document.getElementById("warpGraphPatternInput").value = localStorage.getItem("saved_warp_graph_pattern");
+            onWeaveChange();
         }
         updateAll();
     };

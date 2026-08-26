@@ -313,12 +313,126 @@ input, select {
 .fs-content canvas { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; cursor: grab; display: block; transform-origin: center center; will-change: transform; }
 .fs-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(20,37,30,.85); color: #b8d8bf; padding: 6px 10px; border-radius: 20px; font-size: .55rem; pointer-events: none; white-space: nowrap; }
 
-/* PRINT */
-.print-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000000; justify-content: center; align-items: center; padding: 10px; }
-.print-sheet { background: #fff; color: #000; padding: 15px; border-radius: 7px; width: 100%; max-width: 600px; max-height: 95vh; overflow: auto; }
-.print-controls { display: flex; gap: 7px; justify-content: flex-end; margin-top: 10px; }
-.print-controls button { border: 0; padding: 8px 12px; border-radius: 6px; color: #fff; font-weight: bold; }
-.print-card { display: none !important; }
+/* PRINT — PROFESSIONAL DESIGN SHEET */
+.print-modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(2,8,6,.90);
+    z-index:1000000;
+    justify-content:center;
+    align-items:center;
+    padding:12px;
+    backdrop-filter:blur(5px);
+}
+.print-sheet {
+    background:#f4f7f5;
+    color:#101615;
+    width:100%;
+    max-width:860px;
+    max-height:96vh;
+    overflow:auto;
+    border-radius:14px;
+    box-shadow:0 22px 70px rgba(0,0,0,.45);
+    border:1px solid #789485;
+}
+.print-toolbar {
+    position:sticky;
+    top:0;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 12px;
+    background:linear-gradient(135deg,#123b2b,#1f6045);
+    color:#fff;
+    border-radius:14px 14px 0 0;
+}
+.print-toolbar-title { font-size:.82rem; font-weight:900; letter-spacing:.3px; }
+.print-toolbar-sub { font-size:.54rem; opacity:.78; margin-top:2px; }
+.print-toolbar-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+.print-toolbar-actions select,
+.print-toolbar-actions button {
+    height:32px;
+    border-radius:7px;
+    border:1px solid rgba(255,255,255,.22);
+    font-size:.58rem;
+    font-weight:900;
+}
+.print-toolbar-actions select { background:#fff; color:#153127; padding:0 7px; }
+.print-toolbar-actions button { padding:0 11px; color:#fff; cursor:pointer; }
+.print-toolbar-actions .print-main { background:#2e9d55; }
+.print-toolbar-actions .print-close { background:#704343; }
+.print-toolbar-actions .print-preview-only { background:#315e89; }
+.print-sheet-inner {
+    margin:12px;
+    background:#fff;
+    border:1px solid #c9d4ce;
+    box-shadow:0 4px 18px rgba(20,50,35,.10);
+    padding:12px;
+}
+.print-brand-row { display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:2px solid #173d2d; padding-bottom:8px; }
+.print-brand { font-size:17px; font-weight:950; letter-spacing:.5px; color:#153c2c; }
+.print-doc-type { text-align:right; font-size:8px; font-weight:900; color:#4c6258; letter-spacing:.7px; }
+.print-design-title { text-align:center; font-size:15px; font-weight:950; margin:8px 0 2px; letter-spacing:.3px; }
+.print-design-subtitle { text-align:center; font-size:8px; color:#596861; margin-bottom:9px; }
+.print-info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:9px; }
+.print-info-box { border:1px solid #9caea4; padding:6px 5px; text-align:center; font-size:11px; background:#f8faf9; border-radius:4px; }
+.print-info-box b { display:block; font-size:7px; letter-spacing:.5px; color:#4d6158; margin-bottom:3px; }
+.print-section-title { display:flex; align-items:center; gap:6px; font-size:10px; font-weight:950; color:#153c2c; border-bottom:1.5px solid #315847; padding:5px 0 4px; margin:7px 0 5px; letter-spacing:.2px; }
+.print-section-title .section-code { margin-left:auto; font-size:6.5px; color:#708078; font-weight:800; }
+.print-order-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(38px,1fr)); gap:3px; max-height:68px; overflow:hidden; }
+.print-order-item { border:1px solid #a8b7af; background:#fff; min-width:0; padding:3px 4px; text-align:center; font-size:8px; font-weight:900; border-radius:3px; line-height:1.05; }
+.print-order-item span { color:#65766d; font-size:6.5px !important; }
+.print-graph-wrap { text-align:center; margin-top:3px; padding:5px 0 2px; page-break-inside:avoid; break-inside:avoid; }
+.print-graph-table { border-collapse:collapse; margin:auto; color:#000; }
+.print-graph-table td { border:1px solid #3f4d46; width:8mm; height:8mm; min-width:8mm; text-align:center; vertical-align:middle; font-size:13px; font-weight:950; padding:0; background:#fff; }
+.print-graph-table .graph-axis { border:0; font-size:7px; color:#394740; width:auto; min-width:11px; height:auto; padding:2px; background:#fff; }
+.print-graph-table td:not(.graph-axis):has(+ .graph-axis) { background:#fff; }
+.print-summary-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:6px; }
+.print-summary-box { background:#f1f5f3; border:1px solid #c6d1cb; border-radius:4px; padding:4px 5px; font-size:7px; text-align:center; }
+.print-summary-box b { display:block; color:#496158; font-size:6px; margin-bottom:2px; }
+.print-footer { display:flex; justify-content:space-between; gap:8px; border-top:1px solid #d1dad5; margin-top:7px; padding-top:5px; font-size:6.5px; color:#65736d; }
+.print-controls { display:none; }
+
+@media (max-width:600px) {
+    .print-modal { padding:7px; }
+    .print-sheet { max-height:97vh; border-radius:11px; }
+    .print-toolbar { padding:8px; }
+    .print-toolbar-title { font-size:.72rem; }
+    .print-toolbar-actions select { max-width:82px; }
+    .print-toolbar-actions button { padding:0 8px; }
+    .print-sheet-inner { margin:8px; padding:9px; }
+    .print-brand { font-size:14px; }
+    .print-order-list { max-height:76px; }
+}
+
+@media print {
+    @page { size:A4 portrait; margin:6mm; }
+    html, body { width:100%; min-height:0 !important; background:#fff !important; color:#000 !important; }
+    body { padding:0 !important; margin:0 !important; }
+    .container, .header, .card, .print-hide, #fsModal, #colourPopup, #dentingModal, #colorManagerModal { display:none !important; }
+    body.printing-design #printModalBox {
+        display:block !important; position:static !important; width:100% !important;
+        height:auto !important; min-height:0 !important; max-height:none !important;
+        overflow:visible !important; background:#fff !important; padding:0 !important; margin:0 !important;
+    }
+    body.printing-design .print-sheet {
+        display:block !important; width:100% !important; max-width:none !important;
+        max-height:none !important; overflow:visible !important; padding:0 !important;
+        margin:0 !important; border:0 !important; border-radius:0 !important; box-shadow:none !important;
+        background:#fff !important;
+    }
+    body.printing-design .print-toolbar { display:none !important; }
+    body.printing-design .print-sheet-inner {
+        display:block !important; margin:0 !important; padding:2mm !important;
+        border:1px solid #777 !important; box-shadow:none !important;
+    }
+    .print-info-grid, .print-section-title, .print-order-list, .print-graph-wrap, .print-summary-strip { page-break-inside:avoid !important; break-inside:avoid !important; }
+    .print-order-list { max-height:none !important; overflow:visible !important; }
+    .print-graph-table td { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
 
 /* ================= COLOUR MASTER STYLES ================= */
 .colour-master-card {
@@ -475,16 +589,6 @@ input, select {
     .swatch-pantone { font-size: 0.4rem; }
 }
 
-@media print {
-    @page { margin: 10mm; }
-    body { background: #fff !important; color: #000 !important; padding: 0 !important; }
-    .container { max-width: none; }
-    .header, .card:not(.print-card), .print-hide, #fsModal { display: none !important; }
-    body.printing-graph #printModalBox { display: flex !important; position: static !important; background: #fff !important; padding: 0 !important; }
-    .print-sheet { box-shadow: none !important; max-width: 100% !important; }
-    body.printing-design .print-card { display: block !important; background: #fff !important; border: none !important; color: #000 !important; box-shadow: none !important; }
-    body.printing-design #designPrintImage { display: block !important; width: 100% !important; }
-}
 </style>
 </head>
 <body>
@@ -603,14 +707,30 @@ input, select {
     </div>
 </div>
 
-<!-- GRAPH PRINT -->
+<!-- PROFESSIONAL DESIGN SHEET PRINT PREVIEW -->
 <div id="printModalBox" class="print-modal">
     <div class="print-sheet">
-        <h3 style="text-align:center;margin-bottom:10px">Weave Graph Matrix Design</h3>
-        <div id="printTableContainer"></div>
-        <div class="print-controls print-hide">
-            <button style="background:#2e7d32" onclick="window.print()">Print Graph</button>
-            <button style="background:#5c3a3a" onclick="closeGraphPrintPreview()">Close</button>
+        <div class="print-toolbar print-hide">
+            <div>
+                <div class="print-toolbar-title">🖨️ Professional Design Sheet</div>
+                <div class="print-toolbar-sub">A4 • One Page • Drawing + Denting + Weave Graph</div>
+            </div>
+            <div class="print-toolbar-actions">
+                <select id="printOrientation" onchange="setPrintOrientation(this.value)" aria-label="Page orientation">
+                    <option value="portrait">A4 Portrait</option>
+                    <option value="landscape">A4 Landscape</option>
+                </select>
+                <select id="printGraphScale" onchange="setPrintGraphScale(this.value)" aria-label="Graph size">
+                    <option value="small">Graph Small</option>
+                    <option value="medium" selected>Graph Medium</option>
+                    <option value="large">Graph Large</option>
+                </select>
+                <button class="print-preview-only" onclick="window.print()">🖨️ PRINT</button>
+                <button class="print-close" onclick="closeGraphPrintPreview()">✕ CLOSE</button>
+            </div>
+        </div>
+        <div class="print-sheet-inner">
+            <div id="printDesignContent"></div>
         </div>
     </div>
 </div>
@@ -2169,19 +2289,157 @@ if(fsContent) {
 }
 document.addEventListener("keydown", e => { if(e.key==="Escape" && $("fsModal")?.style.display==="flex") closeFullscreen(); });
 
+function getPrintMatrix() {
+    let type = $("weaveType")?.value || "plain";
+    let m = type === "custom" ? weavePatterns.custom : weavePatterns[type];
+    if(!Array.isArray(m) || !m.length || !Array.isArray(m[0]) || !m[0].length) m = weavePatterns.plain;
+    return m;
+}
+
+function getPrintOrderArray(inputId, fallback) {
+    let raw = $(inputId)?.value || fallback;
+    let arr = expandPattern(raw);
+    return arr.length ? arr : expandPattern(fallback);
+}
+
+function buildPrintOrderBoxes(arr) {
+    return arr.map((v,i) =>
+        `<div class="print-order-item"><span style="font-size:8px;">${i+1}</span><br>${v}</div>`
+    ).join("");
+}
+
+function buildPrintGraph(m) {
+    let html = '<table class="print-graph-table">';
+    for(let r=0; r<m.length; r++) {
+        html += `<tr><td class="graph-axis">${m.length-r}</td>`;
+        for(let c=0; c<m[r].length; c++) html += `<td>${m[r][c] ? "×" : ""}</td>`;
+        html += "</tr>";
+    }
+    html += '<tr><td class="graph-axis"></td>';
+    for(let c=1; c<=m[0].length; c++) html += `<td class="graph-axis">${c}</td>`;
+    html += "</tr></table>";
+    return html;
+}
+
+function buildDesignPrintContent() {
+    const m = getPrintMatrix();
+    const dName = activeDesignObj ? designName(activeDesignObj) : ($("activeDesignText")?.textContent || "Design");
+    const dentArr = getPrintOrderArray("dentingPatternInput", "2");
+    const drawArr = getPrintOrderArray("drawingPatternInput", "1,2,3,4");
+
+    let warpTotal = 0, weftTotal = 0;
+    try { warpTotal = getWarpTotalEnds(); } catch(e) {}
+    try { weftTotal = calculateYarnDetails("weft").totalYarns; } catch(e) {}
+
+    const now = new Date();
+    const stamp = now.toLocaleDateString() + " • " + now.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+
+    return `
+        <div class="print-brand-row">
+            <div>
+                <div class="print-brand">TEXFRIEND</div>
+                <div style="font-size:7px;color:#63736c;font-weight:800;">TEXTILE DESIGN &amp; WEAVE SYSTEM</div>
+            </div>
+            <div class="print-doc-type">TECHNICAL DESIGN SHEET<br>A4 • ONE PAGE</div>
+        </div>
+
+        <div class="print-design-title">DESIGN SHEET — ${escapeColourText(dName)}</div>
+        <div class="print-design-subtitle">Drawing Order • Denting Order • Weave Graph • Production Reference</div>
+
+        <div class="print-info-grid">
+            <div class="print-info-box"><b>DESIGN NO</b>${escapeColourText(dName)}</div>
+            <div class="print-info-box"><b>WARP TOTAL ENDS</b>${warpTotal || 0}</div>
+            <div class="print-info-box"><b>WEFT TOTAL PICKS</b>${weftTotal || 0}</div>
+        </div>
+
+        <div class="print-section-title">🧵 DRAWING ORDER <span class="section-code">FRAME SEQUENCE</span></div>
+        <div class="print-order-list">${buildPrintOrderBoxes(drawArr)}</div>
+
+        <div class="print-section-title">📐 DENTING ORDER <span class="section-code">ENDS / DENT</span></div>
+        <div class="print-order-list">${buildPrintOrderBoxes(dentArr)}</div>
+
+        <div class="print-section-title">📊 WEAVE GRAPH <span class="section-code">${m.length} × ${m[0].length} REPEAT</span></div>
+        <div class="print-graph-wrap">${buildPrintGraph(m)}</div>
+
+        <div class="print-summary-strip">
+            <div class="print-summary-box"><b>GRAPH REPEAT</b>${m.length} × ${m[0].length}</div>
+            <div class="print-summary-box"><b>DRAWING</b>${escapeColourText(drawArr.join(", "))}</div>
+            <div class="print-summary-box"><b>DENTING</b>${escapeColourText(dentArr.join(", "))}</div>
+        </div>
+
+        <div class="print-footer">
+            <span>TEXFRIEND • Technical Reference Copy</span>
+            <span>Generated: ${stamp}</span>
+        </div>
+    `;
+}
+
+function setPrintOrientation(value) {
+    let style = $("dynamicPrintStyle");
+    if(!style) {
+        style = document.createElement("style");
+        style.id = "dynamicPrintStyle";
+        document.head.appendChild(style);
+    }
+    style.textContent = `@media print { @page { size: A4 ${value === "landscape" ? "landscape" : "portrait"}; margin: 6mm; } }`;
+}
+
+function setPrintGraphScale(value) {
+    let style = $("dynamicGraphStyle");
+    if(!style) {
+        style = document.createElement("style");
+        style.id = "dynamicGraphStyle";
+        document.head.appendChild(style);
+    }
+    const size = value === "large" ? "10mm" : (value === "small" ? "6mm" : "8mm");
+    const font = value === "large" ? "15px" : (value === "small" ? "11px" : "13px");
+    style.textContent = `.print-graph-table td:not(.graph-axis){width:${size};height:${size};min-width:${size};font-size:${font};}`;
+}
+
 function openGraphPrintPreview() {
-    let type = $("weaveType").value; let m = type==="custom" ? weavePatterns.custom : weavePatterns[type]; if(!m||!m.length) return;
-    let html = '<table style="border-collapse:collapse;margin:auto;text-align:center;color:#000">';
-    for(let r=0; r<m.length; r++) { html += `<tr><td style="padding:5px;font-weight:bold">${m.length-r}</td>`; for(let c=0; c<m[r].length; c++) html += `<td style="width:30px;height:30px;border:1px solid #000;font-size:20px;font-weight:bold">${m[r][c]?"×":""}</td>`; html+="</tr>"; }
-    html+="<tr><td></td>"; for(let c=1; c<=m[0].length; c++) html += `<td style="padding:6px;font-weight:bold">${c}</td>`; html+="</tr></table>";
-    $("printTableContainer").innerHTML = html; $("printModalBox").style.display="flex"; document.body.classList.add("printing-graph");
+    const box = $("printDesignContent");
+    if(!box) return;
+    box.innerHTML = buildDesignPrintContent();
+    if($("printOrientation")) $("printOrientation").value = "portrait";
+    if($("printGraphScale")) $("printGraphScale").value = "medium";
+    setPrintOrientation("portrait");
+    setPrintGraphScale("medium");
+    $("printModalBox").style.display = "flex";
+    document.body.classList.remove("printing-graph");
+    document.body.classList.add("printing-design");
 }
-function closeGraphPrintPreview() { $("printModalBox").style.display="none"; document.body.classList.remove("printing-graph"); }
+
+function closeGraphPrintPreview() {
+    $("printModalBox").style.display = "none";
+    document.body.classList.remove("printing-graph", "printing-design");
+}
+
 function printDesign() {
-    const sourceCanvas = $("weaveCanvas"); if(!sourceCanvas) return; draw3DWeave();
-    setTimeout(() => { const dataUrl = sourceCanvas.toDataURL("image/png"); const printImg = $("designPrintImage"); if(printImg) { printImg.onload = function() { document.body.classList.add("printing-design"); setTimeout(() => window.print(), 100); }; printImg.src = dataUrl; } }, 250);
+    try {
+        const box = $("printDesignContent");
+        if(!box) {
+            alert("Print section load ஆகவில்லை.");
+            return;
+        }
+
+        box.innerHTML = buildDesignPrintContent();
+        $("printModalBox").style.display = "flex";
+        document.body.classList.remove("printing-graph");
+        document.body.classList.add("printing-design");
+
+        /* Print dialog open ஆக சிறிய delay */
+        setTimeout(() => window.print(), 300);
+    } catch(e) {
+        console.error("Print Design Error:", e);
+        alert("Print Design திறக்க முடியவில்லை. மீண்டும் முயற்சி செய்யவும்.");
+    }
 }
-window.addEventListener("afterprint", () => { document.body.classList.remove("printing-graph","printing-design"); $("printModalBox").style.display="none"; });
+
+window.addEventListener("afterprint", () => {
+    document.body.classList.remove("printing-graph", "printing-design");
+    const modal = $("printModalBox");
+    if(modal) modal.style.display = "none";
+});
 
 /* =========================================================
    COLOUR MASTER PANTONE SYSTEM
