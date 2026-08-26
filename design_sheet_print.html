@@ -219,50 +219,50 @@ select{
 }
 
 /* =========================================================
-   TABLE
+   TABLE (NO VERTICAL & HORIZONTAL BORDERS)
 ========================================================= */
 
 .dual-table-wrapper{
     display:flex;
-    gap:8px;
+    gap:2%;
     width:100%;
 }
 
 .single-table-col{
-    flex:1;
-    min-width:0;
+    flex:0 0 49%;
+    max-width:49%;
 }
 
 .table-container{
     width:100%;
     overflow:hidden;
-    border-radius:5px;
-    border:1px solid #CBD5CB;
-    background:#ffffff;
+    background:transparent;
     margin-bottom:4px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    font-size:9px;
+    font-size:11px;
     text-align:center;
-    background:#ffffff;
+    background:transparent;
 }
 
 th,
 td{
-    padding:5px 4px;
+    padding:7px 5px;
     color:#1E2B23;
-    border:1px solid #CBD5CB;
-    background:#ffffff;
+    border:none; /* No Lines */
+    background:transparent;
 }
 
 th{
     background:#EAF0EA;
     color:#2F4F38;
     font-weight:700;
-    font-size:8px;
+    font-size:10px;
+    border-top:2px solid #4A7C59; /* Header solid borders */
+    border-bottom:2px solid #4A7C59; 
 }
 
 .col-no{
@@ -299,20 +299,37 @@ th{
     letter-spacing:1px;
 }
 
+/* DOTTED LEADER CSS */
+.color-flex {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+}
+.color-text {
+    flex-shrink: 0;
+}
+.dot-leader {
+    flex-grow: 1;
+    border-bottom: 2px dotted #888;
+    margin-left: 6px;
+    margin-bottom: 4px;
+}
+
 /* =========================================================
    SUMMARY
 ========================================================= */
 
 .summary-box{
     background:#F4F7F4;
-    border:1px solid #CBD5CB;
+    border:1px dashed #CBD5CB;
     border-radius:6px;
     padding:6px 8px;
     text-align:left;
-    font-size:9px;
+    font-size:10px;
     font-weight:600;
     color:#2F4F38;
     margin-bottom:8px;
+    margin-top:5px;
     line-height:1.6;
 }
 
@@ -423,21 +440,17 @@ th{
         padding:4px 6px;
     }
 
-    .dual-table-wrapper{
-        gap:5px;
-    }
-
     table{
-        font-size:7px;
+        font-size:10px;
     }
 
     th{
-        font-size:7px;
+        font-size:9px;
     }
 
     th,
     td{
-        padding:4px 2px;
+        padding:6px 3px;
     }
 
     .dash-sep{
@@ -446,7 +459,7 @@ th{
     }
 
     .summary-box{
-        font-size:7px;
+        font-size:9px;
         padding:5px;
     }
 }
@@ -528,20 +541,33 @@ th{
     table{
         width:100% !important;
         border-collapse:collapse !important;
-        background:#ffffff !important;
+        background:transparent !important;
+        font-size:14px !important;
     }
 
     th,
     td{
-        border:1px solid #888888 !important;
-        background:#ffffff !important;
+        border:none !important; /* No Row lines */
+        background:transparent !important;
         color:#000000 !important;
-        padding:5px !important;
+        padding:8px 5px !important;
+        font-size:14px !important;
     }
 
     th{
         background:#EAF0EA !important;
         color:#000000 !important;
+        font-size:12px !important;
+        border-top:2px solid #4A7C59 !important;
+        border-bottom:2px solid #4A7C59 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+    .dot-leader {
+        border-bottom: 2px dotted #000000 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
     }
 
     .section-title{
@@ -554,6 +580,8 @@ th{
     .summary-box{
         background:#F4F7F4 !important;
         color:#000000 !important;
+        font-size:12px !important;
+        border:1px dashed #888 !important;
         -webkit-print-color-adjust:exact !important;
         print-color-adjust:exact !important;
     }
@@ -705,11 +733,11 @@ th{
 
                     <thead>
                         <tr>
-                            <th class="col-no">எண்</th>
-                            <th class="col-count">கவுண்ட்</th>
-                            <th class="col-color">நிறம்</th>
-                            <th class="col-val">எண்ட்ஸ்</th>
-                            <th class="col-set">செட்</th>
+                            <th class="col-no">NO</th>
+                            <th class="col-count">COUNT</th>
+                            <th class="col-color">COLOUR</th>
+                            <th class="col-val">ENDS <br><span style="font-size: 8px; font-weight: normal;">GRND|TOP</span></th>
+                            <th class="col-set">SET</th>
                         </tr>
                     </thead>
 
@@ -789,11 +817,11 @@ th{
 
                     <thead>
                         <tr>
-                            <th class="col-no">எண்</th>
-                            <th class="col-count">கவுண்ட்</th>
-                            <th class="col-color">நிறம்</th>
-                            <th class="col-val">பிக்ஸ்</th>
-                            <th class="col-set">செட்</th>
+                            <th class="col-no">NO</th>
+                            <th class="col-count">COUNT</th>
+                            <th class="col-color">COLOUR</th>
+                            <th class="col-val">PICKS</th>
+                            <th class="col-set">SET</th>
                         </tr>
                     </thead>
 
@@ -1830,27 +1858,27 @@ function renderSplitPreviewTable(
         <tr>
 
             <th class="col-no">
-                எண்
+                NO
             </th>
 
             <th class="col-count">
-                கவுண்ட்
+                COUNT
             </th>
 
             <th class="col-color">
-                நிறம்
+                COLOUR
             </th>
 
             <th class="col-val">
                 ${
                     unitName === "Ends"
-                    ? "எண்ட்ஸ்"
-                    : "பிக்ஸ்"
+                    ? 'ENDS <br><span style="font-size: 8px; font-weight: normal;">GRND|TOP</span>'
+                    : "PICKS"
                 }
             </th>
 
             <th class="col-set">
-                செட்
+                SET
             </th>
 
         </tr>
@@ -2207,7 +2235,10 @@ function buildTableRowsHtml(rows){
 
                 <td class="col-color">
 
-                    ${r.color}
+                    <div class="color-flex">
+                        <span class="color-text">${r.color}</span>
+                        <div class="dot-leader"></div>
+                    </div>
 
                 </td>
 
@@ -2410,7 +2441,7 @@ function closePreviewModal(){
 
 
 /* =========================================================
-   PRINT
+   PRINT / PREVIEW
 ========================================================= */
 
 function printPreview(){

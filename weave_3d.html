@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>3D Warp & Weft Weave Simulator Pro</title>
 
 <!-- Firebase -->
@@ -12,3849 +11,2493 @@
 <script src="config.js"></script>
 
 <style>
-:root{
-    --bg:#0d1713;
-    --card:#14251e;
-    --card2:#192d25;
-    --line:#2c4b3d;
-    --text:#edf7ef;
-    --muted:#9fc5aa;
-    --accent:#78d18a;
-    --blue:#1688d8;
+/* ================= GLOBAL STYLES ================= */
+:root {
+    --bg: #0d1713;
+    --card: #14251e;
+    --card2: #192d25;
+    --line: #2c4b3d;
+    --text: #edf7ef;
+    --muted: #9fc5aa;
+    --accent: #78d18a;
+    --blue: #1688d8;
 }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-html,body{
-    min-height:100%;
-    background:var(--bg);
-    color:var(--text);
+html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
 }
 
-body{
-    padding:8px;
+body {
+    padding: 6px;
 }
 
-.container{
-    width:100%;
-    max-width:760px;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    gap:9px;
+.container {
+    width: 100%;
+    max-width: 760px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.header{
-    background:linear-gradient(145deg,#183328,#102019);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:12px;
-    text-align:center;
+.header {
+    background: linear-gradient(145deg, #183328, #102019);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
 }
 
-.header h1{
-    font-size:1.15rem;
-    color:var(--accent);
+.header h1 {
+    font-size: 1.1rem;
+    color: var(--accent);
 }
 
-.header p{
-    font-size:.72rem;
-    color:var(--muted);
-    margin-top:3px;
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
 }
 
-.card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:11px;
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
-.step{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin-bottom:8px;
+.step-no {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #2d8b47;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: .7rem;
+    flex-shrink: 0;
 }
 
-.step-no{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    background:#2d8b47;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    font-size:.75rem;
-    flex-shrink:0;
+.step h3 {
+    font-size: .85rem;
+    color: #e5f6e9;
 }
 
-.step h3{
-    font-size:.88rem;
-    color:#e5f6e9;
+.step p {
+    font-size: .55rem;
+    color: var(--muted);
+    margin-top: 2px;
 }
 
-.step p{
-    font-size:.63rem;
-    color:var(--muted);
-    margin-top:2px;
+label {
+    font-size: .7rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
 }
 
-label{
-    font-size:.72rem;
-    font-weight:800;
-    color:var(--accent);
-    display:block;
-    margin-bottom:4px;
+input, select {
+    width: 100%;
+    background: #fff;
+    color: #17231d;
+    border: 1px solid #c8d3cd;
+    padding: 8px 9px;
+    border-radius: 8px;
+    font-size: .8rem;
+    min-height: 34px;
+    outline: none;
 }
 
-input,
-select{
-    width:100%;
-    background:#fff;
-    color:#17231d;
-    border:1px solid #c8d3cd;
-    padding:8px 9px;
-    border-radius:9px;
-    font-size:.83rem;
-    min-height:38px;
-    outline:none;
+/* Hide Native Color Picker on Warp/Weft UI */
+#warpInputsContainer input[type=color],
+#weftInputsContainer input[type=color] {
+    display: none !important;
 }
 
-input[type=color]{
-    width:42px!important;
-    min-width:42px!important;
-    height:38px!important;
-    padding:2px!important;
-    cursor:pointer;
+.hidden-sys-input {
+    display: none !important;
 }
 
-.btn{
-    border:0;
-    border-radius:9px;
-    padding:9px 11px;
-    min-height:38px;
-    font-size:.74rem;
-    font-weight:800;
-    cursor:pointer;
+.btn {
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    min-height: 34px;
+    font-size: .7rem;
+    font-weight: 800;
+    cursor: pointer;
 }
 
-.btn-green{
-    background:#2f9147;
-    color:#fff;
+.btn-green { background: #2f9147; color: #fff; }
+.btn-blue { background: #1285d2; color: #fff; }
+.btn-dark { background: #244638; color: #aee9ba; border: 1px solid #39614f; }
+.btn-red { background: #ef4444; color: #fff; }
+
+.cloud-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 6px;
 }
 
-.btn-blue{
-    background:#1285d2;
-    color:#fff;
+.status {
+    font-size: .6rem;
+    color: var(--muted);
+    margin-top: 5px;
+    min-height: 15px;
 }
 
-.btn-dark{
-    background:#244638;
-    color:#aee9ba;
-    border:1px solid #39614f;
+.active-design {
+    margin-top: 6px;
+    background: #0f1d17;
+    border: 1px solid #315746;
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: .65rem;
+    color: #bde8c6;
 }
 
-.btn-red{
-    background:#633b3b;
-    color:#ffd1ca;
+.active-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #45c765;
+    margin-right: 5px;
 }
 
-.cloud-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-    margin-top:7px;
+.yarn-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 6px;
 }
 
-.status{
-    font-size:.67rem;
-    color:var(--muted);
-    margin-top:6px;
-    min-height:15px;
+.yarn-tab {
+    background: #203b30;
+    border: 1px solid #345947;
+    color: #9fc8aa;
+    border-radius: 8px;
+    padding: 6px;
+    font-weight: 900;
+    font-size: .75rem;
+    cursor: pointer;
 }
 
-.active-design{
-    margin-top:7px;
-    background:#0f1d17;
-    border:1px solid #315746;
-    border-radius:9px;
-    padding:7px 9px;
-    font-size:.7rem;
-    color:#bde8c6;
+.yarn-tab.active {
+    background: #2d8d48;
+    color: #fff;
 }
 
-.active-dot{
-    display:inline-block;
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#45c765;
-    margin-right:6px;
+.set-box { display: none !important; }
+.yarn-summary {
+    display: flex;
+    justify-content: flex-end; 
+    background: transparent;
+    padding: 0px 4px;
+    margin-bottom: 4px;
+    font-size: .6rem;
 }
 
-.yarn-tabs{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:6px;
-    margin-bottom:7px;
+.yarn-panel { display: none; }
+.yarn-panel.active { display: block; }
+
+.scroll-box {
+    max-height: 280px;
+    overflow: auto;
+    background: #0d1813;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #28483a;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.yarn-tab{
-    background:#203b30;
-    border:1px solid #345947;
-    color:#9fc8aa;
-    border-radius:9px;
-    padding:8px;
-    font-weight:900;
-    font-size:.76rem;
-    cursor:pointer;
+.scroll-box > div {
+    background: #172b23;
+    border: 1px solid #2e5041;
+    border-radius: 6px;
+    padding: 4px 6px;
+    display: grid;
+    grid-template-columns: 25px 1fr 45px; 
+    align-items: center;
+    gap: 6px;
 }
 
-.yarn-tab.active{
-    background:#2d8d48;
-    color:#fff;
+.scroll-box label {
+    font-size: 0.6rem !important;
+    margin: 0;
+    color: #78d18a;
 }
 
-.yarn-summary{
-    display:flex;
-    justify-content:space-between;
-    background:#0e1b16;
-    border:1px solid #28483a;
-    border-radius:8px;
-    padding:7px 9px;
-    margin-bottom:7px;
-    font-size:.66rem;
-    color:#b8d8bf;
+.scroll-box input[type="number"] {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
+    text-align: center;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    border-radius: 6px;
 }
 
-.yarn-panel{
-    display:none;
+.design-colour-name {
+    width: 100%;
+    height: 34px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    border-radius: 6px;
 }
 
-.yarn-panel.active{
-    display:block;
+#gridEditorSection {
+    background: #0f1b16;
+    border: 1px solid #2c4b3d;
+    padding: 8px;
+    border-radius: 10px;
+    margin-top: 8px;
 }
 
-.scroll-box{
-    max-height:255px;
-    overflow:auto;
-    background:#0d1813;
-    padding:5px;
-    border-radius:9px;
-    border:1px solid #28483a;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-}
+.grid-controls { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+.grid-controls button { background: #244638; color: #aee9ba; border: 1px solid #39614f; padding: 6px 8px; border-radius: 6px; font-size: .6rem; font-weight: 800; }
 
-.scroll-box>div{
-    background:#172b23;
-    border:1px solid #2e5041;
-    border-radius:8px;
-    padding:5px 6px;
-    display:grid;
-    grid-template-columns:55px 42px minmax(0,1fr);
-    align-items:center;
-    gap:6px;
-}
+.matrix-grid-container { max-height: 360px; overflow: auto; padding: 4px; border: 1px solid #28483a; border-radius: 8px; background: #09110d; }
+.matrix-row-wrapper { display: flex; align-items: center; gap: 4px; justify-content: center; margin-bottom: 4px; }
+.matrix-row { display: flex; gap: 3px; }
+.matrix-cell { width: 30px; height: 30px; background: #183026; border: 1px solid #315443; color: #8fe19d; font-weight: 800; font-size: .7rem; display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 4px; flex-shrink: 0; }
+.matrix-cell.active { background: #4caf50; color: #102015; border-color: #8ee49a; }
 
-.scroll-box label{
-    margin:0;
-    font-size:.68rem;
-}
+.btn-row-del, .btn-col-del { background: #633b3b; color: #ffd1ca; border: 0; font-weight: 800; border-radius: 4px; cursor: pointer; flex-shrink: 0; }
+.btn-row-del { width: 24px; height: 30px; }
+.btn-col-del { width: 30px; height: 20px; font-size: .55rem; }
+.col-del-row { display: flex; gap: 3px; justify-content: center; margin-left: 0; margin-bottom: 4px; }
 
-.flex-row{
-    display:contents;
-}
+.save-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.save-row button { border: 0; border-radius: 8px; padding: 8px; font-weight: 800; color: #fff; cursor: pointer; }
+.save-row .save { background: #338e47; }
+.save-row .preview { background: #217eaf; }
 
-.entry-unit{
-    font-size:.57rem!important;
-    color:#729b7d!important;
-}
+.main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.main-actions button { width: 100%; }
+.main-actions .wide { grid-column: 1 / -1; }
 
-#gridEditorSection{
-    background:#0f1b16;
-    border:1px solid #2c4b3d;
-    padding:8px;
-    border-radius:10px;
-    margin-top:8px;
-}
+.menu-panel { display: none; margin-top: 8px; animation: panelIn .18s ease; }
+.menu-panel.active { display: block; }
 
-.grid-controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    margin-bottom:7px;
-}
-
-.grid-controls button{
-    background:#244638;
-    color:#aee9ba;
-    border:1px solid #39614f;
-    padding:7px 8px;
-    border-radius:7px;
-    font-size:.64rem;
-    font-weight:800;
-}
-
-.matrix-grid-container{
-    max-height:360px;
-    overflow:auto;
-    padding:4px;
-    border:1px solid #28483a;
-    border-radius:8px;
-    background:#09110d;
-}
-
-.matrix-row-wrapper{
-    display:flex;
-    align-items:center;
-    gap:4px;
-    justify-content:center;
-    margin-bottom:4px;
-}
-
-.matrix-row{
-    display:flex;
-    gap:3px;
-}
-
-.matrix-cell{
-    width:32px;
-    height:32px;
-    background:#183026;
-    border:1px solid #315443;
-    color:#8fe19d;
-    font-weight:800;
-    font-size:.72rem;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    border-radius:4px;
-    flex-shrink:0;
-}
-
-.matrix-cell.active{
-    background:#4caf50;
-    color:#102015;
-    border-color:#8ee49a;
-}
-
-.btn-row-del,
-.btn-col-del{
-    background:#633b3b;
-    color:#ffd1ca;
-    border:0;
-    font-weight:800;
-    border-radius:4px;
-    cursor:pointer;
-    flex-shrink:0;
-}
-
-.btn-row-del{
-    width:25px;
-    height:32px;
-}
-
-.btn-col-del{
-    width:32px;
-    height:21px;
-    font-size:.6rem;
-}
-
-.col-del-row{
-    display:flex;
-    gap:3px;
-    justify-content:center;
-    margin-left:0;
-    margin-bottom:4px;
-}
-
-.save-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:6px;
-    margin-top:7px;
-}
-
-.save-row button{
-    border:0;
-    border-radius:8px;
-    padding:8px;
-    font-weight:800;
-    color:#fff;
-    cursor:pointer;
-}
-
-.save-row .save{
-    background:#338e47;
-}
-
-.save-row .preview{
-    background:#217eaf;
-}
-
-.main-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-    margin-top:8px;
-}
-
-.main-actions button{
-    width:100%;
-}
-
-.main-actions .wide{
-    grid-column:1/-1;
-}
-
-.menu-panel{
-    display:none;
-    margin-top:8px;
-    animation:panelIn .18s ease;
-}
-
-.menu-panel.active{
-    display:block;
-}
-
-@keyframes panelIn{
-    from{
-        opacity:0;
-        transform:translateY(5px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.info-box{
-    background:#0e1b16;
-    border:1px solid #28483a;
-    border-radius:9px;
-    padding:9px;
-    font-size:.72rem;
-    line-height:1.55;
-}
-
-.info-box b{
-    color:#9be4a8;
-}
+@keyframes panelIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.info-box { background: #0e1b16; border: 1px solid #28483a; border-radius: 8px; padding: 8px; font-size: .65rem; line-height: 1.5; }
+.info-box b { color: #9be4a8; }
 
 /* FULLSCREEN 3D */
-
-.fs-modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-    background:#000;
-    z-index:999999;
-    flex-direction:column;
-}
-
-.fs-header{
-    height:54px;
-    min-height:54px;
-    padding:7px 9px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:#14251e;
-    border-bottom:1px solid #345947;
-}
-
-.fs-title{
-    color:#9be4a8;
-    font-size:.85rem;
-    font-weight:900;
-}
-
-.fs-header-actions{
-    display:flex;
-    gap:6px;
-}
-
-.fs-header button{
-    border:0;
-    border-radius:7px;
-    padding:8px 11px;
-    color:#fff;
-    font-weight:800;
-    font-size:.7rem;
-    cursor:pointer;
-}
-
-.fs-content{
-    flex:1;
-    width:100%;
-    min-height:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    background:#000;
-    touch-action:none;
-    position:relative;
-}
-
-.fs-content canvas{
-    width:100%;
-    height:100%;
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
-    cursor:grab;
-    display:block;
-    transform-origin:center center;
-    will-change:transform;
-}
-
-.fs-hint{
-    position:absolute;
-    bottom:12px;
-    left:50%;
-    transform:translateX(-50%);
-    background:rgba(20,37,30,.85);
-    color:#b8d8bf;
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:.62rem;
-    pointer-events:none;
-    white-space:nowrap;
-}
+.fs-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: #000; z-index: 999999; flex-direction: column; }
+.fs-header { height: 46px; min-height: 46px; padding: 6px 8px; display: flex; align-items: center; justify-content: space-between; background: #14251e; border-bottom: 1px solid #345947; }
+.fs-title { color: #9be4a8; font-size: .8rem; font-weight: 900; }
+.fs-header-actions { display: flex; gap: 6px; }
+.fs-header button { border: 0; border-radius: 6px; padding: 6px 10px; color: #fff; font-weight: 800; font-size: .65rem; cursor: pointer; }
+.fs-content { flex: 1; width: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; touch-action: none; position: relative; }
+.fs-content canvas { width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; cursor: grab; display: block; transform-origin: center center; will-change: transform; }
+.fs-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(20,37,30,.85); color: #b8d8bf; padding: 6px 10px; border-radius: 20px; font-size: .55rem; pointer-events: none; white-space: nowrap; }
 
 /* PRINT */
+.print-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000000; justify-content: center; align-items: center; padding: 10px; }
+.print-sheet { background: #fff; color: #000; padding: 15px; border-radius: 7px; width: 100%; max-width: 600px; max-height: 95vh; overflow: auto; }
+.print-controls { display: flex; gap: 7px; justify-content: flex-end; margin-top: 10px; }
+.print-controls button { border: 0; padding: 8px 12px; border-radius: 6px; color: #fff; font-weight: bold; }
+.print-card { display: none !important; }
 
-.print-modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.85);
-    z-index:1000000;
-    justify-content:center;
-    align-items:center;
-    padding:10px;
+/* ================= COLOUR MASTER STYLES ================= */
+.colour-master-card {
+    background: #102019;
+    border: 1px solid #315746;
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 8px;
 }
 
-.print-sheet{
-    background:#fff;
-    color:#000;
-    padding:15px;
-    border-radius:7px;
-    width:100%;
-    max-width:600px;
-    max-height:95vh;
-    overflow:auto;
+.colour-master-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.colour-master-title b { color: #9be4a8; font-size: .8rem; }
+.colour-master-title span { font-size: .55rem; color: #9fc5aa; }
+
+.colour-master-tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+.colour-master-tab {
+    flex: 0 0 auto;
+    border: 1px solid #39614f;
+    background: #203b30;
+    color: #b8d8bf;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: .58rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+.colour-master-tab.active { background: #2d9148; color: #fff; border-color: #9be4a8; }
+
+.colour-shade-list, .colour-popup-grid { 
+    display: grid; 
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 4px; 
+    margin-top: 6px; 
 }
 
-.print-controls{
-    display:flex;
-    gap:7px;
-    justify-content:flex-end;
-    margin-top:10px;
+.swatch-card {
+    background: #172b23;
+    border: 1px solid #395648;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
-.print-controls button{
-    border:0;
-    padding:8px 12px;
-    border-radius:6px;
-    color:#fff;
-    font-weight:bold;
+.swatch-card.selected { border-color: #9be4a8; box-shadow: 0 0 0 1px #2d9148; background: #1e382d; }
+
+.swatch-color {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    flex-shrink: 0;
 }
 
-.print-card{
-    display:none!important;
+.swatch-details { padding: 4px 2px 0 2px; text-align: center; width: 100%; }
+.swatch-name { font-size: .45rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.swatch-pantone { font-size: .4rem; color: #f59e0b; font-weight: 700; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.colour-master-actions { display: grid; grid-template-columns: 1fr; gap: 4px; margin-top: 8px; }
+.colour-master-actions button { border: 0; border-radius: 6px; padding: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; color: #fff; background: linear-gradient(135deg, #10B981, #059669); }
+
+/* ================= COLOUR POPUP ================= */
+.colour-popup { display: none; position: fixed; inset: 0; z-index: 9999999; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 8px; }
+.colour-popup.active { display: flex; }
+
+.colour-popup-box {
+    width: 100%;
+    max-width: 480px;
+    max-height: 95vh;
+    overflow: auto;
+    background: #14251e;
+    border: 1px solid #3c6752;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
-@media(max-width:430px){
+.colour-popup-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.colour-popup-head b { color: #9be4a8; font-size: .85rem; }
+.colour-popup-close { background: #633b3b; border: 0; color: #fff; border-radius: 6px; padding: 4px 8px; font-weight: 900; font-size:0.75rem; }
 
-    body{
-        padding:5px;
-    }
+.search-box { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #395648; background: #0d1813; color: #fff; font-size: .7rem; margin-bottom: 8px; }
+.colour-popup-grid { max-height: 40vh; overflow-y: auto; padding-right: 2px; }
 
-    .header{
-        padding:10px;
-    }
+.colour-popup-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #2c4b3d; }
+.colour-popup-footer button { border: 0; border-radius: 6px; padding: 10px; color: #fff; font-weight: 900; font-size: .75rem; }
+.colour-use-btn { background: #2d9148; }
+.colour-cancel-btn { background: #633b3b; }
 
-    .card{
-        padding:9px;
-    }
+.pantone-modal { display: none; position: fixed; inset: 0; z-index: 9999999; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 12px; }
+.pantone-modal.active { display: flex; }
 
-    .container{
-        gap:6px;
-    }
+.pm-form-box { background: #172b23; padding: 10px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed #395648; }
+.pm-label { font-size:0.65rem; color:#f59e0b; margin-bottom:4px; display:block; font-weight:bold; }
+.pm-label-w { font-size:0.65rem; color:#9be4a8; margin-bottom:4px; display:block; font-weight:bold; }
 
-    .scroll-box{
-        max-height:230px;
-    }
+#dentingModal {
+    padding: 0 !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+}
+#dentingModal .colour-popup-box {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    max-height: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 10px !important;
+    overflow: auto !important;
+}
+.denting-tabs { display:flex; gap:6px; margin:4px 0 10px; position:sticky; top:0; z-index:3; background:#14251e; padding-bottom:6px; }
+.denting-tab { flex:1; border:1px solid #39614f; background:#203b30; color:#b8d8bf; border-radius:8px; padding:9px 6px; font-weight:900; font-size:.72rem; }
+.denting-tab.active { background:#2d9148; color:#fff; }
+.denting-pane { display:none; }
+.denting-pane.active { display:block; }
+.manual-box { background:#0d1813; border:1px solid #315746; border-radius:8px; padding:8px; margin-top:7px; }
+.manual-row { display:grid; grid-template-columns:45px 1fr 42px; gap:6px; align-items:center; background:#172b23; border:1px solid #2e5041; border-radius:6px; padding:5px; margin-bottom:5px; }
+.manual-row .num { color:#9be4a8; font-weight:900; font-size:.65rem; text-align:center; }
+.manual-row input { height:34px; min-height:34px; padding:5px; }
+.manual-row button { height:34px; border:0; border-radius:6px; background:#633b3b; color:#fff; font-weight:900; }
+.preset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:7px; }
+.preset-grid button { border:1px solid #39614f; background:#244638; color:#aee9ba; border-radius:7px; padding:7px 4px; font-size:.62rem; font-weight:900; }
+.adv-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.adv-grid button { border:0; border-radius:7px; padding:9px 5px; background:#217eaf; color:#fff; font-weight:900; font-size:.65rem; }
+@media(max-width:430px){ .manual-row{grid-template-columns:38px 1fr 38px}.preset-grid{grid-template-columns:1fr 1fr 1fr} }
 
-    .matrix-grid-container{
-        max-height:430px;
-    }
-
-    .matrix-cell{
-        width:30px;
-        height:30px;
-    }
-
-    .main-actions{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .main-actions .wide{
-        grid-column:1/-1;
-    }
-
-    .fs-header{
-        height:50px;
-        min-height:50px;
-        padding:6px;
-    }
-
-    .fs-title{
-        font-size:.74rem;
-    }
-
-    .fs-header button{
-        padding:7px 9px;
-        font-size:.64rem;
-    }
-
-    .fs-hint{
-        font-size:.55rem;
-        bottom:8px;
-    }
+@media(max-width: 430px) {
+    body { padding: 4px; }
+    .header { padding: 8px; }
+    .card { padding: 8px; border-radius: 8px; }
+    .container { gap: 6px; }
+    .scroll-box { max-height: 250px; }
+    .matrix-grid-container { max-height: 400px; }
+    .matrix-cell { width: 30px; height: 30px; }
+    .main-actions { grid-template-columns: 1fr 1fr; }
+    .main-actions .wide { grid-column: 1 / -1; }
+    
+    .colour-shade-list, .colour-popup-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
+    .swatch-color { height: 20px; width: 20px; }
+    .swatch-details { padding: 2px 1px 0 1px; }
+    .swatch-name { font-size: 0.45rem; }
+    .swatch-pantone { font-size: 0.4rem; }
 }
 
-@media print{
-
-    @page{
-        margin:10mm;
-    }
-
-    body{
-        background:#fff!important;
-        color:#000!important;
-        padding:0!important;
-    }
-
-    .container{
-        max-width:none;
-    }
-
-    .header,
-    .card:not(.print-card),
-    .print-hide,
-    #fsModal{
-        display:none!important;
-    }
-
-    body.printing-graph #printModalBox{
-        display:flex!important;
-        position:static!important;
-        background:#fff!important;
-        padding:0!important;
-    }
-
-    .print-sheet{
-        box-shadow:none!important;
-        max-width:100%!important;
-    }
-
-    body.printing-design .print-card{
-        display:block!important;
-        background:#fff!important;
-        border:none!important;
-        color:#000!important;
-        box-shadow:none!important;
-    }
-
-    body.printing-design #designPrintImage{
-        display:block!important;
-        width:100%!important;
-    }
+@media print {
+    @page { margin: 10mm; }
+    body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+    .container { max-width: none; }
+    .header, .card:not(.print-card), .print-hide, #fsModal { display: none !important; }
+    body.printing-graph #printModalBox { display: flex !important; position: static !important; background: #fff !important; padding: 0 !important; }
+    .print-sheet { box-shadow: none !important; max-width: 100% !important; }
+    body.printing-design .print-card { display: block !important; background: #fff !important; border: none !important; color: #000 !important; box-shadow: none !important; }
+    body.printing-design #designPrintImage { display: block !important; width: 100% !important; }
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
-
-<div class="card print-hide" style="padding:10px;margin-bottom:2px;">
-    <button
-        class="btn btn-dark"
-        onclick="window.location.href='dashboard.html'"
-        style="display:inline-flex;align-items:center;padding:8px 14px;min-height:auto;width:auto;">
-        ← Back to Menu
-    </button>
-</div>
-
-<div class="header">
-    <h1>🧵 3D Weave Simulation Pro</h1>
-    <p>வார்ப் & வெஃப்ட் டிசைனை எளிதாக பார்க்கும் நெசவு சிமுலேட்டர்</p>
-</div>
-
-<!-- DESIGN -->
-
-<div class="card">
-
-    <label>🎨 Design</label>
-
-    <select id="designSelect" onchange="loadSelectedDesign()">
-        <option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>
-    </select>
-
-    <div class="active-design">
-        <span class="active-dot"></span>
-        <span id="activeDesignText">Design loading...</span>
-    </div>
-
-    <div class="cloud-actions">
-
-        <button class="btn btn-dark" onclick="importFromFirebase(true)">
-            🔄 Refresh
+    <div class="card print-hide" style="padding:8px;margin-bottom:2px;">
+        <button class="btn btn-dark" onclick="window.location.href='dashboard.html'" style="display:inline-flex;align-items:center;padding:6px 12px;min-height:auto;width:auto;">
+            ← Back to Menu
         </button>
-
-        <button class="btn btn-green" onclick="saveCurrentDesign()">
-            ☁️ Save / Update
-        </button>
-
     </div>
 
-    <div id="designStatus" class="status">
-        ⚡ Loading...
+    <div class="header">
+        <h1>🧵 3D Weave Simulation Pro</h1>
     </div>
 
-</div>
-
-<!-- YARN -->
-
-<div class="card">
-
-    <div class="step">
-
-        <div class="step-no">2</div>
-
-        <div>
-            <h3>நூல் விவரங்கள்</h3>
-            <p>Warp / Weft நிறம் மற்றும் அளவு</p>
+    <!-- DESIGN -->
+    <div class="card">
+        <label>🎨 Design</label>
+        <select id="designSelect" onchange="loadSelectedDesign()">
+            <option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>
+        </select>
+        <div class="active-design">
+            <span class="active-dot"></span>
+            <span id="activeDesignText">Design loading...</span>
         </div>
-
-    </div>
-
-    <div class="yarn-tabs">
-
-        <button class="yarn-tab active" id="warpTab"
-                onclick="showYarnTab('warp')">
-            🧵 WARP <span id="warpTabCount">10</span>
-        </button>
-
-        <button class="yarn-tab" id="weftTab"
-                onclick="showYarnTab('weft')">
-            🪢 WEFT <span id="weftTabCount">6</span>
-        </button>
-
-    </div>
-
-    <div class="yarn-summary">
-
-        <span>
-            நிறங்கள்:
-            <b id="activeYarnCount">0 / 10</b>
-        </span>
-
-        <span id="activeYarnHint">
-            Ends உள்ளிடவும்
-        </span>
-
-    </div>
-
-    <div id="warpPanel" class="yarn-panel active">
-
-        <label>
-            WARP — <span id="warpCountDisplay">10</span> வரிகள்
-        </label>
-
-        <div id="warpInputsContainer" class="scroll-box"></div>
-
-    </div>
-
-    <div id="weftPanel" class="yarn-panel">
-
-        <label>
-            WEFT — <span id="weftCountDisplay">6</span> வரிகள்
-        </label>
-
-        <div id="weftInputsContainer" class="scroll-box"></div>
-
-    </div>
-
-</div>
-
-<!-- WEAVE -->
-
-<div class="card">
-
-    <div class="step">
-
-        <div class="step-no">3</div>
-
-        <div>
-            <h3>Weave அமைப்பு</h3>
-            <p>Graph edit செய்ய Custom தேர்வு செய்யவும்</p>
+        <div class="cloud-actions">
+            <button class="btn btn-dark" onclick="importFromFirebase(true)">🔄 Refresh</button>
+            <button class="btn btn-green" onclick="saveCurrentDesign()">☁️ Save / Update</button>
         </div>
-
+        <div id="designStatus" class="status">⚡ Loading...</div>
     </div>
 
-    <label>Weave Type</label>
-
-    <select id="weaveType" onchange="onWeaveChange()">
-
-        <option value="plain">
-            Plain Weave (1 / 1)
-        </option>
-
-        <option value="twill">
-            Twill 2/2
-        </option>
-
-        <option value="custom">
-            🛠️ Custom Graph Grid
-        </option>
-
-    </select>
-
-    <div id="gridEditorSection" style="display:none">
-
-        <div style="
-            font-size:.72rem;
-            color:#a9d6b2;
-            font-weight:800;
-            margin-bottom:7px">
-            ⚙️ Graph Editor — click cells to toggle 0 / 1
+    <!-- YARN -->
+    <div class="card">
+        <div class="step">
+            <div class="step-no">2</div>
+            <div>
+                <h3>நூல் விவரங்கள்</h3>
+                <p>Warp / Weft நிறம் மற்றும் அளவு</p>
+            </div>
         </div>
-
-        <div class="grid-controls">
-
-            <button onclick="addCol()">➕ Column</button>
-            <button onclick="addRowTop()">➕ Row</button>
-            <button onclick="removeLastRow()">➖ Row</button>
-            <button onclick="removeLastCol()">➖ Column</button>
-            <button onclick="duplicateSet()">⏬ Duplicate</button>
-            <button onclick="triggerGraphScan()">📸 Scan</button>
-
-        </div>
-
-        <div id="matrixGridContainer"
-             class="matrix-grid-container"></div>
-
-        <div style="
-            font-size:.64rem;
-            color:#8fb99a;
-            text-align:center;
-            margin-top:5px">
-            1 = Warp Up • 0 = Weft Up • Graph direction → 3D-லும் அதே direction
-        </div>
-
-        <div class="save-row">
-
-            <button class="save" onclick="saveCurrentDesign()">
-                💾 Save in Same Design
+        <div class="yarn-tabs">
+            <button class="yarn-tab active" id="warpTab" onclick="showYarnTab('warp')">
+                🧵 WARP <span id="warpTabCount">10</span>
             </button>
-
-            <button class="preview" onclick="openGraphPrintPreview()">
-                🖨️ Print Graph
+            <button class="yarn-tab" id="weftTab" onclick="showYarnTab('weft')">
+                🪢 WEFT <span id="weftTabCount">6</span>
             </button>
-
+        </div>
+        
+        <div class="yarn-summary">
+            <span style="display:none;">நிறங்கள்: <b id="activeYarnCount">0 / 10</b></span>
+            <span id="activeYarnHint" style="font-weight: 800; color: #a9d6b2;">Total Ends: 0</span>
         </div>
 
-    </div>
-
-    <div class="main-actions">
-
-        <button class="btn btn-green" onclick="openFullscreen()">
-            🧊 3D VIEW
-        </button>
-
-        <button class="btn btn-blue" onclick="openMenu('denting')">
-            📐 DENTING
-        </button>
-
-        <button class="btn btn-dark wide" onclick="printDesign()">
-            🖨️ PRINT DESIGN
-        </button>
-
-    </div>
-
-    <div id="dentingPanel" class="menu-panel">
-
-        <div class="preview-title">
-            📐 Denting / Drawing
+        <div class="colour-master-card" id="colourMasterCard">
+            <div class="colour-master-title">
+                <b>🎨 Advanced Colours & Pantone</b>
+                <span>Manage Shades</span>
+            </div>
+            <div class="colour-master-tabs" id="colourMasterTabs"></div>
+            <div id="colourShadeList" class="colour-shade-list"></div>
+            <div class="colour-master-actions">
+                <button onclick="openColorManager()">➕ Add New Colour / Pantone</button>
+            </div>
         </div>
 
-        <div class="info-box" id="dentingInfo">
-            Denting data loading...
+        <div id="warpPanel" class="yarn-panel active">
+            <label style="display:none;">WARP — <span id="warpCountDisplay">10</span> வரிகள்</label>
+            <div id="warpInputsContainer" class="scroll-box"></div>
         </div>
-
+        <div id="weftPanel" class="yarn-panel">
+            <label style="display:none;">WEFT — <span id="weftCountDisplay">6</span> வரிகள்</label>
+            <div id="weftInputsContainer" class="scroll-box"></div>
+        </div>
     </div>
 
-</div>
+    <!-- WEAVE -->
+        <!-- 3D VIEW & PRINT DESIGN (முன்பு Weave இருந்த பகுதி) -->
+    <div class="card">
+        
+        <!-- JavaScript எரர் வராமல் இருக்க பழைய Weave & Grid ஆப்ஷன்களை மறைத்து (Hide) வைத்துள்ளோம் -->
+        <div style="display: none;">
+            <select id="weaveType" onchange="onWeaveChange()">
+                <option value="plain">Plain Weave (1 / 1)</option>
+                <option value="twill">Twill 2/2</option>
+                <option value="custom">🛠️ Custom Graph Grid</option>
+            </select>
+            <div id="gridEditorSection"></div>
+        </div>
 
-<!-- PRINT CARD -->
+        <!-- 3D View மற்றும் Print பட்டன்கள் மட்டும் (Full Width) -->
+        <div class="main-actions" style="grid-template-columns: 1fr; gap: 10px; margin-top: 4px;">
+            <button class="btn btn-green" style="padding: 14px; font-size: 0.95rem; font-weight: 900; letter-spacing: 1px;" onclick="openFullscreen()">
+                🧊 3D VIEW PREVIEW
+            </button>
+            <button class="btn btn-dark" style="padding: 12px; font-size: 0.8rem;" onclick="printDesign()">
+                🖨️ PRINT DESIGN
+            </button>
+        </div>
+        
+    </div>
 
-<div class="card print-card" id="designPrintCard">
-
-    <h3 style="color:#000;margin-bottom:8px;text-align:center;">
-        Weave Design
-    </h3>
-
-    <img
-        id="designPrintImage"
-        alt="Print Preview"
-        style="width:100%;max-width:800px;height:auto;display:block;margin:auto;">
-
-</div>
-
-</div>
-
-<!-- FULLSCREEN -->
-
+<!-- FULLSCREEN 3D -->
 <div id="fsModal" class="fs-modal">
-
     <div class="fs-header">
-
-        <div class="fs-title">
-            🧊 3D Weave Preview
-        </div>
-
+        <div class="fs-title">🧊 3D Weave Preview</div>
         <div class="fs-header-actions">
-
-            <button style="background:#217eaf"
-                    onclick="refreshFullscreen3D()">
-                🔄 Refresh
-            </button>
-
-            <button style="background:#633b3b"
-                    onclick="closeFullscreen()">
-                ✖ Close
-            </button>
-
+            <button style="background:#217eaf" onclick="refreshFullscreen3D()">🔄 Refresh</button>
+            <button style="background:#633b3b" onclick="closeFullscreen()">✖ Close</button>
         </div>
-
     </div>
-
     <div id="fsContent" class="fs-content">
-
-        <canvas id="weaveCanvas"
-                width="720"
-                height="520"></canvas>
-
-        <div class="fs-hint">
-            👆 Drag • 🤏 Pinch Zoom
-        </div>
-
+        <canvas id="weaveCanvas" width="720" height="520"></canvas>
+        <div class="fs-hint">👆 Drag • 🤏 Pinch Zoom</div>
     </div>
-
 </div>
 
 <!-- GRAPH PRINT -->
-
 <div id="printModalBox" class="print-modal">
-
     <div class="print-sheet">
-
-        <h3 style="text-align:center;margin-bottom:10px">
-            Weave Graph Matrix Design
-        </h3>
-
+        <h3 style="text-align:center;margin-bottom:10px">Weave Graph Matrix Design</h3>
         <div id="printTableContainer"></div>
-
         <div class="print-controls print-hide">
+            <button style="background:#2e7d32" onclick="window.print()">Print Graph</button>
+            <button style="background:#5c3a3a" onclick="closeGraphPrintPreview()">Close</button>
+        </div>
+    </div>
+</div>
 
-            <button style="background:#2e7d32"
-                    onclick="window.print()">
-                Print Graph
-            </button>
+<!-- SELECT SHADE POPUP -->
+<div id="colourPopup" class="colour-popup">
+    <div class="colour-popup-box">
+        <div class="colour-popup-head">
+            <b id="colourPopupTitle">Select Shade</b>
+            <button class="colour-popup-close" onclick="closeColourPopup()">✕</button>
+        </div>
+        
+        <div class="colour-master-tabs" id="popupMasterTabs" style="margin-bottom: 8px;"></div>
 
-            <button style="background:#5c3a3a"
-                    onclick="closeGraphPrintPreview()">
-                Close
-            </button>
+        <input type="text" id="colourSearchInput" class="search-box" placeholder="🔍 Search Colour Name or Pantone (e.g., 19-4052)..." onkeyup="filterColourPopup()">
+        
+        <div id="colourPopupGrid" class="colour-popup-grid"></div>
 
+        <div style="margin-top: 10px; font-size: 0.65rem; color: #a9d6b2; display: flex; align-items: center; justify-content: center; background: #0d1813; padding: 6px; border-radius: 6px; border: 1px dashed #315746;">
+            <label style="margin:0; display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <input type="checkbox" id="syncColorCheck" checked style="width: 14px !important; min-width: 14px !important; height: 14px !important; min-height: 14px !important; margin: 0; accent-color: #2d9148;">
+                அதே நிறம் உள்ள எல்லா இடங்களிலும் மாற்றவும் (Sync All)
+            </label>
+        </div>
+        
+        <div class="colour-popup-footer">
+            <button class="colour-use-btn" onclick="applySelectedColour()">✅ Select</button>
+            <button class="colour-cancel-btn" onclick="closeColourPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- FULL SCREEN DENTING & DRAWING MODAL -->
+<div id="dentingModal" class="colour-popup">
+    <div class="colour-popup-box">
+        <div class="colour-popup-head">
+            <b style="font-size:0.95rem;color:#f59e0b;">📐 Denting & Drawing — Advanced Editor</b>
+            <button class="colour-popup-close" onclick="closeDentingModal()">✕</button>
         </div>
 
-    </div>
+        <div class="denting-tabs">
+            <button class="denting-tab active" id="dentTabBtn" onclick="showDentingPane('dent')">📐 Denting Order</button>
+            <button class="denting-tab" id="drawTabBtn" onclick="showDentingPane('draw')">🧵 Drawing Order</button>
+            <button class="denting-tab" id="advTabBtn" onclick="showDentingPane('adv')">⚙️ Advanced</button>
+        </div>
 
+        <div id="dentPane" class="denting-pane active">
+            <div class="pm-form-box">
+                <label class="pm-label-w">Denting Pattern</label>
+                <input type="text" id="dentingPatternInput" value="2" oninput="calculateAdvancedDenting();autoRefresh3D();" style="height:38px;min-height:38px;font-size:.85rem;font-weight:bold;letter-spacing:1px;background:#14251e;color:#fff;">
+                <div class="preset-grid">
+                    <button onclick="setDentPreset('2')">2 per Dent</button>
+                    <button onclick="setDentPreset('3')">3 per Dent</button>
+                    <button onclick="setDentPreset('2,3')">2,3 Repeat</button>
+                </div>
+            </div>
+            <div class="manual-box">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <b style="font-size:.72rem;color:#9be4a8;">Manual Denting Order</b>
+                    <button class="btn btn-green" style="padding:6px 9px;min-height:30px;" onclick="addDentingManualRow()">➕ Add Dent</button>
+                </div>
+                <div id="dentingManualRows"></div>
+                <div style="font-size:.58rem;color:#9fc5aa;margin-top:5px;">ஒவ்வொரு Dent-க்கும் Ends எண்ணிக்கையை தனித்தனியாக மாற்றலாம். 0 = Missing / Empty Dent.</div>
+            </div>
+        </div>
+
+        <div id="drawPane" class="denting-pane">
+            <div class="pm-form-box">
+                <label class="pm-label-w">Drawing / Frame Order</label>
+                <input type="text" id="drawingPatternInput" value="1,2,3,4" oninput="calculateAdvancedDenting();autoRefresh3D();" style="height:38px;min-height:38px;font-size:.85rem;font-weight:bold;letter-spacing:1px;background:#14251e;color:#fff;">
+                <div class="preset-grid">
+                    <button onclick="setDrawingPreset('1,2,3,4')">1-2-3-4</button>
+                    <button onclick="setDrawingPreset('1,2,3,4,8,5,9,2')">8 Frame</button>
+                    <button onclick="setDrawingPreset('1,2,3,4,3,2')">Return</button>
+                </div>
+            </div>
+            <div class="manual-box">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <b style="font-size:.72rem;color:#9be4a8;">Manual Drawing Order</b>
+                    <button class="btn btn-green" style="padding:6px 9px;min-height:30px;" onclick="addDrawingManualRow()">➕ Add Frame</button>
+                </div>
+                <div id="drawingManualRows"></div>
+                <div style="font-size:.58rem;color:#9fc5aa;margin-top:5px;">Frame order-ஐ தனித்தனியாக edit செய்யலாம்.</div>
+            </div>
+        </div>
+
+        <div id="advPane" class="denting-pane">
+            <div class="pm-form-box">
+                <label class="pm-label-w">Advanced Denting Options</label>
+                <div class="adv-grid">
+                    <button onclick="setDentPreset('2')">2 Ends / Dent</button>
+                    <button onclick="setDentPreset('3')">3 Ends / Dent</button>
+                    <button onclick="setDentPreset('0')">Missing Dent</button>
+                    <button onclick="setDentPreset('2,2,0,3')">2,2,Missing,3</button>
+                </div>
+                <div style="font-size:.62rem;color:#b8d8bf;line-height:1.5;margin-top:9px;">
+                    <b>0</b> = Missing / Empty Dent. உதாரணம்: <b>2,2,0,3</b> என்றால் 2 ends, 2 ends, missing dent, 3 ends என்று வரிசையாக repeat ஆகும்.
+                </div>
+            </div>
+            <div id="dentingResultDisplay" style="background:#09110d;border:1px dashed #4a7c59;padding:12px;border-radius:8px;font-size:.75rem;color:#b8d8bf;line-height:1.6;margin-top:8px;"></div>
+        </div>
+
+        <div class="colour-popup-footer" style="grid-template-columns:1fr 1fr;position:sticky;bottom:0;background:#14251e;">
+            <button class="colour-use-btn" onclick="closeDentingModal();autoRefresh3D();saveCurrentDesign();">✅ OK — Save Pattern</button>
+            <button class="colour-cancel-btn" onclick="closeDentingModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- PANTONE MODAL -->
+<div id="colorManagerModal" class="pantone-modal">
+    <div class="colour-popup-box" style="max-width: 340px; padding: 12px;">
+        <div class="colour-popup-head">
+            <b id="cmPopupTitle" style="font-size:0.9rem;">🎨 Add New Shade</b>
+            <button class="colour-popup-close" style="padding:4px 8px; font-size:0.7rem;" onclick="closeColorManager()">✕</button>
+        </div>
+        
+        <div class="pm-form-box">
+            <label class="pm-label">Quick Auto-Fill (Pantone)</label>
+            <div style="display:flex; gap:6px;">
+                <input type="text" id="cmPantone" placeholder="e.g. 19-4052" style="height:32px; min-height:32px; font-size:0.75rem;">
+                <button class="btn btn-blue" onclick="searchPantoneDB()" style="min-width: 60px; height:32px; min-height:32px; padding: 0; font-size:0.7rem;">🔍 Find</button>
+            </div>
+        </div>
+
+        <label class="pm-label-w">Category</label>
+        <select id="cmCategory" onchange="handleCatChange()" style="height:32px; min-height:32px; font-size:0.75rem; margin-bottom:8px; background:#fff; color:#000;"></select>
+
+        <label class="pm-label-w">Shade Name</label>
+        <input type="text" id="cmName" placeholder="e.g. Navy Blue" style="height:32px; min-height:32px; font-size:0.75rem; margin-bottom:8px;">
+
+        <label class="pm-label-w">Pick Colour</label>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; background: #0d1813; padding: 6px; border-radius: 6px; border: 1px solid #3c6752;">
+            <div id="cmHexWrapper" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3c6752; overflow: hidden; background: #22c55e; position: relative; flex-shrink: 0; cursor: pointer;">
+                <input type="color" id="cmHexPicker" value="#22c55e" style="position: absolute; top: -10px; left: -10px; width: 60px; height: 60px; opacity: 0; cursor: pointer; padding: 0; border: none;" oninput="document.getElementById('cmHex').value = this.value.toLowerCase(); document.getElementById('cmHexWrapper').style.background = this.value;">
+            </div>
+            <input type="text" id="cmHex" value="#22c55e" style="height:32px; min-height:32px; font-size:0.8rem; font-weight:bold; letter-spacing:1px; text-transform:lowercase; margin:0;" oninput="let v = this.value.toLowerCase(); if(/^#[0-9a-f]{6}$/i.test(v)){ document.getElementById('cmHexPicker').value = v; document.getElementById('cmHexWrapper').style.background = v; }" placeholder="#hexcode">
+        </div>
+
+        <button class="btn btn-green" style="width: 100%; height: 38px; font-size:0.8rem;" onclick="saveNewColorAdvanced()">💾 Save Colour</button>
+        
+        <div id="cmDeleteBtnContainer" style="display:none; margin-top: 8px;">
+            <button class="btn btn-red" style="width: 100%; height: 38px; font-size:0.8rem; background:#dc2626;" onclick="deleteShadeAdvanced()">🗑️ Delete Colour</button>
+        </div>
+    </div>
 </div>
 
 <script>
-
 /* =========================================================
    GLOBAL DATA
 ========================================================= */
-
 let currentWarpCount = 10;
 let currentWeftCount = 6;
-
 let activeDesignObj = null;
 let allCloudDesigns = [];
 
 let weavePatterns = {
-
-    plain:[
-        [1,0],
-        [0,1]
-    ],
-
-    twill:[
-        [0,0,1,1],
-        [0,1,1,0],
-        [1,1,0,0],
-        [1,0,0,1]
-    ],
-
-    custom:[
-        [0,0,1,1],
-        [0,1,1,0],
-        [1,1,0,0],
-        [1,0,0,1]
-    ]
-
+    plain: [[1,0], [0,1]],
+    twill: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]],
+    custom: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]]
 };
+
+/* =========================================================
+   PATTERN EXPANSION HELPER
+========================================================= */
+function expandPattern(str) {
+    if(!str) return [];
+    let s = String(str).toLowerCase().replace(/\s+/g, '');
+    s = s.replace(/[x×*]/g, '*');
+    
+    let parts = s.split(',');
+    let res = [];
+    for(let p of parts) {
+        if(!p) continue;
+        if(p.includes('*')) {
+            let [val, count] = p.split('*');
+            let v = parseInt(val.replace(/[^0-9]/g, ''));
+            let c = parseInt(count.replace(/[^0-9]/g, ''));
+            if(!isNaN(v) && !isNaN(c) && c > 0) {
+                for(let i=0; i<c; i++) res.push(v);
+            }
+        } else {
+            let v = parseInt(p.replace(/[^0-9]/g, ''));
+            if(!isNaN(v)) res.push(v);
+        }
+    }
+    return res;
+}
 
 /* =========================================================
    HELPERS
 ========================================================= */
-
 const $ = id => document.getElementById(id);
 
-function safeJSON(key,fallback=null){
-
-    try{
-
-        const raw=localStorage.getItem(key);
-
-        return raw ? JSON.parse(raw) : fallback;
-
-    }catch(e){
-
-        return fallback;
-
-    }
-
+function safeJSON(key, fallback=null) {
+    try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } 
+    catch(e) { return fallback; }
 }
+function clone(x) { return JSON.parse(JSON.stringify(x)); }
+function cleanDesignName(str) { return str ? str.toString().replace(/#/g, '').trim().toLowerCase() : ''; }
+function designName(d) { return String(d?.designNo ?? d?.design_no ?? d?.designNumber ?? d?.design_number ?? d?.name ?? d?.design ?? d?.id ?? "Unnamed").trim(); }
+function setStatus(x) { const el = $("designStatus"); if(el) el.textContent = x; }
 
-function clone(x){
-
-    return JSON.parse(JSON.stringify(x));
-
-}
-
-function designName(d){
-
-    return String(
-
-        d?.designNo ??
-        d?.design_no ??
-        d?.designNumber ??
-        d?.design_number ??
-        d?.name ??
-        d?.design ??
-        d?.id ??
-        "Unnamed"
-
-    );
-
-}
-
-function setStatus(x){
-
-    const el=$("designStatus");
-
-    if(el)
-        el.textContent=x;
-
-}
-
-function colorName(n){
-
-    if(!n)
-        return "#ffffff";
-
-    let s=String(n).toLowerCase().trim();
-
-    if(/^#[0-9a-f]{6}$/i.test(s))
-        return s;
-
-    if(/^#[0-9a-f]{3}$/i.test(s)){
-
-        return "#"+
-            s[1]+s[1]+
-            s[2]+s[2]+
-            s[3]+s[3];
-
-    }
-
-    let m=[
-
-        ["black","#111827"],
-        ["கருப்பு","#111827"],
-
-        ["white","#f8fafc"],
-        ["வெள்ளை","#f8fafc"],
-
-        ["red","#ef4444"],
-        ["சிவப்பு","#ef4444"],
-
-        ["green","#22c55e"],
-        ["blue","#3b82f6"],
-
-        ["navy","#1e3a8a"],
-        ["yellow","#eab308"],
-        ["gold","#fbbf24"],
-
-        ["orange","#f97316"],
-        ["brown","#92400e"],
-        ["maroon","#9f1239"],
-
-        ["pink","#ec4899"],
-        ["purple","#8b5cf6"],
-        ["violet","#8b5cf6"],
-
-        ["grey","#64748b"],
-        ["gray","#64748b"],
-        ["சாம்பல்","#64748b"],
-
-        ["d. grey","#334155"],
-        ["d. gray","#334155"],
-        ["d. கிரே","#334155"],
-
-        ["l. grey","#94a3b8"],
-        ["l. gray","#94a3b8"],
-        ["l. கிரே","#94a3b8"],
-
-        ["cream","#fdfbf7"],
-        ["கிரீம்","#fdfbf7"],
-
-        ["1/2 salavai","#fdfbf7"],
-        ["1/2 சலவை","#fdfbf7"],
-        ["t. salavai","#fdfbf7"],
-        ["t. சலவை","#fdfbf7"]
-
+function colorName(n) {
+    if(!n) return "#ffffff";
+    let s = String(n).toLowerCase().trim();
+    if(/^#[0-9a-f]{6}$/i.test(s)) return s;
+    if(/^#[0-9a-f]{3}$/i.test(s)) return "#" + s[1]+s[1] + s[2]+s[2] + s[3]+s[3];
+    let m = [
+        ["black","#111827"], ["கருப்பு","#111827"], ["white","#f8fafc"], ["வெள்ளை","#f8fafc"],
+        ["red","#ef4444"], ["சிவப்பு","#ef4444"], ["green","#22c55e"], ["blue","#1e3a8a"],
+        ["navy","#1e3a8a"], ["yellow","#eab308"], ["gold","#fbbf24"], ["orange","#f97316"],
+        ["brown","#92400e"], ["maroon","#9f1239"], ["pink","#ec4899"], ["purple","#8b5cf6"],
+        ["violet","#8b5cf6"], ["grey","#64748b"], ["gray","#64748b"], ["சாம்பல்","#64748b"],
+        ["d. grey","#334155"], ["d. gray","#334155"], ["d. கிரே","#334155"],
+        ["l. grey","#94a3b8"], ["l. gray","#94a3b8"], ["l. கிரே","#94a3b8"],
+        ["cream","#fdfbf7"], ["கிரீம்","#fdfbf7"], ["1/2 salavai","#fdfbf7"],
+        ["1/2 சலவை","#fdfbf7"], ["t. salavai","#fdfbf7"], ["t. சலவை","#fdfbf7"]
     ];
-
-    for(let [a,b] of m){
-
-        if(s.includes(a))
-            return b;
-
-    }
-
-    return "#94a3b8";
-
+    for(let [a,b] of m) if(s.includes(a)) return b;
+    return "#94a3b8"; 
 }
 
-function normLine(x,warp){
-
-    x=x||{};
-
-    let color=
-        x.color ??
-        x.colour ??
-        x.Color ??
-        x.Colour ??
-        x.col ??
-        x.colourName;
-
-    let amount=warp
-        ?(
-            x.ends ??
-            x.end ??
-            x.count ??
-            x.qty ??
-            x.orderEnds
-        )
-        :(
-            x.picks ??
-            x.pick ??
-            x.count ??
-            x.qty ??
-            x.orderPicks
-        );
-
-    return {
-        color:colorName(color),
-        amount:parseInt(amount)||0
+function normLine(x, warp) {
+    x = x || {};
+    let lowerX = {};
+    for (let k in x) { lowerX[k.toLowerCase()] = x[k]; }
+    
+    let color = lowerX.color ?? lowerX.colour ?? lowerX.col ?? lowerX.colourname ?? "";
+    let amount = warp ? (lowerX.ends ?? lowerX.end ?? lowerX.count ?? lowerX.qty ?? lowerX.orderends) : (lowerX.picks ?? lowerX.pick ?? lowerX.count ?? lowerX.qty ?? lowerX.orderpicks);
+    let rowSpan = lowerX.span ?? lowerX.setrows ?? lowerX.set_rows ?? lowerX.group ?? lowerX.row_span ?? 1;
+    let repCount = lowerX.repeat ?? lowerX.setrep ?? lowerX.set_repeat ?? lowerX.multiplier ?? lowerX.rep_count ?? 1;
+    
+    return { 
+        origName: color || "", 
+        color: colorName(color).toLowerCase(),
+        amount: parseInt(amount)||0, 
+        span: parseInt(rowSpan)>1 ? parseInt(rowSpan) : "", 
+        repeat: parseInt(repCount)>1 ? parseInt(repCount) : "" 
     };
-
 }
 
-/* =========================================================
-   MERGE
-========================================================= */
+function sanitizeDesignObj(d) {
+    if (!d) return null;
+    if (!Array.isArray(d.warpLines) || d.warpLines.length === 0) {
+        let tempWarp = [];
+        for(let i=1; i<=30; i++) {
+            let col = d[`warpColor${i}`] || d[`warpColour${i}`] || d[`warpcolor${i}`];
+            let ends = d[`warpEnds${i}`] || d[`warpEnd${i}`] || d[`warpends${i}`];
+            if (col || ends) tempWarp.push({ color: col, ends: ends });
+        }
+        if(tempWarp.length > 0) d.warpLines = tempWarp;
+    }
+    if (!Array.isArray(d.weftLines) || d.weftLines.length === 0) {
+        let tempWeft = [];
+        for(let i=1; i<=30; i++) {
+            let col = d[`weftColor${i}`] || d[`weftColour${i}`] || d[`weftcolor${i}`];
+            let picks = d[`weftPicks${i}`] || d[`weftPick${i}`] || d[`weftpicks${i}`];
+            if (col || picks) tempWeft.push({ color: col, picks: picks });
+        }
+        if(tempWeft.length > 0) d.weftLines = tempWeft;
+    }
+    return d;
+}
 
-function mergeDesigns(items){
+function pickRicherArray(arr1, arr2) {
+    if (!Array.isArray(arr1) || arr1.length === 0) return Array.isArray(arr2) ? arr2 : [];
+    if (!Array.isArray(arr2) || arr2.length === 0) return arr1;
+    return arr1.length >= arr2.length ? arr1 : arr2;
+}
 
-    let map=new Map();
-
-    (items||[])
-        .filter(Boolean)
-        .forEach(d=>{
-
-            let n=designName(d);
-
-            if(!n || n==="Unnamed")
-                return;
-
-            let old=map.get(n);
-
-            if(!old){
-
-                map.set(n,d);
-
-            }else{
-
-                map.set(
-                    n,
-                    {
-                        ...old,
-                        ...d,
-
-                        warpLines:
-                            d.warpLines?.length
-                            ?d.warpLines
-                            :old.warpLines,
-
-                        weftLines:
-                            d.weftLines?.length
-                            ?d.weftLines
-                            :old.weftLines,
-
-                        customMatrix:
-                            d.customMatrix?.length
-                            ?d.customMatrix
-                            :old.customMatrix
-                    }
-                );
-
-            }
-
+function mergeDesigns(items) {
+    let map = new Map();
+    (items||[]).filter(Boolean).forEach(rawD => {
+        let d = sanitizeDesignObj(clone(rawD));
+        let n = cleanDesignName(designName(d)); 
+        if(!n || n==="unnamed") return;
+        let old = map.get(n); 
+        if(!old) map.set(n, d);
+        else map.set(n, { 
+            ...old, ...d, 
+            warpLines: pickRicherArray(old.warpLines, d.warpLines),
+            weftLines: pickRicherArray(old.weftLines, d.weftLines),
+            warpRanges: pickRicherArray(old.warpRanges, d.warpRanges),
+            weftRanges: pickRicherArray(old.weftRanges, d.weftRanges),
+            customMatrix: d.customMatrix?.length ? d.customMatrix : old.customMatrix, 
+            dentingPattern: d.dentingPattern || old.dentingPattern, 
+            drawingPattern: d.drawingPattern || old.drawingPattern 
         });
-
-    return [...map.values()];
-
-}
-
-/* =========================================================
-   YARN
-========================================================= */
-
-function renderUIWithData(w=[],f=[]){
-
-    let wc=Math.max(10,w.length);
-    let fc=Math.max(6,f.length);
-
-    currentWarpCount=wc;
-    currentWeftCount=fc;
-
-    $("warpCountDisplay").textContent=wc;
-    $("weftCountDisplay").textContent=fc;
-
-    $("warpTabCount").textContent=wc;
-    $("weftTabCount").textContent=fc;
-
-    let wh="";
-    let fh="";
-
-    for(let i=0;i<wc;i++){
-
-        let x=w[i]
-            ?normLine(w[i],true)
-            :{
-                color:i ? "#334155" : "#f8fafc",
-                amount:0
-            };
-
-        wh+=`
-
-        <div>
-
-            <label>Warp ${i+1}</label>
-
-            <input
-                type="color"
-                id="wC${i+1}"
-                value="${x.color}">
-
-            <div class="flex-row">
-
-                <input
-                    type="number"
-                    id="wE${i+1}"
-                    value="${x.amount}"
-                    min="0"
-                    inputmode="numeric"
-                    oninput="
-                        updateYarnSummary('warp');
-                        calculateDenting();
-                        autoRefresh3D();
-                    ">
-
-                <span class="entry-unit">
-                    Ends
-                </span>
-
-            </div>
-
-        </div>
-
-        `;
-
-    }
-
-    for(let i=0;i<fc;i++){
-
-        let x=f[i]
-            ?normLine(f[i],false)
-            :{
-                color:i ? "#334155" : "#f8fafc",
-                amount:0
-            };
-
-        fh+=`
-
-        <div>
-
-            <label>Weft ${i+1}</label>
-
-            <input
-                type="color"
-                id="weftC${i+1}"
-                value="${x.color}">
-
-            <div class="flex-row">
-
-                <input
-                    type="number"
-                    id="weftP${i+1}"
-                    value="${x.amount}"
-                    min="0"
-                    inputmode="numeric"
-                    oninput="
-                        updateYarnSummary('weft');
-                        autoRefresh3D();
-                    ">
-
-                <span class="entry-unit">
-                    Picks
-                </span>
-
-            </div>
-
-        </div>
-
-        `;
-
-    }
-
-    $("warpInputsContainer").innerHTML=wh;
-    $("weftInputsContainer").innerHTML=fh;
-
-    updateYarnSummary("warp");
-    calculateDenting();
-
-}
-
-function updateYarnSummary(type){
-
-    let total=
-        type==="warp"
-        ?currentWarpCount
-        :currentWeftCount;
-
-    let filled=0;
-
-    for(let i=1;i<=total;i++){
-
-        let id=
-            type==="warp"
-            ?"wE"+i
-            :"weftP"+i;
-
-        let v=parseInt($(id)?.value)||0;
-
-        if(v>0)
-            filled++;
-
-    }
-
-    $("activeYarnCount").textContent=
-        filled+" / "+total;
-
-    $("activeYarnHint").textContent=
-        type==="warp"
-        ?"Ends உள்ளிடவும்"
-        :"Picks உள்ளிடவும்";
-
-}
-
-function showYarnTab(t){
-
-    $("warpPanel").classList.toggle(
-        "active",
-        t==="warp"
-    );
-
-    $("weftPanel").classList.toggle(
-        "active",
-        t==="weft"
-    );
-
-    $("warpTab").classList.toggle(
-        "active",
-        t==="warp"
-    );
-
-    $("weftTab").classList.toggle(
-        "active",
-        t==="weft"
-    );
-
-    updateYarnSummary(t);
-
-}
-
-/* =========================================================
-   DESIGN SELECT
-========================================================= */
-
-function populateDesignSelect(auto=true){
-
-    let s=$("designSelect");
-
-    let cur=
-        activeDesignObj
-        ?designName(activeDesignObj)
-        :safeJSON("weave_last_design_name","");
-
-    s.innerHTML=
-        '<option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>';
-
-    allCloudDesigns.forEach((d,i)=>{
-
-        let o=document.createElement("option");
-
-        o.value=i;
-        o.textContent="🎨 "+designName(d);
-
-        s.appendChild(o);
-
     });
-
-    if(auto && allCloudDesigns.length){
-
-        let i=
-            allCloudDesigns.findIndex(
-                d=>designName(d)===cur
-            );
-
-        if(i<0)
-            i=0;
-
-        s.value=i;
-
-        loadSelectedDesign();
-
-    }
-
+    return [...map.values()];
 }
 
 /* =========================================================
-   FIREBASE SAFE CHECK
+   YARN SETTINGS & UI
 ========================================================= */
+function renderUIWithData(w=[], f=[]) {
+    let wc = Math.max(10, w.length);
+    let fc = Math.max(6, f.length);
 
-function isFirebaseFirestoreReady(){
+    currentWarpCount = wc; currentWeftCount = fc;
+    $("warpCountDisplay").textContent = wc; $("weftCountDisplay").textContent = fc;
+    $("warpTabCount").textContent = wc; $("weftTabCount").textContent = fc;
 
-    return (
-        typeof window.firebase !== "undefined" &&
-        Array.isArray(window.firebase.apps) &&
-        window.firebase.apps.length > 0 &&
-        typeof window.firebase.firestore === "function"
-    );
+    let wRanges = activeDesignObj?.warpRanges || []; let fRanges = activeDesignObj?.weftRanges || [];
+    let wh = ""; let fh = "";
 
-}
+    for(let i=0; i<wc; i++) {
+        let x = w[i] ? normLine(w[i], true) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
+        let lineNum = i + 1; let match = wRanges.find(r => r.start == lineNum);
+        let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
+        let safeOrig = escapeColourText(x.origName);
 
-function getSafeFirestore(){
-
-    if(!isFirebaseFirestoreReady())
-        return null;
-
-    try{
-
-        return window.firebase.firestore();
-
-    }catch(e){
-
-        console.warn(
-            "Firestore unavailable:",
-            e
-        );
-
-        return null;
-
+        wh += `<div>
+            <label>W${i+1}</label>
+            <input type="color" id="wC${i+1}" value="${x.color}" data-orig="${safeOrig}">
+            <input type="number" id="wE${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('warp'); autoRefresh3D();">
+            <div class="set-box">
+                <input type="number" id="wSpan${i+1}" value="${spanVal}">
+                <input type="number" id="wRep${i+1}" value="${repVal}">
+            </div>
+        </div>`;
     }
+    for(let i=0; i<fc; i++) {
+        let x = f[i] ? normLine(f[i], false) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
+        let lineNum = i + 1; let match = fRanges.find(r => r.start == lineNum);
+        let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
+        let safeOrig = escapeColourText(x.origName);
 
+        fh += `<div>
+            <label>Wft${i+1}</label>
+            <input type="color" id="weftC${i+1}" value="${x.color}" data-orig="${safeOrig}">
+            <input type="number" id="weftP${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('weft'); autoRefresh3D();">
+            <div class="set-box">
+                <input type="number" id="weftSpan${i+1}" value="${spanVal}">
+                <input type="number" id="weftRep${i+1}" value="${repVal}">
+            </div>
+        </div>`;
+    }
+    $("warpInputsContainer").innerHTML = wh; $("weftInputsContainer").innerHTML = fh;
+    updateYarnSummary("warp");
 }
 
-/* =========================================================
-   FIREBASE / CLOUD LOAD
-   FIXED: firebase.firestore IS NEVER CALLED
-   WITHOUT CHECKING IT FIRST
-========================================================= */
+function calculateYarnDetails(type) {
+    let count = type === "warp" ? currentWarpCount : currentWeftCount;
+    let pId = type === "warp" ? "wE" : "weftP"; let spanId = type === "warp" ? "wSpan" : "weftSpan"; let repId = type === "warp" ? "wRep" : "weftRep";
+    let totalYarns = 0; let activeRows = 0; let i = 1;
+    while(i <= count) {
+        let e = $(pId + i); let sInp = $(spanId + i); let rInp = $(repId + i);
+        if(!e) { i++; continue; }
+        let n = Math.max(0, parseInt(e.value)||0); if(n > 0) activeRows++; 
+        let span = Math.max(1, parseInt(sInp?.value)||1); let repeat = Math.max(1, parseInt(rInp?.value)||1);
+        if (span > 1 && repeat > 1) {
+            let setTotal = 0; for(let s=0; s<span; s++) { let rIdx = i + s; let rE = $(pId + rIdx); if(rE) setTotal += Math.max(0, parseInt(rE.value)||0); }
+            totalYarns += (setTotal * repeat); i += span; 
+        } else { totalYarns += n; i++; }
+    }
+    return { totalYarns, activeRows, count };
+}
 
-async function importFromFirebase(manual=false){
-
-    try{
-
-        setStatus(
-            manual
-            ?"🔄 Local + Cloud refresh..."
-            :"⚡ Loading designs..."
-        );
-
-        /* LOCAL FIRST */
-
-        let local=[];
-
-        [
-            "design_masters_data",
-            "weave_designs",
-            "weave_designs_cache",
-            "warp_entry_data",
-            "warping_data"
-        ].forEach(k=>{
-
-            let a=safeJSON(k,[]);
-
-            if(Array.isArray(a))
-                local.push(...a);
-
-        });
-
-        allCloudDesigns=mergeDesigns(local);
-
-        populateDesignSelect(true);
-
-
-        /* FIREBASE SAFE CHECK */
-
-        let db=getSafeFirestore();
-
-        if(!db){
-
-            console.warn(
-                "⚠️ Firebase Firestore unavailable. Local mode."
-            );
-
-            setStatus(
-                allCloudDesigns.length
-                ?"💾 Local designs ready"
-                :"ℹ️ Design இல்லை"
-            );
-
-            return;
-
+function getWarpTotalEnds() {
+    let details = calculateYarnDetails("warp");
+    if (details.totalYarns > 0) return details.totalYarns; 
+    
+    if (activeDesignObj && Array.isArray(activeDesignObj.warpLines) && activeDesignObj.warpLines.length > 0) {
+        let total = 0;
+        let wRanges = activeDesignObj.warpRanges || [];
+        let i = 0;
+        while(i < activeDesignObj.warpLines.length) {
+            let lineNum = i + 1;
+            let range = wRanges.find(r => r.start == lineNum);
+            let lineObj = activeDesignObj.warpLines[i] || {};
+            let lowerLine = {};
+            for(let k in lineObj) lowerLine[k.toLowerCase()] = lineObj[k];
+            
+            if (range && range.end >= range.start && range.set > 1) {
+                let setSum = 0;
+                for(let j = range.start - 1; j < range.end && j < activeDesignObj.warpLines.length; j++) {
+                    let rLine = activeDesignObj.warpLines[j] || {};
+                    let lowerRLine = {};
+                    for(let k in rLine) lowerRLine[k.toLowerCase()] = rLine[k];
+                    setSum += parseInt(lowerRLine.ends || lowerRLine.amount || lowerRLine.end || lowerRLine.qty || 0) || 0;
+                }
+                total += (setSum * range.set);
+                i = range.end;
+            } else {
+                total += parseInt(lowerLine.ends || lowerLine.amount || lowerLine.end || lowerLine.qty || 0) || 0;
+                i++;
+            }
         }
+        if (total > 0) return total;
+    }
+    return 0;
+}
 
+function updateYarnSummary(type) {
+    let details = calculateYarnDetails(type);
+    $("activeYarnCount").textContent = details.activeRows + " / " + details.count;
+    let hint = type === "warp" ? "Total Ends" : "Total Picks";
+    $("activeYarnHint").textContent = `${hint}: ${details.totalYarns}`;
+}
 
-        /* CLOUD LOAD */
+function showYarnTab(t) {
+    $("warpPanel").classList.toggle("active", t === "warp"); $("weftPanel").classList.toggle("active", t === "weft");
+    $("warpTab").classList.toggle("active", t === "warp"); $("weftTab").classList.toggle("active", t === "weft");
+    updateYarnSummary(t);
+}
 
-        let cloud=[];
+function populateDesignSelect(auto = true) {
+    let s = $("designSelect"); let cur = activeDesignObj ? designName(activeDesignObj) : safeJSON("weave_last_design_name", "");
+    s.innerHTML = '<option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>';
+    allCloudDesigns.forEach((d,i) => { let o = document.createElement("option"); o.value = i; o.textContent = "🎨 " + designName(d); s.appendChild(o); });
+    if(auto && allCloudDesigns.length) { 
+        let i = allCloudDesigns.findIndex(d => cleanDesignName(designName(d)) === cleanDesignName(cur) || designName(d) === cur); 
+        if(i < 0) i = 0; 
+        s.value = i; 
+        loadSelectedDesign(); 
+    }
+}
 
-        for(
-            let col of [
-                "weaves",
-                "design_masters_data"
-            ]
-        ){
+async function importFromFirebase(manual = false) {
+    try {
+        setStatus(manual ? "🔄 Local + Cloud refresh..." : "⚡ Loading designs...");
+        let local = []; 
+        ["design_masters_data", "weave_designs", "weave_designs_cache", "warp_entry_data", "weft_entry_data", "warping_data"].forEach(k => { 
+            let a = safeJSON(k, []); if(Array.isArray(a)) local.push(...a); 
+        });
+        allCloudDesigns = mergeDesigns(local); 
+        populateDesignSelect(true);
+        setStatus(allCloudDesigns.length ? "💾 Local designs ready" : "ℹ️ Design இல்லை");
+    } catch(e) {}
+}
 
-            try{
+function loadSelectedDesign() {
+    let s = $("designSelect");
+    if(!s) return;
+    let i = parseInt(s.value);
+    if(isNaN(i) || !allCloudDesigns[i]) {
+        let foundIdx = allCloudDesigns.findIndex(d => cleanDesignName(designName(d)) === cleanDesignName(s.value) || designName(d) === s.value);
+        if(foundIdx >= 0) { i = foundIdx; s.value = i; } else { return; }
+    }
+    activeDesignObj = clone(allCloudDesigns[i]);
+    let dName = designName(activeDesignObj);
+    localStorage.setItem("weave_last_design_name", dName);
+    $("activeDesignText").textContent = "Active Design: " + dName;
+    
+    if($("dentingPatternInput")) $("dentingPatternInput").value = activeDesignObj.dentingPattern || "2";
+    if($("drawingPatternInput")) $("drawingPatternInput").value = activeDesignObj.drawingPattern || "1,2,3,4";
 
-                let snap=
-                    await db
-                        .collection(col)
-                        .get();
+    let w = activeDesignObj.warpLines || activeDesignObj.warp || []; 
+    let f = activeDesignObj.weftLines || activeDesignObj.weft || [];
+    renderUIWithData(w, f);
+    let type = activeDesignObj.type || "plain";
+    if(activeDesignObj.customMatrix?.length) { weavePatterns.custom = clone(activeDesignObj.customMatrix); if(activeDesignObj.type === "custom") type = "custom"; }
+    if(!weavePatterns[type]) type = "plain"; $("weaveType").value = type;
+    onWeaveChange(false);
+}
 
-                snap.forEach(doc=>{
+function getCurrentData() {
+    let w = []; let f = []; let wRanges = []; let fRanges = []; 
+    let wCurrentLine = 1;
+    for(let i=1; i<=currentWarpCount; i++) {
+        let c = $("wC"+i); let e = $("wE"+i); let s = $("wSpan"+i); let r = $("wRep"+i);
+        if(c && e && (parseInt(e.value)||0)>0) {
+            let span = parseInt(s?.value)||1; let rep = parseInt(r?.value)||1;
+            let origName = c.getAttribute('data-orig') || "";
+            w.push({ colourName: origName, color: c.value, ends: parseInt(e.value)||0, span: span, repeat: rep });
+            if(span > 1 && rep > 1) { wRanges.push({ start: wCurrentLine, end: wCurrentLine + span - 1, set: rep }); }
+            wCurrentLine++;
+        }
+    }
+    let fCurrentLine = 1;
+    for(let i=1; i<=currentWeftCount; i++) {
+        let c = $("weftC"+i); let p = $("weftP"+i); let s = $("weftSpan"+i); let r = $("weftRep"+i);
+        if(c && p && (parseInt(p.value)||0)>0) {
+            let span = parseInt(s?.value)||1; let rep = parseInt(r?.value)||1;
+            let origName = c.getAttribute('data-orig') || "";
+            f.push({ colourName: origName, color: c.value, picks: parseInt(p.value)||0, span: span, repeat: rep });
+            if(span > 1 && rep > 1) { fRanges.push({ start: fCurrentLine, end: fCurrentLine + span - 1, set: rep }); }
+            fCurrentLine++;
+        }
+    }
 
-                    cloud.push({
-                        id:doc.id,
-                        ...doc.data()
-                    });
+    let dentP = $("dentingPatternInput")?.value || "2";
+    let drawP = $("drawingPatternInput")?.value || "1,2,3,4";
 
-                });
+    return { 
+        warpLines: w, weftLines: f, warpRanges: wRanges, weftRanges: fRanges, 
+        customMatrix: clone(weavePatterns.custom), type: $("weaveType").value,
+        dentingPattern: dentP, drawingPattern: drawP
+    };
+}
 
-            }catch(e){
+async function saveCurrentDesign() {
+    try {
+        let data = activeDesignObj ? clone(activeDesignObj) : {}; Object.assign(data, getCurrentData());
+        let name = activeDesignObj ? designName(activeDesignObj) : null;
+        if(!name || name==="Unnamed") name = prompt("Design Number / Name", "Design_01"); if(!name) return;
+        if(activeDesignObj?.id) data.id = activeDesignObj.id;
+        data.designNo = name; data.name = name; data.timestamp = new Date().toISOString();
+        let local = safeJSON("design_masters_data", []); if(!Array.isArray(local)) local = [];
+        local = local.filter(x => cleanDesignName(designName(x)) !== cleanDesignName(name)); 
+        local.push(clone(data)); 
+        localStorage.setItem("design_masters_data", JSON.stringify(local));
+        
+        let cache = Array.isArray(allCloudDesigns) ? allCloudDesigns.filter(x => cleanDesignName(designName(x)) !== cleanDesignName(name)) : []; 
+        cache.push(clone(data));
+        allCloudDesigns = mergeDesigns(cache); 
+        localStorage.setItem("weave_designs_cache", JSON.stringify(allCloudDesigns));
+        activeDesignObj = clone(data); 
+        localStorage.setItem("weave_last_design_name", name);
+        
+        $("activeDesignText").textContent = "Active Design: " + name; populateDesignSelect(false);
+        let idx = allCloudDesigns.findIndex(x => cleanDesignName(designName(x)) === cleanDesignName(name)); 
+        if(idx >= 0) $("designSelect").value = idx;
+        
+        setStatus("✅ Saved Successfully — Local");
+        draw3DWeave(); alert("✅ Design வெற்றிகரமாக Save / Update ஆகிவிட்டது!");
+    } catch(error) { setStatus("⚠️ Save Error: " + error.message); }
+}
 
-                console.warn(
-                    "Cloud collection skipped:",
-                    col,
-                    e
-                );
+function onWeaveChange() {
+    let t = $("weaveType").value;
+    if(t === "plain") { weavePatterns.custom = clone(weavePatterns.plain); $("gridEditorSection").style.display="none"; }
+    else if(t === "twill") { weavePatterns.custom = clone(weavePatterns.twill); $("gridEditorSection").style.display="none"; }
+    else { $("gridEditorSection").style.display="block"; buildGridEditor(); }
+    if($("fsModal")?.style.display === "flex") draw3DWeave();
+}
 
+function buildGridEditor() {
+    let box = $("matrixGridContainer"); let m = weavePatterns.custom;
+    if(!Array.isArray(m) || !m.length) { weavePatterns.custom = [[1,0], [0,1]]; m = weavePatterns.custom; }
+    box.innerHTML = ""; let top = document.createElement("div"); top.className = "col-del-row";
+    for(let c=0; c<(m[0]?.length||0); c++) { let b = document.createElement("button"); b.className="btn-col-del"; b.textContent="✕"; b.onclick = () => removeCol(c); top.appendChild(b); }
+    box.appendChild(top);
+    m.forEach((row,r) => {
+        let wrap = document.createElement("div"); wrap.className = "matrix-row-wrapper"; let rd = document.createElement("div"); rd.className = "matrix-row";
+        row.forEach((v,c) => { let cell = document.createElement("div"); cell.className = "matrix-cell" + (v === 1 ? " active" : ""); cell.textContent = v;
+            cell.onclick = () => { m[r][c] = m[r][c] ? 0 : 1; buildGridEditor(); if($("fsModal")?.style.display === "flex") draw3DWeave(); }; rd.appendChild(cell); });
+        wrap.appendChild(rd); let del = document.createElement("button"); del.className="btn-row-del"; del.textContent="✕"; del.onclick = () => removeRow(r); wrap.appendChild(del); box.appendChild(wrap);
+    });
+}
+function addCol() { weavePatterns.custom.forEach(r => r.push(0)); buildGridEditor(); draw3DWeave(); }
+function removeCol(c) { if(!weavePatterns.custom.length || weavePatterns.custom[0].length<=2) return; weavePatterns.custom.forEach(r => r.splice(c,1)); buildGridEditor(); draw3DWeave(); }
+function addRowTop() { let cols = weavePatterns.custom[0]?.length || 4; weavePatterns.custom.unshift(new Array(cols).fill(0)); buildGridEditor(); draw3DWeave(); }
+function removeRow(i) { if(weavePatterns.custom.length<=2) return; weavePatterns.custom.splice(i,1); buildGridEditor(); draw3DWeave(); }
+function removeLastRow() { removeRow(weavePatterns.custom.length-1); }
+function removeLastCol() { removeCol((weavePatterns.custom[0]?.length||1)-1); }
+function duplicateSet() {
+    let m = weavePatterns.custom; let p = prompt("Rows duplicate range (example 1-4)", "1-"+m.length); if(!p) return;
+    let a = p.split("-").map(Number); if(a.length!==2 || a[0]<1 || a[1]>m.length || a[0]>a[1]) { alert("❌ 1-4 போன்ற format கொடுக்கவும்"); return; }
+    let selected = m.slice(a[0]-1, a[1]).map(r => [...r]); weavePatterns.custom = selected.concat(m.map(r => [...r])); buildGridEditor(); draw3DWeave();
+}
+function triggerGraphScan() {
+    let inp = document.createElement("input"); inp.type="file"; inp.accept="image/*";
+    inp.onchange = e => { let f = e.target.files[0]; if(!f) return; let rd = new FileReader(); rd.onload = x => { let im = new Image(); im.onload = () => processGraphImage(im); im.src = x.target.result; }; rd.readAsDataURL(f); }; inp.click();
+}
+function processGraphImage(img) {
+    let r_str = prompt("இந்த படத்தில் உள்ள Grid-ல் எத்தனை வரிசைகள் (Rows/Picks) உள்ளன?", "4"); if(!r_str) return; let c_str = prompt("எத்தனை நெடுக்கைகள் (Columns/Ends) உள்ளன?", "4"); if(!c_str) return;
+    let rows = parseInt(r_str); let cols = parseInt(c_str); if(!rows || !cols || isNaN(rows) || isNaN(cols)) { alert("தவறான உள்ளீடு!"); return; }
+    let c = document.createElement("canvas"); let x = c.getContext("2d"); c.width = img.width; c.height = img.height; x.drawImage(img,0,0);
+    let cellW = c.width/cols; let cellH = c.height/rows; let cellAverages = []; let rawMatrix = [];
+    for(let r=0; r<rows; r++) {
+        let rowData = [];
+        for(let k=0; k<cols; k++) {
+            let startX = Math.floor(k*cellW + cellW*0.25); let startY = Math.floor(r*cellH + cellH*0.25);
+            let w = Math.floor(cellW*0.5)||1; let h = Math.floor(cellH*0.5)||1; let imgData = x.getImageData(startX, startY, w, h).data;
+            let sum = 0; for(let i=0; i<imgData.length; i+=4) sum += 0.299*imgData[i] + 0.587*imgData[i+1] + 0.114*imgData[i+2];
+            let avg = sum/(w*h); rowData.push(avg); cellAverages.push(avg);
+        }
+        rawMatrix.push(rowData);
+    }
+    let threshold = (Math.min(...cellAverages) + Math.max(...cellAverages))/2; let nw = [];
+    for(let r=0; r<rows; r++) { let finalRow = []; for(let k=0; k<cols; k++) finalRow.push(rawMatrix[r][k]<threshold ? 1 : 0); nw.push(finalRow); }
+    weavePatterns.custom = nw; $("weaveType").value = "custom"; $("gridEditorSection").style.display = "block"; buildGridEditor(); draw3DWeave(); alert("✅ புகைப்படம் வெற்றிகரமாக Graph-ஆக மாற்றப்பட்டது!");
+}
+
+/* =========================================================
+   CANVAS 3D RENDER ENGINE (3 REPEATS & 1:1 MM SCALE)
+========================================================= */
+function isWarpUp(r, c, type, draftArr) {
+    let m = type === "custom" ? weavePatterns.custom : (weavePatterns[type] || weavePatterns.custom);
+    if(!m || !m.length || !m[0]?.length) return true;
+    let rr = (m.length-1) - (r%m.length); 
+    
+    let frame = 1;
+    if (draftArr && draftArr.length > 0) {
+        frame = draftArr[c % draftArr.length];
+    } else {
+        frame = c + 1;
+    }
+    
+    let cc = (frame - 1) % m[0].length;
+    if(isNaN(cc) || cc < 0) cc = c % m[0].length; 
+    return m[rr][cc] === 1;
+}
+
+function rgb(hex) {
+    hex = hex || "#fff"; if(/^#[0-9a-f]{3}$/i.test(hex)) hex = "#" + hex[1]+hex[1] + hex[2]+hex[2] + hex[3]+hex[3];
+    if(!/^#[0-9a-f]{6}$/i.test(hex)) hex = "#ffffff";
+    return { r: parseInt(hex.slice(1,3), 16)||255, g: parseInt(hex.slice(3,5), 16)||255, b: parseInt(hex.slice(5,7), 16)||255 };
+}
+
+function shade(a, f) { return `rgb(${Math.max(0, Math.min(255, Math.round(a.r*f)))}, ${Math.max(0, Math.min(255, Math.round(a.g*f)))}, ${Math.max(0, Math.min(255, Math.round(a.b*f)))})`; }
+
+let drawFramePending = false;
+function draw3DWeave() {
+    if(drawFramePending) return;
+    drawFramePending = true;
+
+    requestAnimationFrame(() => {
+        drawFramePending = false;
+
+        const c = $("weaveCanvas");
+        const host = $("fsContent");
+        if(!c || !host) return;
+
+        const rect = host.getBoundingClientRect();
+        const W = Math.max(320, Math.floor(rect.width));
+        const H = Math.max(240, Math.floor(rect.height));
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        c.width = Math.floor(W * dpr);
+        c.height = Math.floor(H * dpr);
+
+        const ctx = c.getContext("2d", {alpha:false});
+        if(!ctx) return;
+
+        /* Draw in CSS pixels; canvas itself is DPR-scaled for sharpness. */
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#00000";
+        ctx.fillRect(0, 0, W, H);
+
+        /* ---------------------------------------------------------
+           1. BUILD THE REAL WARP / WEFT YARN SEQUENCES
+           --------------------------------------------------------- */
+        let baseWarp = [];
+        let w_idx = 1;
+
+        while(w_idx <= currentWarpCount) {
+            const co = $("wC"+w_idx);
+            const e  = $("wE"+w_idx);
+            const sInp = $("wSpan"+w_idx);
+            const rInp = $("wRep"+w_idx);
+
+            if(!co || !e) {
+                w_idx++;
+                continue;
             }
 
-        }
-
-
-        /* MERGE */
-
-        if(cloud.length){
-
-            allCloudDesigns=
-                mergeDesigns(
-                    allCloudDesigns.concat(cloud)
-                );
-
-            localStorage.setItem(
-                "weave_designs_cache",
-                JSON.stringify(allCloudDesigns)
-            );
-
-            populateDesignSelect(true);
-
-            setStatus(
-                "☁️ Cloud designs ready"
-            );
-
-        }else{
-
-            setStatus(
-                allCloudDesigns.length
-                ?"💾 Local designs ready"
-                :"ℹ️ Design இல்லை"
-            );
-
-        }
-
-    }catch(e){
-
-        console.error(
-            "IMPORT / REFRESH ERROR:",
-            e
-        );
-
-        setStatus(
-            allCloudDesigns.length
-            ?"💾 Local designs ready"
-            :"ℹ️ Design இல்லை"
-        );
-
-    }
-
-}
-
-/* =========================================================
-   LOAD DESIGN
-========================================================= */
-
-function loadSelectedDesign(){
-
-    let i=parseInt(
-        $("designSelect").value
-    );
-
-    if(
-        isNaN(i) ||
-        !allCloudDesigns[i]
-    )
-        return;
-
-    activeDesignObj=
-        clone(allCloudDesigns[i]);
-
-    localStorage.setItem(
-        "weave_last_design_name",
-        designName(activeDesignObj)
-    );
-
-    $("activeDesignText").textContent=
-        "Active Design: "+
-        designName(activeDesignObj);
-
-    let w=
-        activeDesignObj.warpLines ||
-        activeDesignObj.warp ||
-        [];
-
-    let f=
-        activeDesignObj.weftLines ||
-        activeDesignObj.weft ||
-        [];
-
-    renderUIWithData(w,f);
-
-    let type=
-        activeDesignObj.type ||
-        "plain";
-
-    if(activeDesignObj.customMatrix?.length){
-
-        weavePatterns.custom=
-            clone(activeDesignObj.customMatrix);
-
-        if(activeDesignObj.type==="custom")
-            type="custom";
-
-    }
-
-    if(!weavePatterns[type])
-        type="plain";
-
-    $("weaveType").value=type;
-
-    onWeaveChange(false);
-
-    closeAllMenus();
-
-    calculateDenting();
-
-}
-
-/* =========================================================
-   CURRENT DATA
-========================================================= */
-
-function getCurrentData(){
-
-    let w=[];
-    let f=[];
-
-    for(
-        let i=1;
-        i<=currentWarpCount;
-        i++
-    ){
-
-        let c=$("wC"+i);
-        let e=$("wE"+i);
-
-        if(
-            c &&
-            e &&
-            (parseInt(e.value)||0)>0
-        ){
-
-            w.push({
-                color:c.value,
-                ends:parseInt(e.value)||0
-            });
-
-        }
-
-    }
-
-    for(
-        let i=1;
-        i<=currentWeftCount;
-        i++
-    ){
-
-        let c=$("weftC"+i);
-        let p=$("weftP"+i);
-
-        if(
-            c &&
-            p &&
-            (parseInt(p.value)||0)>0
-        ){
-
-            f.push({
-                color:c.value,
-                picks:parseInt(p.value)||0
-            });
-
-        }
-
-    }
-
-    let selectedType=
-        $("weaveType").value;
-
-    return {
-
-        warpLines:w,
-        weftLines:f,
-
-        customMatrix:
-            clone(weavePatterns.custom),
-
-        type:selectedType
-
-    };
-
-}
-
-/* =========================================================
-   SAVE SAME DESIGN
-   FIXED FIREBASE HANDLING
-========================================================= */
-
-async function saveCurrentDesign(){
-
-    try{
-
-        let currentInputData=
-            getCurrentData();
-
-        let data=
-            activeDesignObj
-            ?clone(activeDesignObj)
-            :{};
-
-        Object.assign(
-            data,
-            currentInputData
-        );
-
-        let name=
-            activeDesignObj
-            ?designName(activeDesignObj)
-            :null;
-
-        if(
-            !name ||
-            name==="Unnamed"
-        ){
-
-            name=prompt(
-                "Design Number / Name",
-                "Design_01"
-            );
-
-        }
-
-        if(!name)
-            return;
-
-        if(activeDesignObj?.id)
-            data.id=activeDesignObj.id;
-
-        data.designNo=name;
-        data.name=name;
-        data.timestamp=
-            new Date().toISOString();
-
-
-        /* =====================================================
-           LOCAL SAVE
-        ===================================================== */
-
-        let local=
-            safeJSON(
-                "design_masters_data",
-                []
-            );
-
-        if(!Array.isArray(local))
-            local=[];
-
-        local=
-            local.filter(
-                x=>designName(x)!==name
-            );
-
-        local.push(clone(data));
-
-        localStorage.setItem(
-            "design_masters_data",
-            JSON.stringify(local)
-        );
-
-
-        /* CACHE */
-
-        let cache=
-            Array.isArray(allCloudDesigns)
-            ?allCloudDesigns.filter(
-                x=>designName(x)!==name
-            )
-            :[];
-
-        cache.push(clone(data));
-
-        allCloudDesigns=
-            mergeDesigns(cache);
-
-        localStorage.setItem(
-            "weave_designs_cache",
-            JSON.stringify(allCloudDesigns)
-        );
-
-
-        activeDesignObj=
-            clone(data);
-
-        localStorage.setItem(
-            "weave_last_design_name",
-            name
-        );
-
-        if($("activeDesignText")){
-
-            $("activeDesignText").textContent=
-                "Active Design: "+name;
-
-        }
-
-        populateDesignSelect(false);
-
-        let idx=
-            allCloudDesigns.findIndex(
-                x=>designName(x)===name
-            );
-
-        if(
-            idx>=0 &&
-            $("designSelect")
-        ){
-
-            $("designSelect").value=idx;
-
-        }
-
-
-        /* =====================================================
-           SAFE CLOUD SAVE
-        ===================================================== */
-
-        let db=getSafeFirestore();
-
-        if(db){
-
-            try{
-
-                let docId=
-                    data.id || name;
-
-                await db
-                    .collection("weaves")
-                    .doc(String(docId))
-                    .set(
-                        data,
-                        {merge:true}
-                    );
-
-                try{
-
-                    await db
-                        .collection("design_masters_data")
-                        .doc(String(docId))
-                        .set(
-                            data,
-                            {merge:true}
-                        );
-
-                }catch(e){
-
-                    console.warn(
-                        "design_masters_data cloud save skipped:",
-                        e
-                    );
-
+            const n = Math.max(0, parseInt(e.value) || 0);
+            const span = Math.max(1, parseInt(sInp?.value) || 1);
+            const repeat = Math.max(1, parseInt(rInp?.value) || 1);
+
+            if(span > 1 && repeat > 1) {
+                const setSequence = [];
+
+                for(let s=0; s<span; s++) {
+                    const currIdx = w_idx + s;
+                    if(currIdx > currentWarpCount) break;
+
+                    const rCo = $("wC"+currIdx);
+                    const rE  = $("wE"+currIdx);
+
+                    if(rCo && rE) {
+                        const rN = Math.max(0, parseInt(rE.value) || 0);
+                        const rColor = rgb(rCo.value);
+                        for(let j=0; j<rN; j++) setSequence.push(rColor);
+                    }
                 }
 
-                setStatus(
-                    "✅ Saved Successfully — Cloud + Local"
-                );
+                for(let rep=0; rep<repeat; rep++) {
+                    baseWarp.push(...setSequence);
+                }
 
-            }catch(cloudError){
-
-                console.warn(
-                    "Cloud save failed. Local save kept.",
-                    cloudError
-                );
-
-                setStatus(
-                    "✅ Saved Successfully — Local"
-                );
-
+                w_idx += span;
+            } else {
+                if(n > 0) {
+                    const color = rgb(co.value);
+                    for(let j=0; j<n; j++) baseWarp.push(color);
+                }
+                w_idx++;
             }
-
-        }else{
-
-            setStatus(
-                "✅ Saved Successfully — Local"
-            );
-
         }
 
-
-        calculateDenting();
-        draw3DWeave();
-
-        alert(
-            "✅ Design வெற்றிகரமாக Save / Update ஆகிவிட்டது!"
-        );
-
-    }catch(error){
-
-        console.error(
-            "SAVE SAME DESIGN ERROR:",
-            error
-        );
-
-        setStatus(
-            "⚠️ Save Error: "+error.message
-        );
-
-        alert(
-            "Save செய்யும்போது Error ஏற்பட்டுள்ளது.\n\n"+
-            error.message
-        );
-
-    }
-
-}
-
-/* =========================================================
-   WEAVE CHANGE
-========================================================= */
-
-function onWeaveChange(){
-
-    let t=$("weaveType").value;
-
-    if(t==="plain"){
-
-        weavePatterns.custom=
-            clone(weavePatterns.plain);
-
-        $("gridEditorSection")
-            .style.display="none";
-
-    }
-
-    else if(t==="twill"){
-
-        weavePatterns.custom=
-            clone(weavePatterns.twill);
-
-        $("gridEditorSection")
-            .style.display="none";
-
-    }
-
-    else{
-
-        $("gridEditorSection")
-            .style.display="block";
-
-        buildGridEditor();
-
-    }
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    ){
-
-        draw3DWeave();
-
-    }
-
-}
-
-/* =========================================================
-   GRAPH EDITOR
-========================================================= */
-
-function buildGridEditor(){
-
-    let box=$("matrixGridContainer");
-
-    let m=weavePatterns.custom;
-
-    if(
-        !Array.isArray(m) ||
-        !m.length
-    ){
-
-        weavePatterns.custom=[
-            [1,0],
-            [0,1]
-        ];
-
-        m=weavePatterns.custom;
-
-    }
-
-    box.innerHTML="";
-
-    let top=
-        document.createElement("div");
-
-    top.className="col-del-row";
-
-    for(
-        let c=0;
-        c<(m[0]?.length||0);
-        c++
-    ){
-
-        let b=
-            document.createElement("button");
-
-        b.className="btn-col-del";
-        b.textContent="✕";
-
-        b.onclick=()=>removeCol(c);
-
-        top.appendChild(b);
-
-    }
-
-    box.appendChild(top);
-
-    m.forEach((row,r)=>{
-
-        let wrap=
-            document.createElement("div");
-
-        wrap.className=
-            "matrix-row-wrapper";
-
-        let rd=
-            document.createElement("div");
-
-        rd.className="matrix-row";
-
-        row.forEach((v,c)=>{
-
-            let cell=
-                document.createElement("div");
-
-            cell.className=
-                "matrix-cell"+
-                (v===1 ? " active" : "");
-
-            cell.textContent=v;
-
-            cell.onclick=()=>{
-
-                m[r][c]=
-                    m[r][c]
-                    ?0
-                    :1;
-
-                buildGridEditor();
-
-                if(
-                    $("fsModal")?.style.display==="flex"
-                )
-                    draw3DWeave();
-
-            };
-
-            rd.appendChild(cell);
-
-        });
-
-        wrap.appendChild(rd);
-
-        let del=
-            document.createElement("button");
-
-        del.className="btn-row-del";
-        del.textContent="✕";
-
-        del.onclick=()=>removeRow(r);
-
-        wrap.appendChild(del);
-
-        box.appendChild(wrap);
-
-    });
-
-}
-
-function addCol(){
-
-    weavePatterns.custom.forEach(
-        r=>r.push(0)
-    );
-
-    buildGridEditor();
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    )
-        draw3DWeave();
-
-}
-
-function removeCol(c){
-
-    if(
-        !weavePatterns.custom.length ||
-        weavePatterns.custom[0].length<=2
-    )
-        return;
-
-    weavePatterns.custom.forEach(
-        r=>r.splice(c,1)
-    );
-
-    buildGridEditor();
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    )
-        draw3DWeave();
-
-}
-
-function addRowTop(){
-
-    let cols=
-        weavePatterns.custom[0]?.length ||
-        4;
-
-    weavePatterns.custom.unshift(
-        new Array(cols).fill(0)
-    );
-
-    buildGridEditor();
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    )
-        draw3DWeave();
-
-}
-
-function removeRow(i){
-
-    if(
-        weavePatterns.custom.length<=2
-    )
-        return;
-
-    weavePatterns.custom.splice(i,1);
-
-    buildGridEditor();
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    )
-        draw3DWeave();
-
-}
-
-function removeLastRow(){
-
-    removeRow(
-        weavePatterns.custom.length-1
-    );
-
-}
-
-function removeLastCol(){
-
-    removeCol(
-        (
-            weavePatterns.custom[0]?.length||1
-        )-1
-    );
-
-}
-
-function duplicateSet(){
-
-    let m=weavePatterns.custom;
-
-    let p=prompt(
-        "Rows duplicate range (example 1-4)",
-        "1-"+m.length
-    );
-
-    if(!p)
-        return;
-
-    let a=p.split("-").map(Number);
-
-    if(
-        a.length!==2 ||
-        a[0]<1 ||
-        a[1]>m.length ||
-        a[0]>a[1]
-    ){
-
-        alert(
-            "❌ 1-4 போன்ற format கொடுக்கவும்"
-        );
-
-        return;
-
-    }
-
-    let selected=
-        m.slice(
-            a[0]-1,
-            a[1]
-        ).map(r=>[...r]);
-
-    weavePatterns.custom=
-        selected.concat(
-            m.map(r=>[...r])
-        );
-
-    buildGridEditor();
-
-    if(
-        $("fsModal")?.style.display==="flex"
-    )
-        draw3DWeave();
-
-}
-
-/* =========================================================
-   GRAPH SCAN
-========================================================= */
-
-function triggerGraphScan(){
-
-    let inp=
-        document.createElement("input");
-
-    inp.type="file";
-    inp.accept="image/*";
-
-    inp.onchange=e=>{
-
-        let f=e.target.files[0];
-
-        if(!f)
-            return;
-
-        let rd=
-            new FileReader();
-
-        rd.onload=x=>{
-
-            let im=
-                new Image();
-
-            im.onload=()=>{
-                processGraphImage(im);
-            };
-
-            im.src=x.target.result;
-
-        };
-
-        rd.readAsDataURL(f);
-
-    };
-
-    inp.click();
-
-}
-
-function processGraphImage(img){
-
-    let r_str=prompt(
-        "இந்த படத்தில் உள்ள கட்டங்களை (Grid) மட்டும் கட் (crop) செய்திருக்க வேண்டும்.\n\nஎத்தனை வரிசைகள் (Picks/Rows) உள்ளன? (உதாரணம்: 4)",
-        "4"
-    );
-
-    if(!r_str)
-        return;
-
-    let c_str=prompt(
-        "எத்தனை நெடுக்கைகள் (Ends/Cols) உள்ளன? (உதாரணம்: 4)",
-        "4"
-    );
-
-    if(!c_str)
-        return;
-
-    let rows=parseInt(r_str);
-    let cols=parseInt(c_str);
-
-    if(
-        !rows ||
-        !cols ||
-        isNaN(rows) ||
-        isNaN(cols)
-    ){
-
-        alert("தவறான உள்ளீடு!");
-        return;
-
-    }
-
-    let c=document.createElement("canvas");
-    let x=c.getContext("2d");
-
-    c.width=img.width;
-    c.height=img.height;
-
-    x.drawImage(img,0,0);
-
-    let cellW=c.width/cols;
-    let cellH=c.height/rows;
-
-    let cellAverages=[];
-    let rawMatrix=[];
-
-    for(let r=0;r<rows;r++){
-
-        let rowData=[];
-
-        for(let k=0;k<cols;k++){
-
-            let startX=
-                Math.floor(
-                    k*cellW+
-                    cellW*.25
-                );
-
-            let startY=
-                Math.floor(
-                    r*cellH+
-                    cellH*.25
-                );
-
-            let w=
-                Math.floor(cellW*.5)||1;
-
-            let h=
-                Math.floor(cellH*.5)||1;
-
-            let imgData=
-                x.getImageData(
-                    startX,
-                    startY,
-                    w,
-                    h
-                ).data;
-
-            let sum=0;
-
-            for(
-                let i=0;
-                i<imgData.length;
-                i+=4
-            ){
-
-                sum+=
-                    .299*imgData[i]+
-                    .587*imgData[i+1]+
-                    .114*imgData[i+2];
-
-            }
-
-            let avg=
-                sum/(w*h);
-
-            rowData.push(avg);
-            cellAverages.push(avg);
-
-        }
-
-        rawMatrix.push(rowData);
-
-    }
-
-    let minAvg=
-        Math.min(...cellAverages);
-
-    let maxAvg=
-        Math.max(...cellAverages);
-
-    let threshold=
-        (minAvg+maxAvg)/2;
-
-    let nw=[];
-
-    for(let r=0;r<rows;r++){
-
-        let finalRow=[];
-
-        for(let k=0;k<cols;k++){
-
-            finalRow.push(
-                rawMatrix[r][k]<threshold
-                ?1
-                :0
-            );
-
-        }
-
-        nw.push(finalRow);
-
-    }
-
-    weavePatterns.custom=nw;
-
-    $("weaveType").value="custom";
-    $("gridEditorSection").style.display="block";
-
-    buildGridEditor();
-    draw3DWeave();
-
-    alert(
-        "✅ புகைப்படம் வெற்றிகரமாக ஸ்கேன் செய்யப்பட்டு Graph-ஆக மாற்றப்பட்டது!"
-    );
-
-}
-
-/* =========================================================
-   GRAPH → 3D
-========================================================= */
-
-function isWarpUp(r,c,type){
-
-    let m=
-        type==="custom"
-        ?weavePatterns.custom
-        :(
-            weavePatterns[type] ||
-            weavePatterns.custom
-        );
-
-    if(
-        !m ||
-        !m.length ||
-        !m[0]?.length
-    )
-        return true;
-
-    let rr=
-        (m.length-1)-
-        (r%m.length);
-
-    let cc=
-        c%m[0].length;
-
-    return m[rr][cc]===1;
-
-}
-
-/* =========================================================
-   COLOR
-========================================================= */
-
-function rgb(hex){
-
-    hex=hex||"#fff";
-
-    if(
-        !/^#[0-9a-f]{6}$/i.test(hex)
-    )
-        hex="#ffffff";
-
-    return {
-
-        r:
-            parseInt(
-                hex.slice(1,3),
-                16
-            )||255,
-
-        g:
-            parseInt(
-                hex.slice(3,5),
-                16
-            )||255,
-
-        b:
-            parseInt(
-                hex.slice(5,7),
-                16
-            )||255
-
-    };
-
-}
-
-function shade(a,f){
-
-    return `rgb(
-        ${Math.max(
-            0,
-            Math.min(
-                255,
-                Math.round(a.r*f)
-            )
-        )},
-        ${Math.max(
-            0,
-            Math.min(
-                255,
-                Math.round(a.g*f)
-            )
-        )},
-        ${Math.max(
-            0,
-            Math.min(
-                255,
-                Math.round(a.b*f)
-            )
-        )}
-    )`;
-
-}
-
-/* =========================================================
-   3D DRAW ENGINE
-========================================================= */
-
-let drawFramePending=false;
-
-function draw3DWeave(){
-
-    if(drawFramePending)
-        return;
-
-    drawFramePending=true;
-
-    requestAnimationFrame(()=>{
-
-        drawFramePending=false;
-
-        let c=$("weaveCanvas");
-
-        if(!c)
-            return;
-
-        let ctx=
-            c.getContext(
-                "2d",
-                {alpha:false}
-            );
-
-        let warp=[];
-        let weft=[];
-
-        /* WARP */
-
-        for(
-            let i=1;
-            i<=currentWarpCount;
-            i++
-        ){
-
-            let co=$("wC"+i);
-            let e=$("wE"+i);
-
-            if(!co||!e)
+        let baseWeft = [];
+        let f_idx = 1;
+
+        while(f_idx <= currentWeftCount) {
+            const co = $("weftC"+f_idx);
+            const p  = $("weftP"+f_idx);
+            const sInp = $("weftSpan"+f_idx);
+            const rInp = $("weftRep"+f_idx);
+
+            if(!co || !p) {
+                f_idx++;
                 continue;
-
-            let n=
-                Math.max(
-                    0,
-                    parseInt(e.value)||0
-                );
-
-            if(n>0){
-
-                let color=rgb(co.value);
-
-                for(let j=0;j<n;j++)
-                    warp.push(color);
-
             }
 
-        }
+            const n = Math.max(0, parseInt(p.value) || 0);
+            const span = Math.max(1, parseInt(sInp?.value) || 1);
+            const repeat = Math.max(1, parseInt(rInp?.value) || 1);
 
-        /* WEFT */
+            if(span > 1 && repeat > 1) {
+                const setSequence = [];
 
-        for(
-            let i=1;
-            i<=currentWeftCount;
-            i++
-        ){
+                for(let s=0; s<span; s++) {
+                    const currIdx = f_idx + s;
+                    if(currIdx > currentWeftCount) break;
 
-            let co=$("weftC"+i);
-            let p=$("weftP"+i);
+                    const rCo = $("weftC"+currIdx);
+                    const rP  = $("weftP"+currIdx);
 
-            if(!co||!p)
-                continue;
+                    if(rCo && rP) {
+                        const rN = Math.max(0, parseInt(rP.value) || 0);
+                        const rColor = rgb(rCo.value);
+                        for(let j=0; j<rN; j++) setSequence.push(rColor);
+                    }
+                }
 
-            let n=
-                Math.max(
-                    0,
-                    parseInt(p.value)||0
-                );
+                for(let rep=0; rep<repeat; rep++) {
+                    baseWeft.push(...setSequence);
+                }
 
-            if(n>0){
-
-                let color=rgb(co.value);
-
-                for(let j=0;j<n;j++)
-                    weft.push(color);
-
+                f_idx += span;
+            } else {
+                if(n > 0) {
+                    const color = rgb(co.value);
+                    for(let j=0; j<n; j++) baseWeft.push(color);
+                }
+                f_idx++;
             }
-
         }
 
-        let realWarpLength=warp.length;
-        let realWeftLength=weft.length;
+        /*
+         * IMPORTANT:
+         * If the UI has no active values, read the saved Design object.
+         * This keeps Warp/Weft Set data working even after reopening a design.
+         */
+        if(baseWarp.length === 0 && activeDesignObj && Array.isArray(activeDesignObj.warpLines)) {
+            const wRanges = Array.isArray(activeDesignObj.warpRanges) ? activeDesignObj.warpRanges : [];
+            let i = 0;
 
-        if(!warp.length)
-            warp=[rgb("#f8fafc")];
+            while(i < activeDesignObj.warpLines.length) {
+                const lineNum = i + 1;
+                const range = wRanges.find(r => Number(r.start) === lineNum);
 
-        if(!weft.length)
-            weft=[rgb("#dbe4df")];
+                if(range && Number(range.end) >= Number(range.start) && Number(range.set) > 1) {
+                    const setSeq = [];
 
-        const RULER=32;
+                    for(let j=Number(range.start)-1;
+                        j<Number(range.end) && j<activeDesignObj.warpLines.length;
+                        j++) {
 
-        const availW=
-            c.width-RULER;
+                        const l = activeDesignObj.warpLines[j] || {};
+                        const endsCount = parseInt(
+                            l.ends ?? l.amount ?? l.end ?? l.qty ?? 0
+                        ) || 0;
 
-        const availH=
-            c.height-RULER;
+                        const col = rgb(colorName(
+                            l.color || l.colour || l.colourName || "#ffffff"
+                        ));
 
-        let uiReed=
-            parseFloat(
-                document.getElementById("infoReed")?.value
-            );
-
-        let uiPick=
-            parseFloat(
-                document.getElementById("infoPick")?.value
-            );
-
-        let reed=
-            uiReed ||
-            parseFloat(
-                activeDesignObj?.finishedReed ||
-                activeDesignObj?.reed
-            ) ||
-            64;
-
-        let pick=
-            uiPick ||
-            parseFloat(
-                activeDesignObj?.finishedPick ||
-                activeDesignObj?.finishPick ||
-                activeDesignObj?.pick ||
-                activeDesignObj?.weftPick ||
-                activeDesignObj?.weft
-            ) ||
-            48;
-
-        let physW_mm=
-            (realWarpLength/reed)*25.4;
-
-        let physH_mm=
-            (realWeftLength/pick)*25.4;
-
-        let px_per_mm=
-            Math.min(
-                availW/(physW_mm*2||1),
-                availH/(physH_mm*2||1)
-            );
-
-        if(px_per_mm>25)
-            px_per_mm=25;
-
-        if(px_per_mm<1.5)
-            px_per_mm=1.5;
-
-        let cw=
-            (25.4/reed)*px_per_mm;
-
-        let ch=
-            (25.4/pick)*px_per_mm;
-
-        const ends=
-            Math.ceil(availW/cw);
-
-        const picks=
-            Math.ceil(availH/ch);
-
-        let actualDrawW=availW;
-        let actualDrawH=availH;
-
-        let offsetX=RULER;
-
-        ctx.fillStyle="#09110d";
-
-        ctx.fillRect(
-            RULER,
-            0,
-            availW,
-            availH
-        );
-
-        const type=
-            $("weaveType")?.value ||
-            "plain";
-
-        const useGradient=
-            cw>=4 &&
-            ch>=4;
-
-        for(let r=0;r<picks;r++){
-
-            for(let col=0;col<ends;col++){
-
-                const up=
-                    isWarpUp(
-                        r,
-                        col,
-                        type
-                    );
-
-                const base=
-                    up
-                    ?warp[col%warp.length]
-                    :weft[r%weft.length];
-
-                const x=
-                    offsetX+
-                    col*cw;
-
-                const y=
-                    availH-
-                    ((r+1)*ch);
-
-                if(useGradient){
-
-                    let g;
-
-                    if(up){
-
-                        g=
-                            ctx.createLinearGradient(
-                                x,
-                                y,
-                                x+cw,
-                                y
-                            );
-
-                    }else{
-
-                        g=
-                            ctx.createLinearGradient(
-                                x,
-                                y,
-                                x,
-                                y+ch
-                            );
-
+                        for(let k=0; k<endsCount; k++) setSeq.push(col);
                     }
 
-                    g.addColorStop(
-                        0,
-                        shade(base,.55)
+                    for(let rep=0; rep<Number(range.set); rep++) {
+                        baseWarp.push(...setSeq);
+                    }
+
+                    i = Number(range.end);
+                } else {
+                    const l = activeDesignObj.warpLines[i] || {};
+                    const endsCount = parseInt(
+                        l.ends ?? l.amount ?? l.end ?? l.qty ?? 0
+                    ) || 0;
+
+                    const col = rgb(colorName(
+                        l.color || l.colour || l.colourName || "#ffffff"
+                    ));
+
+                    for(let k=0; k<endsCount; k++) baseWarp.push(col);
+                    i++;
+                }
+            }
+        }
+
+        if(baseWeft.length === 0 && activeDesignObj && Array.isArray(activeDesignObj.weftLines)) {
+            const fRanges = Array.isArray(activeDesignObj.weftRanges) ? activeDesignObj.weftRanges : [];
+            let i = 0;
+
+            while(i < activeDesignObj.weftLines.length) {
+                const lineNum = i + 1;
+                const range = fRanges.find(r => Number(r.start) === lineNum);
+
+                if(range && Number(range.end) >= Number(range.start) && Number(range.set) > 1) {
+                    const setSeq = [];
+
+                    for(let j=Number(range.start)-1;
+                        j<Number(range.end) && j<activeDesignObj.weftLines.length;
+                        j++) {
+
+                        const l = activeDesignObj.weftLines[j] || {};
+                        const picksCount = parseInt(
+                            l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0
+                        ) || 0;
+
+                        const col = rgb(colorName(
+                            l.color || l.colour || l.colourName || "#ffffff"
+                        ));
+
+                        for(let k=0; k<picksCount; k++) setSeq.push(col);
+                    }
+
+                    for(let rep=0; rep<Number(range.set); rep++) {
+                        baseWeft.push(...setSeq);
+                    }
+
+                    i = Number(range.end);
+                } else {
+                    const l = activeDesignObj.weftLines[i] || {};
+                    const picksCount = parseInt(
+                        l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0
+                    ) || 0;
+
+                    const col = rgb(colorName(
+                        l.color || l.colour || l.colourName || "#ffffff"
+                    ));
+
+                    for(let k=0; k<picksCount; k++) baseWeft.push(col);
+                    i++;
+                }
+            }
+        }
+
+        if(!baseWarp.length) baseWarp = [rgb("#1e3a8a"), rgb("#ffffff")];
+        if(!baseWeft.length) baseWeft = [rgb("#ffffff"), rgb("#1e3a8a")];
+
+        /* ---------------------------------------------------------
+           3D SIMULATION REPEAT
+           The entered Warp/Weft set is treated as ONE repeat.
+           The 3D view always renders EXACTLY 3 repeats.
+        --------------------------------------------------------- */
+        const singleWarp = baseWarp.slice();
+        const singleWeft = baseWeft.slice();
+
+        const singleWarpLen = singleWarp.length;
+        const singleWeftLen = singleWeft.length;
+
+        const warp = [
+            ...singleWarp,
+            ...singleWarp,
+            
+        ];
+
+        const weft = [
+            ...singleWeft,
+            ...singleWeft,
+            
+        ];
+
+        const realWarpLength = warp.length;
+        const realWeftLength = weft.length;
+
+        /* ---------------------------------------------------------
+           2. READ REED / PICK
+           --------------------------------------------------------- */
+        let reed = parseFloat(
+            activeDesignObj?.finishedReed ??
+            activeDesignObj?.reed ??
+            activeDesignObj?.reedCount
+        );
+
+        let pick = parseFloat(
+            activeDesignObj?.finishedPick ??
+            activeDesignObj?.finishPick ??
+            activeDesignObj?.pick ??
+            activeDesignObj?.weftPick ??
+            activeDesignObj?.pickCount
+        );
+        if(!isFinite(reed) || reed <= 0) reed = 64;
+        if(!isFinite(pick) || pick <= 0) pick = 48;
+
+        /*
+         * Physical repeat size.
+         * This is the same formula displayed in the measurement box:
+         *     Width  = Ends / Reed × 25.4 mm
+         *     Height = Picks / Pick × 25.4 mm
+         *
+         * The old code used dent-count to determine the drawing width
+         * but used ends-count for the measurement label. That caused the
+         * ruler and the displayed W/H to disagree.
+         */
+        const physW_mm = (realWarpLength / reed) * 25.4;
+        const physH_mm = (realWeftLength / pick) * 25.4;
+
+        /* ---------------------------------------------------------
+           3. DENTING + DRAWING PATTERN
+           --------------------------------------------------------- */
+        let dentArr = expandPattern(
+            $("dentingPatternInput")?.value || "2"
+        );
+
+        if(!dentArr.length) dentArr = [2];
+
+        let drawArr = expandPattern(
+            $("drawingPatternInput")?.value || "1,2,3,4"
+        );
+
+        if(!drawArr.length) drawArr = [1,2,3,4];
+
+        /*
+         * Calculate the number of dents needed for the actual number
+         * of warp ends. A partial final dent is allowed, but it never
+         * creates an extra warp end.
+         */
+        let dentsRequired = 0;
+        let endsRemaining = realWarpLength;
+        let dIdx = 0;
+
+        while(endsRemaining > 0) {
+            const patternValue = Math.max(
+                0,
+                parseInt(dentArr[dIdx % dentArr.length]) || 0
+            );
+
+            dentsRequired++;
+
+            if(patternValue > 0) {
+                endsRemaining -= Math.min(patternValue, endsRemaining);
+            }
+
+            dIdx++;
+
+            /* Protect against an all-zero dent pattern. */
+            if(dIdx > 50000) break;
+        }
+
+        if(dentsRequired <= 0) dentsRequired = realWarpLength;
+
+        /* ---------------------------------------------------------
+           4. ONE COMMON SCALE FOR BOTH WIDTH AND HEIGHT
+           --------------------------------------------------------- */
+        const RULER = 32;
+        const availW = Math.max(10, W - RULER);
+        const availH = Math.max(10, H - RULER);
+
+        /*
+         * THIS IS THE MAIN FIX:
+         * The old renderer calculated scale from WIDTH ONLY and then
+         * forced the height to fill the screen. That distorted designs
+         * whose W/H ratio was not close to the canvas ratio.
+         *
+         * Now BOTH W and H use the same mm scale.
+         */
+        let px_per_mm = Math.min(
+            availW / Math.max(0.01, physW_mm),
+            availH / Math.max(0.01, physH_mm)
+        );
+
+        if(!isFinite(px_per_mm) || px_per_mm <= 0) px_per_mm = 2;
+
+        /* Keep very small designs visible but do not distort them. */
+        const drawW = physW_mm * px_per_mm;
+        const drawH = physH_mm * px_per_mm;
+
+        const left = RULER;
+        const bottom = H - RULER;
+        const top = bottom - drawH;
+
+        /*
+         * Exact dent width inside the physical design width.
+         * This keeps the displayed W measurement and the actual
+         * rendered width identical even when Ends/Dent changes.
+         */
+        const dentWidthPx = drawW / Math.max(1, dentsRequired);
+        const cellH = drawH / Math.max(1, realWeftLength);
+
+        /* ---------------------------------------------------------
+           5. MAP EACH WARP END TO A DENT
+           --------------------------------------------------------- */
+        const warpPositions = [];
+        let endIndex = 0;
+        let dentIndex = 0;
+
+        while(endIndex < realWarpLength && dentIndex < dentsRequired) {
+            const requestedEnds = Math.max(
+                0,
+                parseInt(dentArr[dentIndex % dentArr.length]) || 0
+            );
+
+            const x = left + dentIndex * dentWidthPx;
+
+            if(requestedEnds === 0) {
+                warpPositions.push({
+                    colIndex: -1,
+                    x,
+                    w: dentWidthPx,
+                    isEmpty: true
+                });
+            } else {
+                const actualEnds = Math.min(
+                    requestedEnds,
+                    realWarpLength - endIndex
+                );
+
+                const yarnW = dentWidthPx / Math.max(1, actualEnds);
+
+                for(let e=0; e<actualEnds; e++) {
+                    warpPositions.push({
+                        colIndex: endIndex,
+                        x: x + e * yarnW,
+                        w: yarnW,
+                        isEmpty: false
+                    });
+                    endIndex++;
+                }
+            }
+
+            dentIndex++;
+        }
+
+        /* ---------------------------------------------------------
+           6. DRAW EXACTLY 3 REPEATS
+           --------------------------------------------------------- */
+        const type = $("weaveType")?.value || "plain";
+        const useGradient = dentWidthPx >= 1.4 && cellH >= 1.4;
+
+        for(let r=0; r<realWeftLength; r++) {
+            const y = bottom - ((r + 1) * cellH);
+            const weftColor = weft[r % weft.length];
+
+            for(const wp of warpPositions) {
+                if(wp.x >= left + drawW) continue;
+
+                if(wp.isEmpty) {
+                    ctx.fillStyle = shade(weftColor, useGradient ? 0.90 : 0.85);
+                    ctx.fillRect(
+                        wp.x,
+                        y,
+                        Math.max(0.6, wp.w + 0.35),
+                        Math.max(0.6, cellH + 0.35)
                     );
+                    continue;
+                }
 
-                    g.addColorStop(
-                        .35,
-                        shade(base,1.08)
-                    );
+                const up = isWarpUp(
+                    r,
+                    wp.colIndex,
+                    type,
+                    drawArr
+                );
 
-                    g.addColorStop(
-                        .65,
-                        shade(base,1.18)
-                    );
+                const baseColor = up
+                    ? warp[wp.colIndex % warp.length]
+                    : weftColor;
 
-                    g.addColorStop(
-                        1,
-                        shade(base,.55)
-                    );
+                if(useGradient) {
+                    let g;
 
-                    ctx.fillStyle=g;
-
-                }else{
-
-                    ctx.fillStyle=
-                        shade(
-                            base,
-                            up?.95:.82
+                    if(up) {
+                        g = ctx.createLinearGradient(
+                            wp.x, y,
+                            wp.x + wp.w, y
                         );
+                    } else {
+                        g = ctx.createLinearGradient(
+                            wp.x, y,
+                            wp.x, y + cellH
+                        );
+                    }
 
+                    g.addColorStop(0, shade(baseColor, 0.45));
+                    g.addColorStop(0.35, shade(baseColor, 1.08));
+                    g.addColorStop(0.65, shade(baseColor, 1.20));
+                    g.addColorStop(1, shade(baseColor, 0.45));
+
+                    ctx.fillStyle = g;
+                } else {
+                    ctx.fillStyle = shade(
+                        baseColor,
+                        up ? 0.95 : 0.82
+                    );
                 }
 
                 ctx.fillRect(
-                    x,
+                    wp.x,
                     y,
-                    cw+.8,
-                    ch+.8
+                    Math.max(0.6, wp.w + 0.35),
+                    Math.max(0.6, cellH + 0.35)
                 );
-
             }
-
         }
 
-        /* GRID */
+/* ---------------------------------------------------------
+   7. RULER — EXACT DESIGN / 3 REPEAT SIZE
+--------------------------------------------------------- */
 
-        if(cw>=5&&ch>=5){
+/* Bottom horizontal ruler */
+ctx.fillStyle = "#ffffff";
+ctx.fillRect(0, bottom, W, RULER);
 
-            ctx.globalAlpha=.12;
-            ctx.strokeStyle="#ffffff";
-            ctx.lineWidth=.35;
+/* Vertical ruler — ONLY actual design height */
+ctx.fillStyle = "#ffffff";
+ctx.fillRect(
+    0,
+    top,
+    RULER,
+    bottom - top
+);
 
-            for(
-                let ix=offsetX;
-                ix<=offsetX+actualDrawW+.1;
-                ix+=cw
-            ){
+/* Corner */
+ctx.fillStyle = "#f1f5f9";
+ctx.fillRect(
+    0,
+    bottom,
+    RULER,
+    RULER
+);
 
-                ctx.beginPath();
+/* Ruler boundary */
+ctx.beginPath();
 
-                ctx.moveTo(ix,0);
-                ctx.lineTo(ix,availH);
+ctx.strokeStyle = "#334155";
+ctx.lineWidth = 1;
 
-                ctx.stroke();
+ctx.moveTo(RULER + 0.5, top);
+ctx.lineTo(RULER + 0.5, bottom + 0.5);
 
-            }
+ctx.lineTo(W, bottom + 0.5);
 
-            for(
-                let iy=0;
-                iy<=availH+.1;
-                iy+=ch
-            ){
+ctx.stroke();
 
-                ctx.beginPath();
 
-                ctx.moveTo(RULER,iy);
-                ctx.lineTo(
-                    offsetX+actualDrawW,
-                    iy
-                );
+/* ---------------------------------------------------------
+   EXACT PHYSICAL SIZE
+--------------------------------------------------------- */
 
-                ctx.stroke();
+const max_mm_x = drawW / Math.max(0.01, px_per_mm);
+const max_mm_y = drawH / Math.max(0.01, px_per_mm);
 
-            }
 
-            ctx.globalAlpha=1;
+/* ---------------------------------------------------------
+   HORIZONTAL SCALE
+--------------------------------------------------------- */
 
-        }
+ctx.fillStyle = "#000000";
+ctx.font = "10px Arial,sans-serif";
+ctx.textAlign = "center";
+ctx.textBaseline = "top";
 
-        /* RULERS */
+for(let mm = 0; mm <= max_mm_x + 0.001; mm++) {
 
-        ctx.fillStyle="#ffffff";
+    const isCm = mm % 10 === 0;
+    const isHalf = mm % 5 === 0 && !isCm;
 
-        ctx.fillRect(
-            0,
-            0,
-            RULER,
-            c.height
-        );
+    if(!isCm && !isHalf && px_per_mm < 2.5) continue;
 
-        ctx.fillRect(
-            0,
-            availH,
-            c.width,
-            RULER
-        );
+    const x = left + mm * px_per_mm;
 
-        ctx.fillStyle="#f1f5f9";
+    if(x > left + drawW + 0.5) break;
 
-        ctx.fillRect(
-            0,
-            availH,
-            RULER,
-            RULER
-        );
+    const drawX = Math.floor(x) + 0.5;
 
-        ctx.beginPath();
+    const tickLen =
+        isCm ? 12 :
+        (isHalf ? 7 : 4);
 
-        ctx.strokeStyle="#334155";
-        ctx.lineWidth=1;
+    ctx.beginPath();
 
-        ctx.moveTo(
-            RULER+.5,
-            0
-        );
+    ctx.moveTo(drawX, bottom);
+    ctx.lineTo(drawX, bottom + tickLen);
 
-        ctx.lineTo(
-            RULER+.5,
-            availH+.5
-        );
+    ctx.strokeStyle =
+        isCm ? "#000000" : "#64748b";
 
-        ctx.lineTo(
-            c.width,
-            availH+.5
-        );
+    ctx.stroke();
 
-        ctx.stroke();
+    if(isCm && mm > 0) {
 
-        let max_mm_x=
-            actualDrawW/px_per_mm;
-
-        let max_mm_y=
-            actualDrawH/px_per_mm;
-
-        ctx.fillStyle="#000000";
-        ctx.font="10px Arial,sans-serif";
-
-        /* X RULER */
-
-        ctx.textAlign="center";
-        ctx.textBaseline="top";
-
-        for(
-            let mm=0;
-            mm<=max_mm_x;
-            mm++
-        ){
-
-            let isCm=
-                mm%10===0;
-
-            let isHalf=
-                mm%5===0 &&
-                !isCm;
-
-            if(
-                !isCm &&
-                !isHalf &&
-                px_per_mm<2.5
-            )
-                continue;
-
-            let x=
-                offsetX+
-                mm*px_per_mm;
-
-            if(
-                x>
-                offsetX+actualDrawW
-            )
-                break;
-
-            let drawX=
-                Math.floor(x)+.5;
-
-            let tickLen=
-                isCm
-                ?12
-                :(isHalf?7:4);
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                drawX,
-                availH
-            );
-
-            ctx.lineTo(
-                drawX,
-                availH+tickLen
-            );
-
-            ctx.lineWidth=1;
-
-            ctx.strokeStyle=
-                isCm
-                ?"#000000"
-                :"#64748b";
-
-            ctx.stroke();
-
-            if(isCm&&mm>0){
-
-                let cmVal=mm/10;
-
-                let cmWidthPx=
-                    10*px_per_mm;
-
-                let skipLabel=false;
-
-                if(
-                    cmWidthPx<18 &&
-                    cmVal%2!==0
-                )
-                    skipLabel=true;
-
-                if(
-                    cmWidthPx<9 &&
-                    cmVal%5!==0
-                )
-                    skipLabel=true;
-
-                if(!skipLabel)
-                    ctx.fillText(
-                        cmVal,
-                        drawX,
-                        availH+14
-                    );
-
-            }
-
-        }
-
-        /* Y RULER */
-
-        ctx.textAlign="right";
-        ctx.textBaseline="middle";
-
-        for(
-            let mm=0;
-            mm<=max_mm_y;
-            mm++
-        ){
-
-            let isCm=
-                mm%10===0;
-
-            let isHalf=
-                mm%5===0 &&
-                !isCm;
-
-            if(
-                !isCm &&
-                !isHalf &&
-                px_per_mm<2.5
-            )
-                continue;
-
-            let y=
-                availH-
-                mm*px_per_mm;
-
-            if(y<0)
-                break;
-
-            let drawY=
-                Math.floor(y)+.5;
-
-            let tickLen=
-                isCm
-                ?12
-                :(isHalf?7:4);
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                RULER,
-                drawY
-            );
-
-            ctx.lineTo(
-                RULER-tickLen,
-                drawY
-            );
-
-            ctx.lineWidth=1;
-
-            ctx.strokeStyle=
-                isCm
-                ?"#000000"
-                :"#64748b";
-
-            ctx.stroke();
-
-            if(isCm&&mm>0){
-
-                let cmVal=mm/10;
-
-                let cmWidthPx=
-                    10*px_per_mm;
-
-                let skipLabel=false;
-
-                if(
-                    cmWidthPx<18 &&
-                    cmVal%2!==0
-                )
-                    skipLabel=true;
-
-                if(
-                    cmWidthPx<9 &&
-                    cmVal%5!==0
-                )
-                    skipLabel=true;
-
-                if(!skipLabel){
-
-                    ctx.fillText(
-                        cmVal,
-                        RULER-14,
-                        drawY
-                    );
-
-                }
-
-            }
-
-        }
-
-        /* CM LABEL */
-
-        ctx.fillStyle="#000000";
-        ctx.textAlign="center";
-        ctx.textBaseline="middle";
+        ctx.fillStyle = "#000000";
 
         ctx.fillText(
-            "cm",
-            RULER/2,
-            availH+RULER/2
+            mm / 10,
+            drawX,
+            bottom + 14
+        );
+    }
+}
+
+
+/* ---------------------------------------------------------
+   VERTICAL SCALE — EXACTLY 3 REPEAT
+--------------------------------------------------------- */
+
+ctx.textAlign = "right";
+ctx.textBaseline = "middle";
+
+for(let mm = 0; mm <= max_mm_y + 0.001; mm++) {
+
+    const isCm = mm % 10 === 0;
+    const isHalf = mm % 5 === 0 && !isCm;
+
+    if(!isCm && !isHalf && px_per_mm < 2.5) continue;
+
+    const y = bottom - mm * px_per_mm;
+
+    /* STOP EXACTLY AT DESIGN TOP */
+    if(y < top) break;
+
+    const drawY = Math.floor(y) + 0.5;
+
+    const tickLen =
+        isCm ? 12 :
+        (isHalf ? 7 : 4);
+
+    ctx.beginPath();
+
+    ctx.moveTo(RULER, drawY);
+    ctx.lineTo(RULER - tickLen, drawY);
+
+    ctx.strokeStyle =
+        isCm ? "#000000" : "#64748b";
+
+    ctx.stroke();
+
+    if(isCm && mm > 0) {
+
+        ctx.fillStyle = "#000000";
+
+        ctx.fillText(
+            mm / 10,
+            RULER - 14,
+            drawY
+        );
+    }
+}
+
+
+/* ---------------------------------------------------------
+   CM LABEL
+--------------------------------------------------------- */
+
+ctx.fillStyle = "#000000";
+
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+
+ctx.fillText(
+    "cm",
+    RULER / 2,
+    bottom + RULER / 2
+);
+
+/* ---------------------------------------------------------
+   VERTICAL RULER — STOP EXACTLY AT 3 REPEAT TOP
+--------------------------------------------------------- */
+
+ctx.textAlign = "right";
+ctx.textBaseline = "middle";
+
+/* Exact number of mm actually displayed */
+const verticalMm = drawH / px_per_mm;
+
+for(let mm = 0; mm <= verticalMm + 0.001; mm++) {
+
+    const isCm = mm % 10 === 0;
+    const isHalf = mm % 5 === 0 && !isCm;
+
+    if(!isCm && !isHalf && px_per_mm < 2.5) continue;
+
+    const y = bottom - (mm * px_per_mm);
+
+    /* IMPORTANT:
+       Do not draw anything above the actual 3-repeat top */
+    if(y < top) break;
+
+    const drawY = Math.floor(y) + 0.5;
+
+    const tickLen =
+        isCm ? 12 :
+        (isHalf ? 7 : 4);
+
+    ctx.beginPath();
+
+    ctx.moveTo(RULER, drawY);
+    ctx.lineTo(RULER - tickLen, drawY);
+
+    ctx.strokeStyle =
+        isCm ? "#000000" : "#64748b";
+
+    ctx.stroke();
+
+    if(isCm && mm > 0) {
+
+        const cmVal = mm / 10;
+
+        ctx.fillStyle = "#000000";
+
+        ctx.fillText(
+            cmVal,
+            RULER - 14,
+            drawY
+        );
+    }
+}
+
+/* ---------------------------------------------------------
+   CM LABEL
+--------------------------------------------------------- */
+
+ctx.fillStyle = "#000000";
+
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+
+ctx.fillText(
+    "cm",
+    RULER / 2,
+    bottom + RULER / 2
+);
+
+        /* ---------------------------------------------------------
+           8. EXACT MEASUREMENT BOX
+           --------------------------------------------------------- */
+        const repeat_width_mm = (singleWarpLen / reed) * 25.4;
+        const repeat_height_mm = (singleWeftLen / pick) * 25.4;
+
+        const text1 =
+            `W: (${singleWarpLen} ÷ ${reed}) × 25.4 = ${repeat_width_mm.toFixed(2)} mm`;
+
+        const text2 =
+            `H: (${singleWeftLen} ÷ ${pick}) × 25.4 = ${repeat_height_mm.toFixed(2)} mm`;
+
+        ctx.font = "bold 11px Arial,sans-serif";
+
+        const tw1 = ctx.measureText(text1).width;
+        const tw2 = ctx.measureText(text2).width;
+
+        const boxWidth = Math.min(
+            W - 20,
+            Math.max(tw1, tw2) + 30
         );
 
-        /* PROOF BOX */
+        const boxHeight = 46;
 
-        let repeat_width_mm=
-            (realWarpLength/reed)*25.4;
+const boxX = Math.max(
+    left + 5,
+    left + drawW - boxWidth - 10
+);
 
-        let repeat_height_mm=
-            (realWeftLength/pick)*25.4;
+const boxY = Math.max(
+    10,
+    top + 10
+);
 
-        let text1=
-            `W: (${realWarpLength} ÷ ${reed}) × 25.4 = ${repeat_width_mm.toFixed(2)} mm`;
-
-        let text2=
-            `H: (${realWeftLength} ÷ ${pick}) × 25.4 = ${repeat_height_mm.toFixed(2)} mm`;
-
-        ctx.font=
-            "bold 11px Arial,sans-serif";
-
-        let tw1=
-            ctx.measureText(text1).width;
-
-        let tw2=
-            ctx.measureText(text2).width;
-
-        let maxTw=
-            Math.max(tw1,tw2);
-
-        let boxWidth=
-            maxTw+30;
-
-        let boxX=
-            c.width-boxWidth-10;
-
-        ctx.fillStyle=
-            "rgba(0,0,0,.85)";
-
-        ctx.strokeStyle="#ffffff";
-        ctx.lineWidth=1.5;
+        ctx.fillStyle = "rgba(0,0,0,.85)";
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 1.5;
 
         ctx.fillRect(
             boxX,
-            10,
+            boxY,
             boxWidth,
-            46
+            boxHeight
         );
 
         ctx.strokeRect(
             boxX,
-            10,
+            boxY,
             boxWidth,
-            46
+            boxHeight
         );
 
-        ctx.fillStyle="#ffffff";
-        ctx.textAlign="right";
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
 
         ctx.fillText(
             text1,
-            c.width-25,
-            26
+            W - 25,
+            boxY + 16
         );
 
         ctx.fillText(
             text2,
-            c.width-25,
-            44
+            W - 25,
+            boxY + 34
         );
-
     });
-
 }
+
+let refreshTimer = null; function autoRefresh3D() { clearTimeout(refreshTimer); if($("fsModal")?.style.display==="flex") refreshTimer = setTimeout(draw3DWeave, 120); }
 
 /* =========================================================
-   AUTO REFRESH
+   DENTING & DRAWING MODAL LOGIC
 ========================================================= */
-
-let refreshTimer=null;
-
-function autoRefresh3D(){
-
-    clearTimeout(refreshTimer);
-
-    if(
-        $("fsModal")?.style.display!=="flex"
-    )
-        return;
-
-    refreshTimer=
-        setTimeout(
-            draw3DWeave,
-            120
-        );
-
+function openDentingModal() {
+    const modal = $("dentingModal");
+    if(!modal) return;
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    buildManualDentingEditor();
+    buildManualDrawingEditor();
+    calculateAdvancedDenting();
 }
 
-/* =========================================================
-   DENTING
-========================================================= */
-
-function calculateDenting(){
-
-    let total=0;
-
-    for(
-        let i=1;
-        i<=currentWarpCount;
-        i++
-    ){
-
-        total+=
-            parseInt(
-                $("wE"+i)?.value
-            )||0;
-
-    }
-
-    if(total===0){
-
-        let el=$("dentingInfo");
-
-        if(el)
-            el.innerHTML="டேட்டா இல்லை";
-
-        return;
-
-    }
-
-    let dents=
-        Math.ceil(total/2);
-
-    $("dentingInfo").innerHTML=`
-
-        <b>பாவு மொத்தம்:</b>
-        ${total} Ends
-
-        <br>
-
-        <b>Denting:</b>
-        ஒரு Dent-க்கு 2 Ends அடிப்படையில்
-        சுமார்
-        <b>${dents}</b>
-        Dent தேவை.
-
-        <br>
-
-        <b>Drawing:</b>
-        Frame 1 → 2 → 3 → 4
-        என்ற வரிசையில் repeat செய்யலாம்.
-
-    `;
-
+function closeDentingModal() {
+    const modal = $("dentingModal");
+    if(modal) modal.classList.remove("active");
+    document.body.style.overflow = "";
 }
 
-/* =========================================================
-   MENU
-========================================================= */
-
-function closeAllMenus(){
-
-    const denting=$("dentingPanel");
-
-    if(denting)
-        denting.classList.remove("active");
-
-}
-
-function openMenu(type){
-
-    closeAllMenus();
-
-    if(type==="view3d"){
-
-        openFullscreen();
-        return;
-
-    }
-
-    if(type==="denting"){
-
-        const panel=$("dentingPanel");
-
-        if(panel)
-            panel.classList.add("active");
-
-        calculateDenting();
-
-    }
-
-}
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
-let scale=1;
-let pointX=0;
-let pointY=0;
-
-let panning=false;
-
-let startX=0;
-let startY=0;
-
-let lastDist=0;
-
-function openFullscreen(){
-
-    const modal=$("fsModal");
-
-    if(!modal)
-        return;
-
-    modal.style.display="flex";
-
-    scale=1;
-    pointX=0;
-    pointY=0;
-    panning=false;
-
-    requestAnimationFrame(()=>{
-
-        draw3DWeave();
-        updateTransform();
-
+function showDentingPane(name) {
+    ["dent","draw","adv"].forEach(x => {
+        $(x+"Pane")?.classList.toggle("active", x === name);
     });
-
+    $("dentTabBtn")?.classList.toggle("active", name === "dent");
+    $("drawTabBtn")?.classList.toggle("active", name === "draw");
+    $("advTabBtn")?.classList.toggle("active", name === "adv");
 }
 
-function refreshFullscreen3D(){
-
-    scale=1;
-    pointX=0;
-    pointY=0;
-
-    draw3DWeave();
-    updateTransform();
-
+function setDentPreset(value) {
+    $("dentingPatternInput").value = value;
+    buildManualDentingEditor();
+    calculateAdvancedDenting();
+    autoRefresh3D();
 }
 
-function closeFullscreen(){
+function setDrawingPreset(value) {
+    $("drawingPatternInput").value = value;
+    buildManualDrawingEditor();
+    calculateAdvancedDenting();
+    autoRefresh3D();
+}
 
-    const modal=$("fsModal");
+function buildManualDentingEditor() {
+    const box = $("dentingManualRows"); if(!box) return;
+    const arr = expandPattern($("dentingPatternInput")?.value || "2");
+    const values = arr.length ? arr : [2];
+    box.innerHTML = values.map((v,i) => `
+        <div class="manual-row">
+            <div class="num">Dent ${i+1}</div>
+            <input type="number" min="0" value="${Math.max(0,v)}" oninput="syncManualDenting();calculateAdvancedDenting();autoRefresh3D();">
+            <button onclick="removeDentingManualRow(${i})">✕</button>
+        </div>`).join("");
+}
 
-    if(!modal)
-        return;
+function syncManualDenting() {
+    const box=$("dentingManualRows"); if(!box) return;
+    const vals=[...box.querySelectorAll("input")].map(x=>Math.max(0,parseInt(x.value)||0));
+    if(vals.length) $("dentingPatternInput").value=vals.join(",");
+}
 
-    modal.style.display="none";
+function addDentingManualRow() {
+    syncManualDenting();
+    const vals=expandPattern($("dentingPatternInput").value||"2");
+    vals.push(vals.length ? vals[vals.length-1] : 2);
+    $("dentingPatternInput").value=vals.join(",");
+    buildManualDentingEditor();
+    calculateAdvancedDenting();
+}
 
-    const c=$("weaveCanvas");
+function removeDentingManualRow(i) {
+    const vals=expandPattern($("dentingPatternInput").value||"2");
+    if(vals.length<=1) return;
+    vals.splice(i,1);
+    $("dentingPatternInput").value=vals.join(",");
+    buildManualDentingEditor();
+    calculateAdvancedDenting();
+}
 
-    if(c){
+function buildManualDrawingEditor() {
+    const box=$("drawingManualRows"); if(!box) return;
+    const arr=expandPattern($("drawingPatternInput")?.value||"1,2,3,4");
+    const values=arr.length?arr:[1,2,3,4];
+    box.innerHTML=values.map((v,i)=>`
+        <div class="manual-row">
+            <div class="num">${i+1}</div>
+            <input type="number" min="1" value="${Math.max(1,v)}" oninput="syncManualDrawing();calculateAdvancedDenting();autoRefresh3D();">
+            <button onclick="removeDrawingManualRow(${i})">✕</button>
+        </div>`).join("");
+}
 
-        const ctx=c.getContext("2d");
+function syncManualDrawing() {
+    const box=$("drawingManualRows"); if(!box) return;
+    const vals=[...box.querySelectorAll("input")].map(x=>Math.max(1,parseInt(x.value)||1));
+    if(vals.length) $("drawingPatternInput").value=vals.join(",");
+}
 
-        ctx.clearRect(
-            0,
-            0,
-            c.width,
-            c.height
-        );
+function addDrawingManualRow() {
+    syncManualDrawing();
+    const vals=expandPattern($("drawingPatternInput").value||"1,2,3,4");
+    vals.push(vals.length ? vals[vals.length-1] : 1);
+    $("drawingPatternInput").value=vals.join(",");
+    buildManualDrawingEditor();
+    calculateAdvancedDenting();
+}
 
-        c.style.transform=
-            "translate(0px,0px) scale(1)";
+function removeDrawingManualRow(i) {
+    const vals=expandPattern($("drawingPatternInput").value||"1,2,3,4");
+    if(vals.length<=1) return;
+    vals.splice(i,1);
+    $("drawingPatternInput").value=vals.join(",");
+    buildManualDrawingEditor();
+    calculateAdvancedDenting();
+}
 
+function calculateAdvancedDenting() {
+    let totalEnds=getWarpTotalEnds();
+    let dentStr=$("dentingPatternInput")?.value.trim()||"2";
+    let drawStr=$("drawingPatternInput")?.value.trim()||"1,2,3,4";
+    let dentArr=expandPattern(dentStr); if(!dentArr.length) dentArr=[2];
+    let drawArr=expandPattern(drawStr); if(!drawArr.length) drawArr=[1,2,3,4];
+    if(totalEnds===0){ $("dentingResultDisplay").innerHTML="<span style='color:#ef4444;'>டேட்டா இல்லை — Warp Ends முதலில் உள்ளிடவும்.</span>"; return; }
+    let dentsUsed=0,endsCounted=0,emptyDents=0,ptr=0;
+    while(endsCounted<totalEnds && ptr<50000){
+        const n=Math.max(0,dentArr[ptr%dentArr.length]); dentsUsed++;
+        if(n===0) emptyDents++; else endsCounted+=n; ptr++;
     }
-
-    scale=1;
-    pointX=0;
-    pointY=0;
-    panning=false;
-    lastDist=0;
-
+    const maxFrame=Math.max(...drawArr);
+    $("dentingResultDisplay").innerHTML=`
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><b>Warp Ends</b><span>${totalEnds}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><b>Required Dents</b><span>${dentsUsed}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><b>Missing / Empty Dents</b><span style="color:#f59e0b">${emptyDents}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><b>Frames Required</b><span>${maxFrame}</span></div>
+      <div style="font-size:.6rem;color:#78d18a;margin-top:8px;">Denting: ${dentArr.join(", ")} &nbsp; | &nbsp; Drawing: ${drawArr.join(", ")}</div>`;
 }
 
-function updateTransform(){
+let scale = 1, pointX = 0, pointY = 0, panning = false, startX = 0, startY = 0, lastDist = 0;
+function openFullscreen() { 
+    // புதிய Denting பக்கத்தில் Save செய்த டேட்டாவை 3D-யில் காட்ட:
+    let savedDent = localStorage.getItem("saved_denting_pattern");
+    let savedDraw = localStorage.getItem("saved_drawing_pattern");
+    if(savedDent && $("dentingPatternInput")) $("dentingPatternInput").value = savedDent;
+    if(savedDraw && $("drawingPatternInput")) $("drawingPatternInput").value = savedDraw;
 
-    const c=$("weaveCanvas");
-
-    if(!c)
-        return;
-
-    c.style.transform=
-        `translate(${pointX}px,${pointY}px) scale(${scale})`;
-
+    const modal = $("fsModal"); if(!modal) return; 
+    modal.style.display="flex"; scale=1; pointX=0; pointY=0; panning=false; 
+    requestAnimationFrame(()=>{ draw3DWeave(); updateTransform(); }); 
 }
+
+function refreshFullscreen3D() { scale=1; pointX=0; pointY=0; draw3DWeave(); updateTransform(); }
+function closeFullscreen() { const modal = $("fsModal"); if(!modal) return; modal.style.display="none"; const c = $("weaveCanvas"); if(c) { const ctx = c.getContext("2d"); if(ctx) ctx.clearRect(0,0,c.width,c.height); c.style.transform="translate(0px,0px) scale(1)"; } scale=1; pointX=0; pointY=0; panning=false; lastDist=0; }
+function updateTransform() { const c=$("weaveCanvas"); if(c) c.style.transform=`translate(${pointX}px,${pointY}px) scale(${scale})`; }
+
+const fsContent = $("fsContent");
+if(fsContent) {
+    fsContent.addEventListener("touchstart", e => { if(e.touches.length===1) { panning=true; startX=e.touches[0].clientX-pointX; startY=e.touches[0].clientY-pointY; } else if(e.touches.length===2) { panning=false; lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); } }, {passive:false});
+    fsContent.addEventListener("touchmove", e => { e.preventDefault();
+        if(e.touches.length===1 && panning) { pointX=e.touches[0].clientX-startX; pointY=e.touches[0].clientY-startY; updateTransform(); }
+        else if(e.touches.length===2) { let d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); if(lastDist) scale = Math.max(1, Math.min(5, scale*d/lastDist)); lastDist = d; updateTransform(); }
+    }, {passive:false});
+    fsContent.addEventListener("touchend", () => { panning=false; lastDist=0; });
+}
+document.addEventListener("keydown", e => { if(e.key==="Escape" && $("fsModal")?.style.display==="flex") closeFullscreen(); });
+
+function openGraphPrintPreview() {
+    let type = $("weaveType").value; let m = type==="custom" ? weavePatterns.custom : weavePatterns[type]; if(!m||!m.length) return;
+    let html = '<table style="border-collapse:collapse;margin:auto;text-align:center;color:#000">';
+    for(let r=0; r<m.length; r++) { html += `<tr><td style="padding:5px;font-weight:bold">${m.length-r}</td>`; for(let c=0; c<m[r].length; c++) html += `<td style="width:30px;height:30px;border:1px solid #000;font-size:20px;font-weight:bold">${m[r][c]?"×":""}</td>`; html+="</tr>"; }
+    html+="<tr><td></td>"; for(let c=1; c<=m[0].length; c++) html += `<td style="padding:6px;font-weight:bold">${c}</td>`; html+="</tr></table>";
+    $("printTableContainer").innerHTML = html; $("printModalBox").style.display="flex"; document.body.classList.add("printing-graph");
+}
+function closeGraphPrintPreview() { $("printModalBox").style.display="none"; document.body.classList.remove("printing-graph"); }
+function printDesign() {
+    const sourceCanvas = $("weaveCanvas"); if(!sourceCanvas) return; draw3DWeave();
+    setTimeout(() => { const dataUrl = sourceCanvas.toDataURL("image/png"); const printImg = $("designPrintImage"); if(printImg) { printImg.onload = function() { document.body.classList.add("printing-design"); setTimeout(() => window.print(), 100); }; printImg.src = dataUrl; } }, 250);
+}
+window.addEventListener("afterprint", () => { document.body.classList.remove("printing-graph","printing-design"); $("printModalBox").style.display="none"; });
 
 /* =========================================================
-   TOUCH
+   COLOUR MASTER PANTONE SYSTEM
 ========================================================= */
+const TEXFRIEND_COLOUR_KEY = "texfriend_colour_master_v5";
 
-const fsContent=$("fsContent");
+const PANTONE_DB = {
+    "19-4052": { name: "Classic Blue", hex: "#0F4C81" }, "18-1662": { name: "Flame Scarlet", hex: "#CE2029" }, "11-0601": { name: "Bright White", hex: "#F4F5F0" },
+    "19-0303": { name: "Jet Black", hex: "#2D2C2F" }, "17-5104": { name: "Ultimate Gray", hex: "#939597" }, "13-0647": { name: "Illuminating", hex: "#F5DF4D" },
+    "16-1546": { name: "Living Coral", hex: "#FF6F61" }, "18-3838": { name: "Ultra Violet", hex: "#5F4B8B" }, "15-0343": { name: "Greenery", hex: "#8A9A5B" },
+    "15-3919": { name: "Serenity", hex: "#91A8D0" }, "13-1520": { name: "Rose Quartz", hex: "#F7CAC9" }, "18-1438": { name: "Marsala", hex: "#955251" },
+    "18-3224": { name: "Radiant Orchid", hex: "#6B5B95" }, "17-5641": { name: "Emerald", hex: "#009473" }, "17-1463": { name: "Tangerine Tango", hex: "#DD4124" },
+    "15-5519": { name: "Turquoise", hex: "#00B5A6" }, "14-0848": { name: "Mimosa", hex: "#F0C05A" }, "18-3943": { name: "Blue Iris", hex: "#5A5B9F" },
+    "19-1557": { name: "Chili Pepper", hex: "#9B1B30" }, "13-1106": { name: "Sand Dollar", hex: "#DECDBE" }, "19-1664": { name: "True Red", hex: "#BF1932" },
+    "19-4007": { name: "Anthracite", hex: "#28282B" }, "11-4001": { name: "Brilliant White", hex: "#F9FAFC" }, "14-4102": { name: "Glacier Gray", hex: "#B8C2CC" },
+    "19-3911": { name: "Black Beauty", hex: "#26262A" }, "14-1064": { name: "Saffron", hex: "#FFA100" }, "19-1536": { name: "Red Pear", hex: "#7A3334" },
+    "16-1532": { name: "Crabapple", hex: "#D77E70" }, "14-4620": { name: "Island Paradise", hex: "#94C4E1" }, "15-0545": { name: "Jalapeño Red", hex: "#9D2B3D" },
+    "11-0103": { name: "Cream/Egret", hex: "#F2ECE4" }, "19-4039": { name: "Navy Peony", hex: "#223A5E" }, "16-1108": { name: "Twine", hex: "#B39F8D" }, 
+    "17-1501": { name: "Wood Ash", hex: "#978C87" }, "18-4005": { name: "Steel Gray", hex: "#75787B" }, "19-1619": { name: "Maroon", hex: "#6E363C" }, 
+    "19-0312": { name: "Night Sky", hex: "#323133" }, "16-0906": { name: "Simply Taupe", hex: "#AD9F93" }, "18-1031": { name: "Toffee", hex: "#755139" }, 
+    "19-5513": { name: "Dark Green", hex: "#2A4B46" }, "13-0858": { name: "Vibrant Yellow", hex: "#FFDA29" }, "15-1340": { name: "Cadmium Orange", hex: "#F99471" },
+    "18-1663": { name: "Chinese Red", hex: "#C7243A" }, "19-3810": { name: "Eclipse", hex: "#343148" }, "18-1248": { name: "Rust", hex: "#B55A30" },
+    "19-4024": { name: "Dress Blues", hex: "#2B3A48" }, "16-1325": { name: "Copper", hex: "#B27A62" }, "14-4214": { name: "Powder Blue", hex: "#9FBCE2" },
+    "13-0947": { name: "Banana", hex: "#FCB953" }, "15-1040": { name: "Warm Sand", hex: "#CB8E66" }, "19-1725": { name: "Burgundy", hex: "#5C2C35" },
+    "17-1562": { name: "Mandarin Red", hex: "#E2492F" }, "19-0527": { name: "Rifle Green", hex: "#414833" }, "12-0752": { name: "Buttercup", hex: "#E3AB10" },
+    "17-2036": { name: "Magenta", hex: "#D946EF" }, "18-2436": { name: "Fuchsia", hex: "#C026D3" }, "16-5938": { name: "Mint Green", hex: "#34D399" },
+    "11-0907": { name: "Ivory", hex: "#FFEDD5" }, "12-0712": { name: "Vanilla", hex: "#FEF3C7" }, "19-3955": { name: "Royal Blue", hex: "#2563EB" },
+    "19-3748": { name: "Dark Violet", hex: "#6D28D9" }, "15-3920": { name: "Lavender", hex: "#C084FC" }, "16-2130": { name: "Pink", hex: "#EC4899" }
+};
 
-if(fsContent){
+let texfriendColourMaster = [
+    { name:"Red", shades:[{name:"Red", pantone:"19-1664", hex:"#ef4444"}, {name:"Dark Red", pantone:"19-1557", hex:"#b91c1c"}, {name:"Light Red", pantone:"", hex:"#fca5a5"}] },
+    { name:"Pink", shades:[{name:"Pink", pantone:"16-2130", hex:"#ec4899"}, {name:"Hot Pink", pantone:"", hex:"#db2777"}, {name:"Rose", pantone:"", hex:"#e11d48"}] },
+    { name:"Magenta", shades:[{name:"Magenta", pantone:"17-2036", hex:"#d946ef"}, {name:"Fuchsia", pantone:"18-2436", hex:"#c026d3"}] },
+    { name:"Maroon", shades:[{name:"Maroon", pantone:"19-1619", hex:"#800000"}, {name:"Wine", pantone:"19-1536", hex:"#722f37"}, {name:"Burgundy", pantone:"19-1725", hex:"#5c2c35"}] },
+    { name:"Orange", shades:[{name:"Orange", pantone:"15-1340", hex:"#f97316"}, {name:"Dark Orange", pantone:"", hex:"#ea580c"}, {name:"Light Orange", pantone:"", hex:"#fdba74"}] },
+    { name:"Yellow", shades:[{name:"Yellow", pantone:"13-0858", hex:"#eab308"}, {name:"Light Yellow", pantone:"", hex:"#fef08a"}, {name:"Golden Yellow", pantone:"14-1064", hex:"#ca8a04"}] },
+    { name:"Cream", shades:[{name:"Cream", pantone:"11-0103", hex:"#fefce8"}, {name:"Ivory", pantone:"11-0907", hex:"#ffedd5"}, {name:"Vanilla", pantone:"12-0712", hex:"#fef3c7"}] },
+    { name:"Mint", shades:[{name:"Mint Green", pantone:"16-5938", hex:"#34d399"}, {name:"Light Mint", pantone:"", hex:"#a7f3d0"}] },
+    { name:"Green", shades:[{name:"Green", pantone:"", hex:"#22c55e"}, {name:"Light Green", pantone:"", hex:"#86efac"}, {name:"Dark Green", pantone:"19-5513", hex:"#15803d"}, {name:"Emerald", pantone:"17-5641", hex:"#009473"}, {name:"Olive", pantone:"", hex:"#65a30d"}] },
+    { name:"Teal/Cyan", shades:[{name:"Teal", pantone:"", hex:"#14b8a6"}, {name:"Cyan", pantone:"", hex:"#06b6d4"}, {name:"Aqua", pantone:"", hex:"#67e8f9"}] },
+    { name:"Blue", shades:[{name:"Blue", pantone:"18-3949", hex:"#3b82f6"}, {name:"Light Blue", pantone:"14-4214", hex:"#7dd3fc"}, {name:"Dark Blue", pantone:"19-4024", hex:"#1d4ed8"}] },
+    { name:"Navy", shades:[{name:"Navy Blue", pantone:"19-4039", hex:"#1e3a8a"}, {name:"Dark Navy", pantone:"", hex:"#172554"}, {name:"Midnight Blue", pantone:"19-3911", hex:"#1e3a8a"}] },
+    { name:"Violet", shades:[{name:"Violet", pantone:"18-3838", hex:"#8b5cf6"}, {name:"Dark Violet", pantone:"19-3748", hex:"#6d28d9"}, {name:"Lavender", pantone:"15-3920", hex:"#c084fc"}] },
+    { name:"Brown", shades:[{name:"Brown", pantone:"18-1031", hex:"#a16207"}, {name:"Dark Brown", pantone:"", hex:"#713f12"}, {name:"Copper", pantone:"16-1325", hex:"#b45309"}] },
+    { name:"Khaki/Sand", shades:[{name:"Khaki", pantone:"", hex:"#d6d3d1"}, {name:"Sand", pantone:"15-1040", hex:"#e7e5e4"}, {name:"Beige", pantone:"", hex:"#f5f5f4"}] },
+    { name:"Grey", shades:[{name:"Grey", pantone:"17-5104", hex:"#6b7280"}, {name:"Light Grey", pantone:"14-4102", hex:"#d1d5db"}, {name:"Dark Grey", pantone:"18-4005", hex:"#374151"}, {name:"Charcoal", pantone:"", hex:"#1f2937"}] },
+    { name:"Black", shades:[{name:"Black", pantone:"19-0303", hex:"#000000"}, {name:"Jet Black", pantone:"19-3911", hex:"#111827"}, {name:"Soft Black", pantone:"19-4007", hex:"#1c1917"}] },
+    { name:"White", shades:[{name:"White", pantone:"11-0601", hex:"#ffffff"}, {name:"Off White", pantone:"11-4001", hex:"#f8fafc"}, {name:"Snow", pantone:"", hex:"#f9fafb"}] }
+];
 
-    fsContent.addEventListener(
-        "touchstart",
-        e=>{
+let activeColourMasterIndex = 0; let selectedColourForPopup = null; let colourPopupTarget = { type:null, index:null };
+let editingShadeIndex = -1;
 
-            if(e.touches.length===1){
+function loadTexfriendColourMaster() {
+    try { const saved = localStorage.getItem(TEXFRIEND_COLOUR_KEY); if(saved) { const parsed = JSON.parse(saved); if(Array.isArray(parsed) && parsed.length) texfriendColourMaster = parsed; } } catch(e) {}
+    renderColourMasterTabs(); renderColourShades();
+}
+function saveTexfriendColourMaster() { localStorage.setItem(TEXFRIEND_COLOUR_KEY, JSON.stringify(texfriendColourMaster)); }
 
-                panning=true;
+function renderColourMasterTabs() {
+    const box = $("colourMasterTabs"); if(!box) return; box.innerHTML = "";
+    texfriendColourMaster.forEach((colour,i) => {
+        const btn = document.createElement("button"); btn.className = "colour-master-tab" + (i===activeColourMasterIndex ? " active" : "");
+        btn.textContent = colour.name; btn.onclick = () => { activeColourMasterIndex = i; renderColourMasterTabs(); renderColourShades(); }; box.appendChild(btn);
+    });
+}
 
-                startX=
-                    e.touches[0].clientX-pointX;
+function renderColourShades() {
+    const box = $("colourShadeList"); if(!box) return; box.innerHTML="";
+    const master = texfriendColourMaster[activeColourMasterIndex]; if(!master) return;
+    master.shades.forEach((shade,i) => {
+        const card = document.createElement("div"); card.className = "swatch-card";
+        let pantoneHTML = shade.pantone ? `<div class="swatch-pantone">PT: ${escapeColourText(shade.pantone)}</div>` : '';
+        card.innerHTML = `<div class="swatch-color" style="background:${shade.hex}"></div><div class="swatch-details"><div class="swatch-name" title="${escapeColourText(shade.name)}">${escapeColourText(shade.name)}</div>${pantoneHTML}</div>`;
+        card.onclick = () => openColorManager(i);
+        box.appendChild(card);
+    });
+}
 
-                startY=
-                    e.touches[0].clientY-pointY;
+function renderPopupTabs() {
+    const box = $("popupMasterTabs"); if(!box) return; box.innerHTML = "";
+    texfriendColourMaster.forEach((colour,i) => {
+        const btn = document.createElement("button"); btn.className = "colour-master-tab" + (i===activeColourMasterIndex ? " active" : "");
+        btn.textContent = colour.name; 
+        btn.onclick = () => { 
+            activeColourMasterIndex = i; 
+            renderPopupTabs(); 
+            $("colourSearchInput").value = ""; 
+            renderColourPopupGrid(texfriendColourMaster[i]); 
+        }; 
+        box.appendChild(btn);
+    });
+}
 
+function openColourPopup(masterName, shadeIndex, targetType=null, targetIndex=null) {
+    const masterIndex = texfriendColourMaster.findIndex(x=>x.name===masterName); if(masterIndex<0) return;
+    const master = texfriendColourMaster[masterIndex]; selectedColourForPopup = master.shades[shadeIndex];
+    colourPopupTarget = { type:targetType, index:targetIndex };
+    $("colourPopupTitle").textContent = "Select Shade"; $("colourPopup").classList.add("active"); $("colourSearchInput").value = ""; 
+    renderPopupTabs(); 
+    renderColourPopupGrid(master); 
+}
+
+function renderColourPopupGrid(master, filterText = "") {
+    const box = $("colourPopupGrid"); box.innerHTML="";
+    let shadesToRender = [];
+    if(filterText) {
+        texfriendColourMaster.forEach(m => { m.shades.forEach(s => { if(s.name.toLowerCase().includes(filterText) || (s.pantone && s.pantone.toLowerCase().includes(filterText))) { shadesToRender.push(s); } }); });
+    } else { shadesToRender = master.shades; }
+    if(shadesToRender.length === 0) { box.innerHTML = `<div style="color:#9fc5aa; font-size:0.7rem; padding:10px; grid-column:1/-1; text-align:center;">No match found.</div>`; return; }
+    shadesToRender.forEach(shade => {
+        const card = document.createElement("div"); card.className = "swatch-card" + (selectedColourForPopup?.hex===shade.hex && selectedColourForPopup?.name===shade.name ? " selected" : "");
+        let pantoneHTML = shade.pantone ? `<div class="swatch-pantone">PT: ${escapeColourText(shade.pantone)}</div>` : '';
+        card.innerHTML = `<div class="swatch-color" style="background:${shade.hex}"></div><div class="swatch-details"><div class="swatch-name" title="${escapeColourText(shade.name)}">${escapeColourText(shade.name)}</div>${pantoneHTML}</div>`;
+        card.onclick = () => { selectedColourForPopup = shade; renderColourPopupGrid(master, filterText); }; box.appendChild(card);
+    });
+}
+
+function filterColourPopup() { let text = $("colourSearchInput").value.trim().toLowerCase(); const master = texfriendColourMaster[activeColourMasterIndex]; renderColourPopupGrid(master, text); }
+
+function closeColourPopup() { $("colourPopup").classList.remove("active"); }
+
+function applySelectedColour() {
+    if(!selectedColourForPopup) { closeColourPopup(); return; }
+    const target = colourPopupTarget; let oldHex = "";
+    let inputObj = $(target.type === "warp" ? "wC"+target.index : "weftC"+target.index); if(inputObj) oldHex = inputObj.value;
+    let syncAll = $("syncColorCheck")?.checked; let newHex = selectedColourForPopup.hex.toLowerCase(); let newNameHTML = makeColourNameHTML(selectedColourForPopup);
+
+    if(syncAll && oldHex) {
+        for(let i=1; i<=currentWarpCount; i++) { let wInp = $("wC"+i); if(wInp && wInp.value.toLowerCase() === oldHex.toLowerCase()) { wInp.value = newHex; let wName = $("wName"+i); if(wName) wName.innerHTML = newNameHTML; } }
+        for(let i=1; i<=currentWeftCount; i++) { let fInp = $("weftC"+i); if(fInp && fInp.value.toLowerCase() === oldHex.toLowerCase()) { fInp.value = newHex; let fName = $("weftName"+i); if(fName) fName.innerHTML = newNameHTML; } }
+    } else {
+        if(target.type==="warp" && target.index) { const input = $("wC"+target.index); if(input) input.value = newHex; const name = $("wName"+target.index); if(name) name.innerHTML = newNameHTML; }
+        if(target.type==="weft" && target.index) { const input = $("weftC"+target.index); if(input) input.value = newHex; const name = $("weftName"+target.index); if(name) name.innerHTML = newNameHTML; }
+    }
+    saveTexfriendColourMaster(); autoRefresh3D(); closeColourPopup();
+}
+
+function getContrastColor(hex) {
+    hex = (hex || "#ffffff").replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+    const r = parseInt(hex.substring(0, 2), 16) || 255;
+    const g = parseInt(hex.substring(2, 4), 16) || 255;
+    const b = parseInt(hex.substring(4, 6), 16) || 255;
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? '#000000' : '#ffffff';
+}
+
+function makeColourNameHTML(shade) { 
+    let textColor = getContrastColor(shade.hex);
+    let pnt = shade.pantone ? `<span style="font-size: 0.5rem; opacity: 0.85; margin-top: 1px;">PT: ${escapeColourText(shade.pantone)}</span>` : '';
+    return `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; background:${shade.hex}; color:${textColor}; border-radius:6px; padding: 2px;">
+                <span style="font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${escapeColourText(shade.name)}</span>
+                ${pnt}
+            </div>`; 
+}
+
+function escapeColourText(value) { return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+
+function openColorManager(index = -1) {
+    editingShadeIndex = index;
+    let catSelect = $("cmCategory");
+    catSelect.innerHTML = ""; 
+    texfriendColourMaster.forEach(m => { catSelect.innerHTML += `<option value="${m.name}">${m.name}</option>`; });
+    catSelect.innerHTML += `<option value="_new_">➕ Add New Category</option>`;
+    
+    if(index >= 0) {
+        $("cmPopupTitle").innerHTML = "✏️ Edit / Delete Shade";
+        let shade = texfriendColourMaster[activeColourMasterIndex].shades[index];
+        catSelect.value = texfriendColourMaster[activeColourMasterIndex].name;
+        $("cmPantone").value = shade.pantone || ""; 
+        $("cmName").value = shade.name || ""; 
+        
+        let hexVal = (shade.hex || "#22c55e").toLowerCase(); 
+        if(/^#[0-9a-f]{3}$/i.test(hexVal)) {
+            hexVal = "#" + hexVal[1]+hexVal[1] + hexVal[2]+hexVal[2] + hexVal[3]+hexVal[3];
+        }
+        if(!/^#[0-9a-f]{6}$/i.test(hexVal)) {
+            hexVal = "#22c55e";
+        }
+        
+        $("cmHex").value = hexVal; 
+        $("cmHexPicker").value = hexVal;
+        $("cmHexWrapper").style.background = hexVal;
+        $("cmDeleteBtnContainer").style.display = "block";
+    } else {
+        $("cmPopupTitle").innerHTML = "🎨 Add New Shade";
+        catSelect.value = texfriendColourMaster[activeColourMasterIndex]?.name || ""; 
+        $("cmPantone").value = ""; $("cmName").value = ""; 
+        $("cmHex").value = "#22c55e"; 
+        $("cmHexPicker").value = "#22c55e";
+        $("cmHexWrapper").style.background = "#22c55e";
+        $("cmDeleteBtnContainer").style.display = "none";
+    }
+    
+    $("colorManagerModal").classList.add("active");
+}
+
+function handleCatChange() {
+    let catSelect = $("cmCategory");
+    if (catSelect.value === "_new_") {
+        let n = prompt("Enter new category name:");
+        if(n && n.trim() !== "") {
+            n = n.trim();
+            catSelect.innerHTML = `<option value="${n}">${n}</option>` + catSelect.innerHTML;
+            catSelect.value = n;
+        } else {
+            catSelect.selectedIndex = 0;
+        }
+    }
+}
+
+function closeColorManager() { $("colorManagerModal").classList.remove("active"); }
+
+function searchPantoneDB() {
+    let code = $("cmPantone").value.trim().toUpperCase(); if(!code) return;
+    if(PANTONE_DB[code]) { 
+        $("cmName").value = PANTONE_DB[code].name; 
+        let h = PANTONE_DB[code].hex.toLowerCase(); 
+        $("cmHex").value = h; 
+        $("cmHexPicker").value = h; 
+        $("cmHexWrapper").style.background = h;
+        alert(`✅ Pantone Code Found!\nName: ${PANTONE_DB[code].name}\nHex: ${PANTONE_DB[code].hex}`); 
+    } 
+    else { alert("ℹ️ Pantone Not Found in Offline Database.\nYou can manually choose the HEX color below and save it!"); }
+}
+
+function saveNewColorAdvanced() {
+    let catName = $("cmCategory").value.trim() || "Others"; let pantone = $("cmPantone").value.trim().toUpperCase(); let shadeName = $("cmName").value.trim() || (pantone ? `PT ${pantone}` : "New Shade"); let hex = $("cmHex").value.trim().toLowerCase();
+    if(!/^#[0-9a-f]{6}$/i.test(hex)) { alert("❌ Invalid Hex Code! (Use #RRGGBB)"); return; }
+    
+    let newShade = { name: shadeName, pantone: pantone, hex: hex };
+
+    if(editingShadeIndex >= 0) {
+        let oldCatName = texfriendColourMaster[activeColourMasterIndex].name;
+        if(oldCatName.toLowerCase() === catName.toLowerCase()) {
+            texfriendColourMaster[activeColourMasterIndex].shades[editingShadeIndex] = newShade;
+        } else {
+            texfriendColourMaster[activeColourMasterIndex].shades.splice(editingShadeIndex, 1);
+            let newCatIndex = texfriendColourMaster.findIndex(m => m.name.toLowerCase() === catName.toLowerCase());
+            if(newCatIndex >= 0) { texfriendColourMaster[newCatIndex].shades.push(newShade); activeColourMasterIndex = newCatIndex; } 
+            else { texfriendColourMaster.push({ name: catName, shades: [newShade] }); activeColourMasterIndex = texfriendColourMaster.length - 1; }
+        }
+    } else {
+        let catIndex = texfriendColourMaster.findIndex(m => m.name.toLowerCase() === catName.toLowerCase()); 
+        if(catIndex >= 0) { texfriendColourMaster[catIndex].shades.push(newShade); activeColourMasterIndex = catIndex; } 
+        else { texfriendColourMaster.push({ name: catName, shades: [newShade] }); activeColourMasterIndex = texfriendColourMaster.length - 1; }
+    }
+
+    saveTexfriendColourMaster(); renderColourMasterTabs(); renderColourShades(); closeColorManager();
+}
+
+function deleteShadeAdvanced() {
+    if (editingShadeIndex >= 0) {
+        if(confirm("Are you sure you want to delete this shade?")) {
+            texfriendColourMaster[activeColourMasterIndex].shades.splice(editingShadeIndex, 1);
+            saveTexfriendColourMaster(); renderColourMasterTabs(); renderColourShades(); closeColorManager();
+        }
+    }
+}
+
+function addColourNameButtons() {
+    for(let i=1; i<=currentWarpCount; i++) {
+        const input = $("wC"+i); if(!input) continue; const parent = input.parentElement; if($("wName"+i)) continue;
+        const name = document.createElement("button"); name.type="button"; name.id="wName"+i; name.className="design-colour-name";
+        let origName = input.getAttribute("data-orig") || "";
+        name.innerHTML = getExistingColourName(input.value, origName); 
+        name.onclick=()=>openColourPickerForEntry("warp", i);
+        parent.replaceChild(name, input); input.style.display="none"; parent.appendChild(input);
+    }
+    for(let i=1; i<=currentWeftCount; i++) {
+        const input = $("weftC"+i); if(!input) continue; const parent = input.parentElement; if($("weftName"+i)) continue;
+        const name = document.createElement("button"); name.type="button"; name.id="weftName"+i; name.className="design-colour-name";
+        let origName = input.getAttribute("data-orig") || "";
+        name.innerHTML = getExistingColourName(input.value, origName); 
+        name.onclick=()=>openColourPickerForEntry("weft", i);
+        parent.replaceChild(name, input); input.style.display="none"; parent.appendChild(input);
+    }
+}
+
+function getExistingColourName(hex, origName = "") {
+    for(const master of texfriendColourMaster) { 
+        for(const shade of master.shades) { 
+            if(shade.hex.toLowerCase()===String(hex).toLowerCase()) {
+                return makeColourNameHTML(shade); 
             }
-
-            else if(e.touches.length===2){
-
-                panning=false;
-
-                lastDist=
-                    Math.hypot(
-                        e.touches[0].clientX-
-                        e.touches[1].clientX,
-
-                        e.touches[0].clientY-
-                        e.touches[1].clientY
-                    );
-
-            }
-
-        },
-        {passive:false}
-    );
-
-    fsContent.addEventListener(
-        "touchmove",
-        e=>{
-
-            e.preventDefault();
-
-            if(
-                e.touches.length===1 &&
-                panning
-            ){
-
-                pointX=
-                    e.touches[0].clientX-
-                    startX;
-
-                pointY=
-                    e.touches[0].clientY-
-                    startY;
-
-                updateTransform();
-
-            }
-
-            else if(
-                e.touches.length===2
-            ){
-
-                let d=
-                    Math.hypot(
-                        e.touches[0].clientX-
-                        e.touches[1].clientX,
-
-                        e.touches[0].clientY-
-                        e.touches[1].clientY
-                    );
-
-                if(lastDist){
-
-                    scale=
-                        Math.max(
-                            1,
-                            Math.min(
-                                5,
-                                scale*d/lastDist
-                            )
-                        );
-
-                }
-
-                lastDist=d;
-
-                updateTransform();
-
-            }
-
-        },
-        {passive:false}
-    );
-
-    fsContent.addEventListener(
-        "touchend",
-        ()=>{
-
-            panning=false;
-            lastDist=0;
-
-        }
-    );
-
+        } 
+    }
+    
+    let textColor = getContrastColor(hex);
+    let displayTxt = origName !== "" ? `${escapeColourText(origName)} <span style="font-size:0.5rem;display:block;opacity:0.8;">(Tap to map tone)</span>` : `Select Colour`;
+    
+    return `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; background:${hex}; color:${textColor}; border-radius:6px; padding: 2px;">
+                <span style="font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align:center;">${displayTxt}</span>
+            </div>`;
 }
 
-/* =========================================================
-   ESC
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    e=>{
-
-        if(
-            e.key==="Escape" &&
-            $("fsModal")?.style.display==="flex"
-        ){
-
-            closeFullscreen();
-
-        }
-
-    }
-);
-
-/* =========================================================
-   GRAPH PRINT
-========================================================= */
-
-function openGraphPrintPreview(){
-
-    let type=$("weaveType").value;
-
-    let m=
-        type==="custom"
-        ?weavePatterns.custom
-        :weavePatterns[type];
-
-    if(!m||!m.length)
-        return;
-
-    let html=
-        '<table style="border-collapse:collapse;margin:auto;text-align:center;color:#000">';
-
-    for(
-        let r=0;
-        r<m.length;
-        r++
-    ){
-
-        html+=
-            `<tr>
-                <td style="
-                    padding:5px;
-                    font-weight:bold">
-                    ${m.length-r}
-                </td>`;
-
-        for(
-            let c=0;
-            c<m[r].length;
-            c++
-        ){
-
-            html+=
-                `<td style="
-                    width:30px;
-                    height:30px;
-                    border:1px solid #000;
-                    font-size:20px;
-                    font-weight:bold">
-                    ${m[r][c]?"×":""}
-                </td>`;
-
-        }
-
-        html+="</tr>";
-
-    }
-
-    html+="<tr><td></td>";
-
-    for(
-        let c=1;
-        c<=m[0].length;
-        c++
-    ){
-
-        html+=
-            `<td style="
-                padding:6px;
-                font-weight:bold">
-                ${c}
-            </td>`;
-
-    }
-
-    html+="</tr></table>";
-
-    $("printTableContainer").innerHTML=html;
-
-    $("printModalBox").style.display="flex";
-
-    document.body.classList.add(
-        "printing-graph"
-    );
-
+function openColourPickerForEntry(type, index) {
+    const input = $(type==="warp" ? "wC"+index : "weftC"+index); const hex = input?.value || "#22c55e";
+    let foundMaster = texfriendColourMaster.findIndex(master=>master.shades.some(shade=>shade.hex.toLowerCase()===hex.toLowerCase()));
+    if(foundMaster<0) foundMaster=0; activeColourMasterIndex = foundMaster; const master = texfriendColourMaster[foundMaster];
+    let foundShade = master.shades.find(shade=>shade.hex.toLowerCase()===hex.toLowerCase()); if(!foundShade) foundShade=master.shades[0];
+    selectedColourForPopup = foundShade; openColourPopup(master.name, master.shades.indexOf(foundShade), type, index);
 }
 
-function closeGraphPrintPreview(){
+const _originalRenderUIWithData = window.renderUIWithData;
+window.renderUIWithData = function(w=[], f=[]) { _originalRenderUIWithData(w,f); setTimeout(()=>addColourNameButtons(), 0); };
 
-    $("printModalBox").style.display="none";
-
-    document.body.classList.remove(
-        "printing-graph"
-    );
-
-}
-
-/* =========================================================
-   PRINT DESIGN
-========================================================= */
-
-function printDesign(){
-
-    const sourceCanvas=$("weaveCanvas");
-
-    if(!sourceCanvas)
-        return;
-
-    draw3DWeave();
-
-    setTimeout(()=>{
-
-        const dataUrl=
-            sourceCanvas.toDataURL("image/png");
-
-        const printImg=
-            $("designPrintImage");
-
-        if(printImg){
-
-            printImg.onload=function(){
-
-                document.body.classList.add(
-                    "printing-design"
-                );
-
-                setTimeout(()=>{
-
-                    window.print();
-
-                    setTimeout(()=>{
-
-                        document.body.classList.remove(
-                            "printing-design"
-                        );
-
-                    },500);
-
-                },100);
-
-            };
-
-            printImg.src=dataUrl;
-
-        }
-
-    },150);
-
-}
-
-/* =========================================================
-   AFTER PRINT
-========================================================= */
-
-window.addEventListener(
-    "afterprint",
-    ()=>{
-
-        document.body.classList.remove(
-            "printing-graph",
-            "printing-design"
-        );
-
-        $("printModalBox").style.display="none";
-
-    }
-);
-
-/* =========================================================
-   INITIAL LOAD
-========================================================= */
-
-window.addEventListener(
-    "load",
-    async()=>{
-
-        renderUIWithData([],[]);
-
-        let cache=
-            safeJSON(
-                "weave_designs_cache",
-                []
-            );
-
-        let local=
-            safeJSON(
-                "design_masters_data",
-                []
-            );
-
-        allCloudDesigns=
-            mergeDesigns([
-
-                ...(Array.isArray(cache)
-                    ?cache
-                    :[]),
-
-                ...(Array.isArray(local)
-                    ?local
-                    :[])
-
-            ]);
-
-        if(allCloudDesigns.length){
-
-            populateDesignSelect(true);
-
-        }else{
-
-            setStatus(
-                "ℹ️ Design இல்லை — முதலில் Design data save செய்யவும்"
-            );
-
-        }
-
-        /*
-         * Firebase is loaded only after
-         * local UI is ready.
-         *
-         * IMPORTANT:
-         * importFromFirebase() now safely
-         * falls back to LocalStorage.
-         */
-
-        await importFromFirebase(false);
-
-    }
-);
-
+window.addEventListener("load", async () => {
+    loadTexfriendColourMaster(); renderUIWithData([],[]);
+    let cache = safeJSON("weave_designs_cache", []); let local = safeJSON("design_masters_data", []);
+    allCloudDesigns = mergeDesigns([...(Array.isArray(cache)?cache:[]), ...(Array.isArray(local)?local:[])]);
+    if(allCloudDesigns.length) populateDesignSelect(true); else setStatus("ℹ️ Design இல்லை — முதலில் Design data save செய்யவும்");
+    await importFromFirebase(false);
+});
 </script>
 
 </body>

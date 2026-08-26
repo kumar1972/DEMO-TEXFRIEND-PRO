@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Advanced Denting & Drawing Editor</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="config.js"></script>
+
+<style>
+    /* ================= GLOBAL STYLES ================= */
+    :root {
+        --bg: #0d1713; --card: #14251e; --card2: #192d25;
+        --line: #2c4b3d; --text: #edf7ef; --muted: #9fc5aa;
+        --accent: #78d18a; --blue: #1688d8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    html, body { min-height: 100%; background: var(--bg); color: var(--text); padding: 0; margin: 0; }
+    .container { width: 100%; max-width: 100%; min-height: 100vh; margin: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; }
+    
+    .header { background: linear-gradient(145deg, #183328, #102019); border: 1px solid var(--line); border-radius: 10px; padding: 12px; text-align: center; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .header h1 { font-size: 1rem; color: #f59e0b; margin: 0 auto;}
+    .back-btn { background: #244638; color: #aee9ba; border: 1px solid #39614f; border-radius: 6px; padding: 8px 12px; font-size: 0.75rem; font-weight: bold; cursor: pointer; text-decoration: none; }
+
+    /* ACTION BAR */
+    .action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+    .action-bar button { border: 0; border-radius: 8px; padding: 12px 5px; font-size: 0.8rem; font-weight: 900; color: #fff; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    .btn-save { background: #2d9148; }
+    .btn-undo { background: #217eaf; }
+    .btn-reset { background: #dc2626; }
+
+    /* FORM & TABS */
+    .pm-form-box { background: #172b23; padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px dashed #395648; }
+    .pm-label-w { font-size: 0.75rem; color: #9be4a8; margin-bottom: 8px; display: block; font-weight: bold; }
+    input[type="text"], input[type="number"], select { width: 100%; background: #14251e; color: #fff; border: 1px solid #3c6752; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; outline: none; }
+    select { appearance: auto; cursor: pointer; }
+    
+    .denting-tabs { display: flex; gap: 8px; margin: 6px 0 10px; position: sticky; top: 0; z-index: 3; background: var(--bg); padding-bottom: 8px; }
+    .denting-tab { flex: 1; border: 1px solid #39614f; background: #203b30; color: #b8d8bf; border-radius: 8px; padding: 12px 4px; font-weight: 900; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+    .denting-tab.active { background: #2d9148; color: #fff; border-color: #9be4a8; }
+    .denting-pane { display: none; }
+    .denting-pane.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* GRIDS & ROWS */
+    .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+    .preset-grid button, .preset-grid select { border: 1px solid #39614f; background: #244638; color: #aee9ba; border-radius: 8px; padding: 10px 4px; font-size: 0.7rem; font-weight: 900; cursor: pointer; text-align: center; }
+
+    .manual-box { background: #0d1813; border: 1px solid #315746; border-radius: 10px; padding: 12px; margin-top: 8px; }
+    .manual-row { display: grid; grid-template-columns: 55px 1fr 45px; gap: 8px; align-items: center; background: #172b23; border: 1px solid #2e5041; border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+    .manual-row .num { color: #9be4a8; font-weight: 900; font-size: 0.75rem; text-align: center; }
+    .manual-row button { height: 100%; min-height: 38px; border: 0; border-radius: 6px; background: #633b3b; color: #fff; font-weight: 900; cursor: pointer; }
+    .btn-add { background: #2f9147; color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
+
+    #dentingResultDisplay { background: #09110d; border: 1px dashed #4a7c59; padding: 14px; border-radius: 10px; font-size: 0.85rem; color: #b8d8bf; line-height: 1.8; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <a href="dashboard.html" class="back-btn">← Back</a>
+        <h1>📐 Denting & Drawing Editor</h1>
+        <div style="width: 60px;"></div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+        <button class="btn-save" onclick="saveData()">💾 Save</button>
+        <button class="btn-undo" onclick="undoData()">↩️ Undo</button>
+        <button class="btn-reset" onclick="resetData()">🗑️ Reset</button>
+    </div>
+
+    <!-- 2. DESIGN DROPDOWN LIST -->
+    <div class="pm-form-box">
+        <label class="pm-label-w">🎨 Select Design</label>
+        <select id="designSelect" onchange="loadSelectedDesign()">
+            <option value="">-- Load Saved Design --</option>
+        </select>
+    </div>
+
+    <div class="pm-form-box" style="display:flex; justify-content:space-between; align-items:center;">
+        <label class="pm-label-w" style="margin:0;">Total Warp Ends (Auto Calculated):</label>
+        <input type="number" id="totalWarpEnds" value="82" style="width:100px; text-align:center; height:38px; padding:4px;" oninput="calculateAdvancedDenting()">
+    </div>
+
+    <div class="denting-tabs">
+        <button class="denting-tab active" id="dentTabBtn" onclick="showDentingPane('dent')">📐 Denting Order</button>
+        <button class="denting-tab" id="drawTabBtn" onclick="showDentingPane('draw')">🧵 Drawing Order</button>
+        <button class="denting-tab" id="advTabBtn" onclick="showDentingPane('adv')">📊 Summary & Results</button>
+    </div>
+
+    <!-- DENTING PANE -->
+    <div id="dentPane" class="denting-pane active">
+        <div class="pm-form-box">
+            <label class="pm-label-w">Denting Pattern (Short-hand)</label>
+            <input type="text" id="dentingPatternInput" value="2" oninput="saveHistory(); calculateAdvancedDenting(); buildManualDentingEditor();">
+            <div class="preset-grid" style="grid-template-columns: 1fr 1fr;">
+                <button onclick="setDentPreset('2')">2 per Dent</button>
+                <button onclick="setDentPreset('3')">3 per Dent</button>
+            </div>
+            <div style="font-size:.7rem; color:#b8d8bf; line-height:1.6; margin-top:10px;">
+                <b>0</b> = Missing / Empty Dent. நேரடியாக உங்கள் பார்முலாவை (உதாரணம்: <b>2,2,0,3</b>) மேலே டைப் செய்யவும்.
+            </div>
+        </div>
+        <div class="manual-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <b style="font-size:0.8rem; color:#9be4a8;">Manual Denting Order</b>
+                <button class="btn-add" onclick="addDentingManualRow()">➕ Add Dent</button>
+            </div>
+            <div id="dentingManualRows"></div>
+            <div style="font-size:0.65rem; color:#9fc5aa; margin-top:10px;">ஒவ்வொரு Dent-க்கும் தனித்தனியாக மாற்றிக்கொள்ளலாம்.</div>
+        </div>
+    </div>
+
+    <!-- DRAWING PANE -->
+    <div id="drawPane" class="denting-pane">
+        <div class="pm-form-box">
+            <label class="pm-label-w">Drawing / Frame Order</label>
+            <input type="text" id="drawingPatternInput" value="1,2,3,4" oninput="saveHistory(); calculateAdvancedDenting(); buildManualDrawingEditor();">
+            <div class="preset-grid">
+                <button onclick="setDrawingPreset('1,2,3,4')">1-2-3-4</button>
+                
+                <select id="frameDropdown" onchange="generateFramesFromDropdown()">
+                    <option value="">-- Select Frames --</option>
+                    <option value="1">1 Frame</option>
+                    <option value="2">2 Frames</option>
+                    <option value="3">3 Frames</option>
+                    <option value="4">4 Frames</option>
+                    <option value="5">5 Frames</option>
+                    <option value="6">6 Frames</option>
+                    <option value="7">7 Frames</option>
+                    <option value="8">8 Frames</option>
+                    <option value="9">9 Frames</option>
+                    <option value="10">10 Frames</option>
+                    <option value="11">11 Frames</option>
+                    <option value="12">12 Frames</option>
+                    <option value="13">13 Frames</option>
+                    <option value="14">14 Frames</option>
+                </select>
+
+                <button onclick="setDrawingPreset('1,2,3,4,3,2')">Return</button>
+            </div>
+        </div>
+        <div class="manual-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <b style="font-size:0.8rem; color:#9be4a8;">Manual Drawing Order</b>
+                <button class="btn-add" onclick="addDrawingManualRow()">➕ Add Frame</button>
+            </div>
+            <div id="drawingManualRows"></div>
+            <div style="font-size:0.65rem; color:#9fc5aa; margin-top:10px;">Frame order-ஐ தனித்தனியாக edit செய்யலாம்.</div>
+        </div>
+    </div>
+
+    <!-- ADVANCED PANE (SUMMARY) -->
+    <div id="advPane" class="denting-pane">
+        <div class="pm-form-box" style="padding: 15px;">
+            <h3 style="color:#f59e0b; font-size: 0.95rem; margin-bottom: 15px; border-bottom: 1px solid #3c6752; padding-bottom: 8px;">📊 Final Calculation Summary</h3>
+            <div id="dentingResultDisplay"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- History System for UNDO ---
+    let historyStack = [];
+    let allCloudDesigns = [];
+    let activeDesignObj = null;
+    
+    function saveHistory() {
+        historyStack.push({
+            dent: document.getElementById("dentingPatternInput").value,
+            draw: document.getElementById("drawingPatternInput").value
+        });
+        if(historyStack.length > 20) historyStack.shift(); 
+    }
+
+    function undoData() {
+        if(historyStack.length > 0) {
+            let lastState = historyStack.pop();
+            document.getElementById("dentingPatternInput").value = lastState.dent;
+            document.getElementById("drawingPatternInput").value = lastState.draw;
+            updateAll();
+        } else {
+            alert("Nothing to undo!");
+        }
+    }
+
+    function resetData() {
+        if(confirm("Are you sure you want to delete/reset the pattern?")) {
+            saveHistory();
+            document.getElementById("dentingPatternInput").value = "2";
+            document.getElementById("drawingPatternInput").value = "1,2,3,4";
+            updateAll();
+        }
+    }
+
+    // --- 2. Design Data & Total Ends Calculation ---
+    function loadDesignList() {
+        let local = JSON.parse(localStorage.getItem("design_masters_data") || "[]");
+        let cache = JSON.parse(localStorage.getItem("weave_designs_cache") || "[]");
+        
+        let map = new Map();
+        [...cache, ...local].forEach(d => {
+            if(!d) return;
+            let name = (d.designNo || d.name || "Unnamed").trim();
+            if(name) map.set(name, d);
+        });
+        allCloudDesigns = Array.from(map.values());
+        
+        let sel = document.getElementById("designSelect");
+        allCloudDesigns.forEach((d, i) => {
+            let n = d.designNo || d.name || "Unnamed";
+            sel.innerHTML += `<option value="${i}">${n}</option>`;
+        });
+
+        let last = localStorage.getItem("selected_design_number") || localStorage.getItem("weave_last_design_name");
+        if(last) {
+            let idx = allCloudDesigns.findIndex(d => (d.designNo === last || d.name === last));
+            if(idx >= 0) {
+                sel.value = idx;
+                loadSelectedDesign();
+            }
+        }
+    }
+
+    function loadSelectedDesign() {
+        let sel = document.getElementById("designSelect").value;
+        if(sel === "") return;
+        activeDesignObj = allCloudDesigns[sel];
+        
+        if(activeDesignObj) {
+            let total = calculateWarpEnds(activeDesignObj);
+            if(total > 0) document.getElementById("totalWarpEnds").value = total;
+
+            if(activeDesignObj.dentingPattern) document.getElementById("dentingPatternInput").value = activeDesignObj.dentingPattern;
+            if(activeDesignObj.drawingPattern) document.getElementById("drawingPatternInput").value = activeDesignObj.drawingPattern;
+        }
+        updateAll();
+    }
+
+    function calculateWarpEnds(d) {
+        let total = 0;
+        let warpLines = d.warpLines || d.warp || [];
+        let wRanges = d.warpRanges || [];
+        
+        if (warpLines.length === 0) {
+            for(let i=1; i<=30; i++) {
+                let ends = d[`warpEnds${i}`] || d[`warpEnd${i}`];
+                if(ends) warpLines.push({ends: ends});
+            }
+        }
+
+        let i = 0;
+        while(i < warpLines.length) {
+            let lineNum = i + 1;
+            let range = wRanges.find(r => parseInt(r.start) === lineNum);
+            
+            if (range && range.end >= range.start && range.set > 1) {
+                let setSum = 0;
+                for(let j = range.start - 1; j < range.end && j < warpLines.length; j++) {
+                    let l = warpLines[j] || {};
+                    setSum += parseInt(l.ends || l.amount || l.end || l.qty || 0) || 0;
+                }
+                total += (setSum * range.set);
+                i = range.end;
+            } else {
+                let l = warpLines[i] || {};
+                total += parseInt(l.ends || l.amount || l.end || l.qty || 0) || 0;
+                i++;
+            }
+        }
+        return total;
+    }
+
+    function saveData() {
+        let dentStr = document.getElementById("dentingPatternInput").value;
+        let drawStr = document.getElementById("drawingPatternInput").value;
+        
+        localStorage.setItem("saved_denting_pattern", dentStr);
+        localStorage.setItem("saved_drawing_pattern", drawStr);
+
+        let sel = document.getElementById("designSelect").value;
+        if(sel !== "" && allCloudDesigns[sel]) {
+            allCloudDesigns[sel].dentingPattern = dentStr;
+            allCloudDesigns[sel].drawingPattern = drawStr;
+            let name = allCloudDesigns[sel].designNo || allCloudDesigns[sel].name;
+            
+            let local = JSON.parse(localStorage.getItem("design_masters_data") || "[]");
+            let idx = local.findIndex(d => (d.designNo === name || d.name === name));
+            if(idx >= 0) {
+                local[idx].dentingPattern = dentStr;
+                local[idx].drawingPattern = drawStr;
+                localStorage.setItem("design_masters_data", JSON.stringify(local));
+            }
+        }
+        alert("✅ Pattern Saved Successfully!");
+    }
+
+    // --- Tab Switching ---
+    function showDentingPane(name) {
+        ["dent","draw","adv"].forEach(x => {
+            document.getElementById(x+"Pane").classList.toggle("active", x === name);
+        });
+        document.getElementById("dentTabBtn").classList.toggle("active", name === "dent");
+        document.getElementById("drawTabBtn").classList.toggle("active", name === "draw");
+        document.getElementById("advTabBtn").classList.toggle("active", name === "adv");
+    }
+
+    // ==============================================================
+    // இதுவே பிராக்கெட்டுகளைச் சரியாகப் பிரிக்கும் புதிய லாஜிக்!
+    // ==============================================================
+    function expandPattern(str) {
+        if(!str) return [];
+        let s = String(str).toLowerCase().replace(/\s+/g, ''); // Space-ஐ நீக்குதல்
+        s = s.replace(/[x×X*]/g, '*'); // x, ×, X என அனைத்தையும் * ஆக மாற்றுதல்
+
+        // 1. Bracket-க்குள் உள்ளதை கண்டுபிடித்து பெருக்குதல்: (1,2,3,4)*5
+        let bracketRegex = /\(([^)]+)\)\*(\d+)/g;
+        let match;
+        while ((match = bracketRegex.exec(s)) !== null) {
+            let innerContent = match[1]; // Ex: 1,2,3,4
+            let multiplier = parseInt(match[2]); // Ex: 5
+            let expandedStr = Array(multiplier).fill(innerContent).join(',');
+            s = s.replace(match[0], expandedStr);
+            bracketRegex.lastIndex = 0; // Reset
+        }
+
+        // 2. கமா (,) மற்றும் சாதாரண பெருக்கலுக்கான லாஜிக்
+        let parts = s.split(',');
+        let res = [];
+        for(let p of parts) {
+            if(!p) continue;
+            if(p.includes('*')) {
+                let [val, count] = p.split('*');
+                let v = parseInt(val.replace(/[^0-9]/g, ''));
+                let c = parseInt(count.replace(/[^0-9]/g, ''));
+                if(!isNaN(v) && !isNaN(c) && c > 0) {
+                    for(let i=0; i<c; i++) res.push(v);
+                }
+            } else {
+                let v = parseInt(p.replace(/[^0-9]/g, ''));
+                if(!isNaN(v)) res.push(v);
+            }
+        }
+        return res;
+    }
+
+    // --- Presets ---
+    function setDentPreset(value) { saveHistory(); document.getElementById("dentingPatternInput").value = value; updateAll(); }
+    function setDrawingPreset(value) { saveHistory(); document.getElementById("drawingPatternInput").value = value; updateAll(); }
+
+    function generateFramesFromDropdown() {
+        let val = parseInt(document.getElementById("frameDropdown").value);
+        if(!val) return;
+        saveHistory();
+        let arr = [];
+        for(let i=1; i<=val; i++) arr.push(i);
+        document.getElementById("drawingPatternInput").value = arr.join(",");
+        document.getElementById("frameDropdown").value = "";
+        updateAll();
+    }
+
+    // --- Core Updates ---
+    function updateAll() {
+        buildManualDentingEditor();
+        buildManualDrawingEditor();
+        calculateAdvancedDenting();
+    }
+
+    // --- Manual Denting Rows ---
+    function buildManualDentingEditor() {
+        const box = document.getElementById("dentingManualRows"); if(!box) return;
+        const arr = expandPattern(document.getElementById("dentingPatternInput").value || "2");
+        const values = arr.length ? arr : [2];
+        box.innerHTML = values.map((v,i) => `
+            <div class="manual-row">
+                <div class="num">Dent ${i+1}</div>
+                <input type="number" min="0" value="${Math.max(0,v)}" oninput="syncManualDenting()">
+                <button onclick="removeDentingManualRow(${i})">✕</button>
+            </div>`).join("");
+    }
+    
+    function syncManualDenting() {
+        saveHistory();
+        const box = document.getElementById("dentingManualRows");
+        const vals = [...box.querySelectorAll("input")].map(x => Math.max(0, parseInt(x.value)||0));
+        if(vals.length) document.getElementById("dentingPatternInput").value = vals.join(",");
+        calculateAdvancedDenting();
+    }
+
+    function addDentingManualRow() {
+        saveHistory();
+        const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
+        vals.push(vals.length ? vals[vals.length-1] : 2);
+        document.getElementById("dentingPatternInput").value = vals.join(",");
+        updateAll();
+    }
+
+    function removeDentingManualRow(i) {
+        saveHistory();
+        const vals = expandPattern(document.getElementById("dentingPatternInput").value || "2");
+        if(vals.length <= 1) return;
+        vals.splice(i,1);
+        document.getElementById("dentingPatternInput").value = vals.join(",");
+        updateAll();
+    }
+
+    // --- Manual Drawing Rows ---
+    function buildManualDrawingEditor() {
+        const box = document.getElementById("drawingManualRows"); if(!box) return;
+        const arr = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
+        const values = arr.length ? arr : [1,2,3,4];
+        box.innerHTML = values.map((v,i) => `
+            <div class="manual-row">
+                <div class="num">${i+1}</div>
+                <input type="number" min="1" value="${Math.max(1,v)}" oninput="syncManualDrawing()">
+                <button onclick="removeDrawingManualRow(${i})">✕</button>
+            </div>`).join("");
+    }
+
+    function syncManualDrawing() {
+        saveHistory();
+        const box = document.getElementById("drawingManualRows");
+        const vals = [...box.querySelectorAll("input")].map(x => Math.max(1, parseInt(x.value)||1));
+        if(vals.length) document.getElementById("drawingPatternInput").value = vals.join(",");
+        calculateAdvancedDenting();
+    }
+
+    function addDrawingManualRow() {
+        saveHistory();
+        const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
+        vals.push(vals.length ? vals[vals.length-1] : 1);
+        document.getElementById("drawingPatternInput").value = vals.join(",");
+        updateAll();
+    }
+
+    function removeDrawingManualRow(i) {
+        saveHistory();
+        const vals = expandPattern(document.getElementById("drawingPatternInput").value || "1,2,3,4");
+        if(vals.length <= 1) return;
+        vals.splice(i,1);
+        document.getElementById("drawingPatternInput").value = vals.join(",");
+        updateAll();
+    }
+
+    // --- Calculator Engine ---
+    function calculateAdvancedDenting() {
+        let totalEnds = parseInt(document.getElementById("totalWarpEnds").value) || 0;
+        let dentStr = document.getElementById("dentingPatternInput").value.trim() || "2";
+        let drawStr = document.getElementById("drawingPatternInput").value.trim() || "1,2,3,4";
+        let dentArr = expandPattern(dentStr); if(!dentArr.length) dentArr = [2];
+        let drawArr = expandPattern(drawStr); if(!drawArr.length) drawArr = [1,2,3,4];
+        
+        if(totalEnds === 0) { 
+            document.getElementById("dentingResultDisplay").innerHTML = "<span style='color:#ef4444;'>Warp Ends 0 ஆக உள்ளது. மேலே சரியான Ends-ஐ உள்ளிடவும் அல்லது டிசைனைத் தேர்ந்தெடுக்கவும்.</span>"; 
+            return; 
+        }
+
+        let dentsUsed = 0, endsCounted = 0, emptyDents = 0, ptr = 0;
+        while(endsCounted < totalEnds && ptr < 50000){
+            const n = Math.max(0, dentArr[ptr % dentArr.length]); 
+            dentsUsed++;
+            if(n === 0) emptyDents++; else endsCounted += n; 
+            ptr++;
+        }
+        const maxFrame = Math.max(...drawArr);
+        
+        document.getElementById("dentingResultDisplay").innerHTML = `
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Total Warp Ends</b><span style="font-size:1.15rem;font-weight:900;color:#fff;">${totalEnds}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Required Dents</b><span style="font-size:1.15rem;font-weight:900;color:#fff;">${dentsUsed}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;border-bottom:1px solid #28483a;padding-bottom:8px;"><b>Missing / Empty Dents</b><span style="color:#f59e0b;font-size:1.15rem;font-weight:900;">${emptyDents}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><b>Frames Required</b><span style="color:#10b981;font-size:1.15rem;font-weight:900;">${maxFrame}</span></div>
+          <div style="font-size:0.8rem;color:#78d18a;margin-top:15px;line-height:1.6;background:#0d1813;padding:12px;border-radius:8px;border:1px solid #3c6752;">
+            <b style="color:#fff;">Denting Logic:</b> ${dentArr.join(", ")}<br><br>
+            <b style="color:#fff;">Drawing Logic:</b> ${drawArr.join(", ")}
+          </div>`;
+    }
+
+    // Initialize on load
+    window.onload = () => {
+        loadDesignList();
+        let savedDent = localStorage.getItem("saved_denting_pattern");
+        let savedDraw = localStorage.getItem("saved_drawing_pattern");
+        
+        if(!activeDesignObj) {
+            if(savedDent) document.getElementById("dentingPatternInput").value = savedDent;
+            if(savedDraw) document.getElementById("drawingPatternInput").value = savedDraw;
+        }
+        updateAll();
+    };
+</script>
+
+</body>
+</html>
