@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 <script src="config.js"></script>
-
+<script src="translator.js"></script>
 <style>
 /* ================= GLOBAL STYLES ================= */
 :root {
@@ -859,6 +859,83 @@ let weavePatterns = {
     twill: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]],
     custom: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]]
 };
+
+/* =========================================================
+   COLOUR TRANSLATION MAP (கலர் பெயர்கள் - config.js / உங்களது தரவு முறைப்படி)
+========================================================= */
+const COLOR_TRANSLATIONS = {
+    'gold': 'கோல்டு',
+        'l. olive': 'L. ஆலிவ்',
+        'd. olive': 'D. ஆலிவ்',
+        'grey': 'கிரே',
+        'gray': 'கிரே',
+        't.salavai': 'T. சலவை',
+        't. salavai': 'T. சலவை',
+        't. white': 'T. சலவை',
+        '1/2 salavai': '1/2 சலவை',
+        '1/2 white': '1/2 சலவை',
+        'white': 'வெள்ளை',
+        'black': 'கருப்பு',
+        'blue': 'ப்ளூ',
+        'yellow': 'மஞ்சள்',
+        'red': 'ரெட்',
+        'green': 'கிரீன்',
+        'p. green': 'கிளி பச்சை',
+        'brown': 'பிரவுன்',
+        'khaki': 'காக்கி',
+        'l. khaki': 'L. காக்கி',
+        'd. khaki': 'D. காக்கி',
+        'rose': 'ரோஸ்',
+        'orange': 'ஆரஞ்சு',
+        'violet': 'வைலட்',
+        'pink': 'பிங்க்',
+        'navy': 'நேவி',
+        'l. navy': 'L. நேவி',
+        'd. navy': 'D. நேவி',
+        'maroon': 'மெரூன்',
+        'olive': 'ஆலிவ்',
+        'l. blue': 'L. ப்ளூ',
+        'r. blue': 'R. ப்ளூ',
+        'turq': 'டர்க்',
+        'purple': 'பர்புள்',
+        'cream': 'கிரீம்',
+        'beige': 'பேஜ்',
+        'biscuit': 'பிஸ்கட்',
+        'majenda': 'மெஜந்தா',
+        'silver': 'சில்வர்',
+        'peach': 'பீச்',
+        'sky blue': 'வான ப்ளூ',
+        'bottle green': 'பாட்டில் கிரீன்',
+        'onion': 'ஆனியன்'
+    };
+
+function getLocalizedColorName(engName) {
+    if (!engName) return "";
+    let clean = engName.trim();
+    let lower = clean.toLowerCase();
+    
+    // First check config/master data if available
+    let tamil = "";
+    if (typeof texfriendColourMaster !== 'undefined') {
+        for (let cat of texfriendColourMaster) {
+            let found = cat.shades.find(s => s.name.toLowerCase() === lower);
+            if (found) {
+                tamil = COLOR_TRANSLATIONS[found.name.toLowerCase()] || COLOR_TRANSLATIONS[cat.name.toLowerCase()] || "";
+                break;
+            }
+        }
+    }
+    
+    // Fallback to direct map
+    if (!tamil) {
+        tamil = COLOR_TRANSLATIONS[lower] || "";
+    }
+
+    if (tamil) {
+        return `${clean} (${tamil})`;
+    }
+    return clean;
+}
 
 /* =========================================================
    PATTERN EXPANSION HELPER
@@ -1924,10 +2001,13 @@ function buildWarpTable(lines, drawArr) {
                     cleanName = cleanName.replace(/\(Tap to map tone\)/g, "").replace(/Select Colour/g, "Custom Shade").trim();
                 }
                 if(!cleanName) cleanName = String(l.color).toUpperCase();
+                
+                // Translate colour name to English (Tamil)
+                cleanName = getLocalizedColorName(cleanName);
 
                 let amt = parseInt(l.ends) || 0;
                 
-                // Set Column Logic (NO Text "Row 4", just Bracket and Multiplier)
+                // Set Column Logic
                 let setTd = "";
                 if (sIdx === 0) {
                     setTd = `<td rowspan="${spanLen}" style="font-size:10px; font-weight:900; color:#b91c1c; background:#fff5f5; vertical-align:middle; text-align:center; padding:2px;">
@@ -1965,6 +2045,9 @@ function buildWarpTable(lines, drawArr) {
                 cleanName = cleanName.replace(/\(Tap to map tone\)/g, "").replace(/Select Colour/g, "Custom Shade").trim();
             }
             if(!cleanName) cleanName = String(l.color).toUpperCase();
+            
+            // Translate colour name to English (Tamil)
+            cleanName = getLocalizedColorName(cleanName);
 
             let amt = parseInt(l.ends) || 0;
             
