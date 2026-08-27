@@ -215,7 +215,7 @@ body{
 
 
 /* =========================================================
-   DROPDOWN
+   DROPDOWN & SCREEN ZOOM CONTROLS
 ========================================================= */
 
 .profile-dropdown-wrapper{
@@ -331,6 +331,85 @@ body{
     line-height:1.8;
 }
 
+/* SCREEN SIZE ZOOM BOX POPUP */
+.screen-zoom-popup{
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    background: #061814;
+    border: 2px solid #10B981;
+    border-radius: 18px;
+    padding: 16px;
+    width: 220px;
+    z-index: 999999;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(16,185,129,0.3);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+.screen-zoom-popup h4{
+    color: #34D399;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.zoom-controls-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #020b08;
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.zoom-btn{
+    background: #0F172A;
+    border: 1px solid #34D399;
+    color: #34D399;
+    font-size: 18px;
+    font-weight: bold;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-val-text{
+    font-weight: 800;
+    font-size: 14px;
+    color: #FFF;
+}
+
+.fit-screen-action-btn{
+    background: #3B82F6;
+    color: #FFF;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    transition: all 0.2s ease;
+}
+
+.fit-screen-action-btn:hover{
+    background: #2563EB;
+}
+
+/* FORCE HIDE ANY ACCIDENTAL FLOATING OR DUPLICATE ICONS */
+.floating-zoom-icon, div[style*="position: fixed"][style*="background: rgb(16"], .floating-icon {
+    display: none !important;
+}
+
 
 /* =========================================================
    MAIN CONTAINER
@@ -362,6 +441,7 @@ body{
     flex-direction:column;
 
     gap:18px;
+    transition: transform 0.2s ease;
 }
 
 
@@ -1442,6 +1522,20 @@ window.addEventListener(
             <div id="liveDate" class="live-date">01 Jan 2026</div>
         </div>
 
+        <!-- SCREEN SIZE ZOOM POPUP CONTROLS -->
+        <div class="profile-dropdown-wrapper">
+            <button class="dropdown-btn" onclick="toggleScreenZoomMenu(event)" title="Adjust Screen Size">🔍</button>
+            <div id="screenZoomMenu" class="screen-zoom-popup">
+                <h4>Screen Size</h4>
+                <div class="zoom-controls-row">
+                    <button class="zoom-btn" onclick="adjustZoom(-10)">-</button>
+                    <span id="zoomDisplayPercent" class="zoom-val-text">100%</span>
+                    <button class="zoom-btn" onclick="adjustZoom(10)">+</button>
+                </div>
+                <button class="fit-screen-action-btn" onclick="resetFitToScreen()">Fit to Screen</button>
+            </div>
+        </div>
+
         <!-- THEME -->
         <div class="profile-dropdown-wrapper">
             <button class="dropdown-btn" onclick="toggleThemeMenu(event)">🎨</button>
@@ -1472,7 +1566,7 @@ window.addEventListener(
      MAIN CONTAINER
 ========================================================= -->
 
-<div class="container">
+<div class="container" id="dashboardMainContainer">
 
     <!-- SEARCH -->
     <div class="search-bar-wrapper">
@@ -1970,6 +2064,52 @@ function quickSearchDesign(){
 }
 
 /* =========================================================
+   SCREEN ZOOM & FIT TO SCREEN LOGIC
+========================================================= */
+
+let currentZoomLevel = parseInt(localStorage.getItem("erp_dashboard_zoom") || "100", 10);
+
+function applyZoom(zoom) {
+    currentZoomLevel = Math.min(Math.max(zoom, 50), 200); // 50% to 200%
+    localStorage.setItem("erp_dashboard_zoom", currentZoomLevel);
+    
+    const display = document.getElementById("zoomDisplayPercent");
+    if(display) display.textContent = currentZoomLevel + "%";
+
+    const bodyEl = document.body;
+    if(bodyEl) {
+        bodyEl.style.zoom = (currentZoomLevel / 100);
+    }
+}
+
+function adjustZoom(delta) {
+    applyZoom(currentZoomLevel + delta);
+}
+
+function resetFitToScreen() {
+    applyZoom(100);
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(()=>{});
+    }
+    const zoomMenu = document.getElementById("screenZoomMenu");
+    if(zoomMenu) zoomMenu.style.display = "none";
+}
+
+function toggleScreenZoomMenu(event) {
+    if(event) event.stopPropagation();
+    const zoomMenu = document.getElementById("screenZoomMenu");
+    const themeMenu = document.getElementById("themeDropdownMenu");
+    const profileMenu = document.getElementById("dropdownMenu");
+
+    if(themeMenu) themeMenu.style.display = "none";
+    if(profileMenu) profileMenu.style.display = "none";
+    
+    if(zoomMenu) {
+        zoomMenu.style.display = (zoomMenu.style.display === "flex") ? "none" : "flex";
+    }
+}
+
+/* =========================================================
    THEME
 ========================================================= */
 
@@ -1987,7 +2127,10 @@ function toggleThemeMenu(event){
     if(event) event.stopPropagation();
     const theme= document.getElementById("themeDropdownMenu");
     const profile= document.getElementById("dropdownMenu");
+    const zoomMenu = document.getElementById("screenZoomMenu");
+
     if(profile){ profile.style.display= "none"; }
+    if(zoomMenu){ zoomMenu.style.display = "none"; }
     if(theme){ theme.style.display= theme.style.display==="block" ? "none" : "block"; }
 }
 
@@ -1995,12 +2138,15 @@ function toggleMenu(event){
     if(event) event.stopPropagation();
     const menu= document.getElementById("dropdownMenu");
     const theme= document.getElementById("themeDropdownMenu");
+    const zoomMenu = document.getElementById("screenZoomMenu");
+
     if(theme){ theme.style.display= "none"; }
+    if(zoomMenu){ zoomMenu.style.display = "none"; }
     if(menu){ menu.style.display= menu.style.display==="block" ? "none" : "block"; }
 }
 
 function closeAllMenus(){
-    ["dropdownMenu", "themeDropdownMenu", "searchSuggestions"].forEach(id=>{
+    ["dropdownMenu", "themeDropdownMenu", "searchSuggestions", "screenZoomMenu"].forEach(id=>{
         const el= document.getElementById(id);
         if(el){ el.style.display= "none"; }
     });
@@ -2029,7 +2175,7 @@ async function logoutUser(){
 
 function clearCacheData(){
     if(!confirm("Clear local cache?\n\nFirebase Cloud data will NOT be deleted.")) return;
-    const keep=[ "erp_logged_role", "erp_logged_user", "user_role", "username", "user_permissions", "erp_system_users", "app_heading_name", "company_logo_base64", "company_logo", "logo", "erp_theme_mode" ];
+    const keep=[ "erp_logged_role", "erp_logged_user", "user_role", "username", "user_permissions", "erp_system_users", "app_heading_name", "company_logo_base64", "company_logo", "logo", "erp_theme_mode", "erp_dashboard_zoom" ];
     const remove=[];
     for(let i=0; i<localStorage.length; i++){
         const key= localStorage.key(i);
@@ -2108,6 +2254,14 @@ function waitForCloudSync(timeout=15000){
 
 window.addEventListener("DOMContentLoaded", async function(){
     try{
+        // Remove any leaked floating elements programmatically
+        document.querySelectorAll('div').forEach(el => {
+            if(el.style.position === 'fixed' && (el.innerHTML.includes('🔍') || el.style.borderRadius === '50%')) {
+                el.remove();
+            }
+        });
+
+        applyZoom(currentZoomLevel);
         loadUserInfo();
         loadCompanySettings();
         startClock();
@@ -2131,8 +2285,10 @@ window.addEventListener("click", function(event){
     if(!event.target.closest(".profile-dropdown-wrapper")){
         const menu= document.getElementById("dropdownMenu");
         const theme= document.getElementById("themeDropdownMenu");
+        const zoomMenu = document.getElementById("screenZoomMenu");
         if(menu){ menu.style.display= "none"; }
         if(theme){ theme.style.display= "none"; }
+        if(zoomMenu){ zoomMenu.style.display = "none"; }
     }
     if(!event.target.closest(".search-bar-wrapper")){
         const search= document.getElementById("searchSuggestions");
