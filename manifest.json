@@ -1,7 +1,7 @@
 {
-    "name": "TEXFRIEND ERP",
+    "name": "TEXFOREVER",
     "short_name": "TEXFRIEND",
-    "description": "TEXFRIEND Textile ERP - Offline + Cloud Sync",
+    "description": "TEXFOREVER - Offline + Cloud Sync",
 
     "start_url": "./",
     "scope": "./",

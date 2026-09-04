@@ -1,5 +1,5 @@
 // ============================================================
-// TEXFRIEND ERP
+// TEXFOREVER
 // sw.js
 // PWA + OFFLINE ALL PAGES + LOCAL-FIRST + CLOUD READY
 // ============================================================
@@ -10,7 +10,7 @@
 // ✅ Online Network First
 // ✅ Offline Cache Fallback
 // ✅ Firebase / Google API NOT cached
-// ✅ Old TEXFRIEND caches cleaned
+// ✅ Old TEXFOREVER caches cleaned
 // ✅ Service Worker update support
 // ============================================================
 
@@ -24,10 +24,10 @@
 const CACHE_VERSION = "v4";
 
 const CACHE_NAME =
-    "texfriend-erp-" + CACHE_VERSION;
+    "TEXFOREVER-" + CACHE_VERSION;
 
 const APP_SHELL_CACHE =
-    "texfriend-shell-" + CACHE_VERSION;
+    "TEXFOREVER-shell-" + CACHE_VERSION;
 
 
 // ============================================================
@@ -156,7 +156,7 @@ self.addEventListener(
     event => {
 
         console.log(
-            "📦 TEXFRIEND ERP SW installing:",
+            "📦 TEXFOREVER SW installing:",
             CACHE_NAME
         );
 
@@ -242,7 +242,7 @@ self.addEventListener(
                 () => {
 
                     console.log(
-                        "✅ TEXFRIEND ERP pages cached"
+                        "✅ TEXFOREVER pages cached"
                     );
 
 
@@ -281,7 +281,7 @@ self.addEventListener(
     event => {
 
         console.log(
-            "⚡ TEXFRIEND ERP SW activated:",
+            "⚡ TEXFOREVER SW activated:",
             CACHE_NAME
         );
 
@@ -299,14 +299,14 @@ self.addEventListener(
                             cacheName => {
 
                                 /*
-                                 * Delete old TEXFRIEND
+                                 * Delete old TEXFOREVER
                                  * caches.
                                  */
 
                                 if (
 
                                     cacheName.startsWith(
-                                        "texfriend-"
+                                        "TEXFOREVER-"
                                     ) &&
 
                                     cacheName !==
@@ -543,7 +543,7 @@ async function handleNavigation(
 
 
     return new Response(
-        "TEXFRIEND ERP is offline.",
+        "TEXFOREVER is offline.",
         {
             status: 503,
             headers: {
@@ -630,7 +630,7 @@ async function handleStaticRequest(
 
 
         return new Response(
-            "TEXFRIEND ERP offline.\n\n" +
+            "TEXFOREVER offline.\n\n" +
             "This resource is not cached.",
             {
                 status: 503,
@@ -784,7 +784,7 @@ self.addEventListener(
         ) {
 
             console.log(
-                "🔄 TEXFRIEND: Force update"
+                "🔄 TEXFOREVER: Force update"
             );
 
 
@@ -794,12 +794,12 @@ self.addEventListener(
 
 
         /*
-         * Clear TEXFRIEND caches.
+         * Clear TEXFOREVER caches.
          */
 
         if (
             event.data.type ===
-            "CLEAR_TEXFRIEND_CACHE"
+            "CLEAR_TEXFOREVER_CACHE"
         ) {
 
             event.waitUntil(
@@ -816,7 +816,7 @@ self.addEventListener(
                                 .filter(
                                     name =>
                                         name.startsWith(
-                                            "texfriend-"
+                                            "TEXFOREVER-"
                                         )
                                 )
 
@@ -836,7 +836,7 @@ self.addEventListener(
                     () => {
 
                         console.log(
-                            "🧹 TEXFRIEND caches cleared"
+                            "🧹 TEXFOREVER caches cleared"
                         );
 
                     }
@@ -859,7 +859,7 @@ self.addEventListener(
     event => {
 
         console.error(
-            "❌ TEXFRIEND SW Error:",
+            "❌ TEXFOREVER SW Error:",
             event.error
         );
 
@@ -876,7 +876,7 @@ self.addEventListener(
     event => {
 
         console.error(
-            "❌ TEXFRIEND SW Promise Error:",
+            "❌ TEXFOREVER SW Promise Error:",
             event.reason
         );
 
@@ -889,6 +889,6 @@ self.addEventListener(
 // ============================================================
 
 console.log(
-    "🚀 TEXFRIEND ERP Service Worker Ready:",
+    "🚀 TEXFOREVER Service Worker Ready:",
     CACHE_NAME
 );

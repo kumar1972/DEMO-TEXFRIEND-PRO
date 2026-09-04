@@ -908,7 +908,7 @@ Advanced Config
 
 
 /* ============================================================
-   TEXFRIEND ERP SETTINGS
+   TEXFOREVER SETTINGS
 ============================================================ */
 
 let tempLogoData = "";
@@ -2839,7 +2839,7 @@ async function executeSaveAll(){
             .then(function(results){
 
                 console.log(
-                    "TEXFRIEND cloud sync completed:",
+                    "TEXFOREVER cloud sync completed:",
                     results
                 );
 
@@ -2962,7 +2962,7 @@ function backupAllData(){
         const payload = {
 
             app:
-                "TEXFRIEND ERP",
+                "TEXFOREVER",
 
             version:
                 "Settings Backup",
@@ -2997,7 +2997,7 @@ function backupAllData(){
         a.href = url;
 
         a.download =
-            "texfriend_erp_backup_" +
+            "TEXFOREVER_backup_" +
             new Date()
                 .toISOString()
                 .slice(0,10) +
@@ -3230,7 +3230,7 @@ function initialiseSettings(){
     const heading =
         safeLoad(
             "app_heading_name",
-            "TEXFRIEND ERP"
+            "TEXFOREVER"
         );
 
     if($("set_heading")){
@@ -3245,7 +3245,7 @@ function initialiseSettings(){
     const address =
         safeLoad(
             "company_full_address",
-            "TEXFRIEND ERP SOLUTIONS\nSalem, Tamil Nadu."
+            "TEXFOREVER SOLUTIONS \n Salem, Tamil Nadu."
         );
 
     if($("set_comp_addr")){

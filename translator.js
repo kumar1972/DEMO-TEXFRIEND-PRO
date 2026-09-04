@@ -42,8 +42,8 @@ function translateColorToTamil(colorName) {
         'purple': 'பர்புள்',
         'beige': 'பேஜ்',
         'silver': 'சில்வர்',
-        'peach': 'பீச்'
-        'Mint': 'மிண்ட்'
+        'peach': 'பீச்',
+        'Mint': 'மிண்ட்',
     };
 
     if (map[c]) return map[c];

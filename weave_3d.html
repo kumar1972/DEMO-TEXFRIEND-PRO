@@ -1809,7 +1809,7 @@ function buildDesignPrintContent() {
     return `
         <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #173d2d; padding-bottom:6px; margin-bottom:10px;">
             <div>
-                <div style="font-size:16px; font-weight:950; color:#153c2c; letter-spacing:0.5px; margin-bottom:2px;">TEXFRIEND <span style="font-size:10px; color:#596861; font-weight:700;">| DESIGN SHEET — ${escapeColourText(dName)}</span></div>
+                <div style="font-size:16px; font-weight:950; color:#153c2c; letter-spacing:0.5px; margin-bottom:2px;">TEXFOREVER <span style="font-size:10px; color:#596861; font-weight:700;">| DESIGN SHEET — ${escapeColourText(dName)}</span></div>
                 <div style="font-size:7px; font-weight:800; color:#63736c; letter-spacing:0.5px;">WARPING PLAN • DRAWING ORDER • WEAVE GRAPH</div>
             </div>
             <div style="text-align:right; font-size:10px; font-weight:900; color:#153c2c;">
@@ -1873,7 +1873,7 @@ function buildDesignPrintContent() {
         </div>
 
         <div class="print-footer">
-            <span>TEXFRIEND • Technical Reference Copy</span>
+            <span>TEXFOREVER • Technical Reference Copy</span>
             <span>Generated: ${stamp}</span>
         </div>
     `;
@@ -1964,7 +1964,7 @@ function print3DOnly() {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TEXFRIEND — 3D CAD Weave Full Print</title>
+<title>TEXFOREVER — 3D CAD Weave Full Print</title>
 <style>
   @page { 
       size: A4 landscape; 
@@ -2013,7 +2013,7 @@ function print3DOnly() {
 </head>
 <body>
   <div class="print-header">
-      <b>TEXFRIEND | 3D CAD WEAVE PREVIEW</b>
+      <b>TEXFOREVER | 3D CAD WEAVE PREVIEW</b>
       <span>${escapeColourText(activeDesignObj ? designName(activeDesignObj) : '3D Weave')}</span>
   </div>
   <div class="print-cad-wrap">
@@ -2157,7 +2157,7 @@ function triggerRealPrint() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TEXFRIEND Design Sheet</title>
+<title>TEXFOREVER Design Sheet</title>
 ${styles}
 <style>${printCSS}</style>
 </head>
