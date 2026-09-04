@@ -186,7 +186,7 @@
             border-radius: 8px;
             border: 1px solid #D1DED1;
             background: #FFFFFF;
-            color: #1E22A3;
+            color: #1E2B23;
             font-size: 11px;
             font-weight: 600;
             transition: all 0.3s ease;
@@ -205,7 +205,6 @@
             width: 100%;
         }
 
-        /* 🟢 input & select added here to support datalist 🟢 */
         .input-group-btn input,
         .input-group-btn select {
             flex: 1;
@@ -875,9 +874,10 @@
             <label>Select Design Number</label>
 
             <div class="input-group-btn">
-                <!-- 🟢 Editable Input with Datalist 🟢 -->
-                <input type="text" id="designNo" list="designList" placeholder="Select or type Design No" onchange="loadWeftDesignData()" autocomplete="off">
-                <datalist id="designList"></datalist>
+                <!-- 🟢 Standard Select Dropdown 🟢 -->
+                <select id="designNo" onchange="loadWeftDesignData()">
+                    <option value="">Select Design No</option>
+                </select>
 
                 <button
                     class="btn-copy-design"
@@ -1471,7 +1471,7 @@ function loadBitmapImage() {
 
 
 /* ============================================================
-   DESIGN DROPDOWN
+   DESIGN DROPDOWN (STANDARD SELECT)
 ============================================================ */
 
 function loadDesignDropdown() {
@@ -1547,12 +1547,11 @@ function loadDesignDropdown() {
         });
     }
 
-    let select = document.getElementById('designNo');
-    let datalist = document.getElementById('designList');
+    let designElement = document.getElementById('designNo');
 
-    if (!select || !datalist) return;
+    if (!designElement) return;
 
-    datalist.innerHTML = '';
+    designElement.innerHTML = '<option value="">Select Design No</option>';
 
     Array.from(allDesigns)
         .filter(Boolean)
@@ -1565,7 +1564,8 @@ function loadDesignDropdown() {
         .forEach(d => {
             let option = document.createElement('option');
             option.value = d;
-            datalist.appendChild(option);
+            option.textContent = d;
+            designElement.appendChild(option);
         });
 
     let activeDesign = localStorage.getItem('selected_design_number');
@@ -1579,7 +1579,7 @@ function loadDesignDropdown() {
         )
     ) {
 
-        select.value = Array.from(allDesigns).find(
+        designElement.value = Array.from(allDesigns).find(
             d => cleanDesignName(d) === cleanDesignName(activeDesign)
         );
         loadWeftDesignData();
@@ -1967,7 +1967,7 @@ function loadDefaultRow() {
 
 
 /* ============================================================
-   COPY DESIGN
+   COPY DESIGN (UPDATE FOR SELECT ELEMENT)
 ============================================================ */
 
 async function copyToNewDesign() {
@@ -2337,13 +2337,11 @@ async function copyToNewDesign() {
 
     const designElement = document.getElementById('designNo');
     if (designElement) {
+        const option = document.createElement('option');
+        option.value = newDNo;
+        option.textContent = newDNo;
+        designElement.appendChild(option);
         designElement.value = newDNo;
-        const datalist = document.getElementById('designList');
-        if (datalist) {
-            const option = document.createElement('option');
-            option.value = newDNo;
-            datalist.appendChild(option);
-        }
     }
 
     localStorage.setItem(
@@ -3976,17 +3974,14 @@ function editDesignPattern(dNo) {
 
     let select = document.getElementById('designNo');
     
-    let datalist = document.getElementById('designList');
-    if(datalist) {
-        let optionExists = Array.from(datalist.options).some(opt => cleanDesignName(opt.value) === cleanDesignName(dNo));
+    if (select) {
+        let optionExists = Array.from(select.options).some(opt => cleanDesignName(opt.value) === cleanDesignName(dNo));
         if(!optionExists) {
             let newOption = document.createElement('option');
             newOption.value = dNo;
-            datalist.appendChild(newOption);
+            newOption.textContent = dNo;
+            select.appendChild(newOption);
         }
-    }
-
-    if (select) {
         select.value = dNo;
     }
 

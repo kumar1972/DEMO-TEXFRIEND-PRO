@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Design Masiter - TEXFRIEND ERP</title>
+    <title>Design Master - TEXFRIEND ERP</title>
     <!-- IMPORTANT: config.js must load first -->
     <script src="config.js"></script>
     <script src="translator.js"></script>
@@ -41,11 +41,11 @@
 
         .form-section { 
             background: #F8FAF8; border: 1px solid #E2E8E2; border-radius: 14px; 
-            padding: 20px 15px 15px 15px; margin-bottom: 5px; position: relative; 
+            padding: 15px; margin-bottom: 5px; position: relative; 
             display: flex; flex-direction: column; gap: 12px; 
         }
         
-        .form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; width: 100%; }
         .form-group { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 4px; }
         .form-group label { font-size: 11px; color: #4A554A; font-weight: 600; white-space: nowrap; }
         
@@ -56,17 +56,34 @@
         }
         input:focus, select:focus { border-color: #4A7C59; outline: none; box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.15); }
         
+        /* New 4 Buttons Row Layout */
+        .action-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+            width: 100%; margin-top: 5px; margin-bottom: 10px;
+        }
+        .action-btn {
+            padding: 10px 4px; border-radius: 8px; border: none; color: white;
+            font-weight: 700; font-size: 12px; cursor: pointer; text-align: center;
+            box-shadow: 0 4px 10px rgba(30, 43, 35, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(30, 43, 35, 0.2); }
+        .action-btn:active { transform: translateY(0); }
+
+        .btn-del { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .btn-edit { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .btn-add { background: linear-gradient(135deg, #10B981, #059669); }
+        .btn-save { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        
+        /* Photo Save Button styling */
+        .btn-photo-save { background: linear-gradient(135deg, #8B5CF6, #6D28D9); width: 100%; margin-top: 10px; padding: 12px; font-size: 14px; text-transform: uppercase;}
+
         .custom-upload-btn {
             background: #F4F7F4; border: 1px dashed #4A7C59; color: #2F4F38; padding: 12px;
             border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; text-align: center;
             display: block; transition: background 0.2s; width: 100%;
         }
         .custom-upload-btn:hover { background: #EAF0EA; }
-
-        .btn-add { background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(30, 43, 35, 0.1); }
-        .btn-del { background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(30, 43, 35, 0.1); }
-        .btn-edit { background: linear-gradient(135deg, #Aa3B82, #1D44a8); width: 100%; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(30, 43, 35, 0.15); margin-top: 10px; text-transform: uppercase; }
-        .btn-add:hover, .btn-del:hover, .btn-edit:hover { transform: translateY(-2px); }
 
         #bitmapPreviewBox { background: #FFFFFF; padding: 12px; border-radius: 12px; border: 1px solid #D1DED1; box-shadow: 0 4px 12px rgba(30, 43, 35, 0.05); margin-top: 5px; text-align: center; display: none; }
         #bitmapImgTag { width: 100%; max-height: 280px; object-fit: contain; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); cursor: zoom-in; }
@@ -100,6 +117,35 @@
         }
 
         .hidden-file-input { opacity: 0; position: absolute; z-index: -1; width: 0; height: 0; }
+
+        /* Custom Weave Dropdown Overlay Styles */
+        .weave-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); z-index: 99999;
+            align-items: center; justify-content: center;
+        }
+        .weave-dropdown-box {
+            background-color: #3b3231; color: #f0f0f0; width: 90%; max-width: 350px;
+            border-radius: 16px; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .weave-option {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 20px; font-size: 14px; border-bottom: 1px solid #524746;
+            cursor: pointer; transition: background 0.2s ease;
+        }
+        .weave-option:active { background-color: #4a3f3e; }
+        .weave-option:last-child { border-bottom: none; }
+        .weave-option input[type="radio"] {
+            appearance: none; -webkit-appearance: none; width: 20px; height: 20px;
+            border: 2px solid #9e9e9e; border-radius: 50%; outline: none; position: relative; cursor: pointer;
+        }
+        .weave-option input[type="radio"]:checked { border-color: #e09e9e; }
+        .weave-option input[type="radio"]:checked::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 10px; height: 10px;
+            background: #e09e9e; border-radius: 50%;
+        }
     </style>
 </head>
 <body>
@@ -109,21 +155,29 @@
         <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
     </div>
 
-    <h2 class=.card-header {
-    color: #FFFFF; /* Inga unga color-a change pannikalam */
-}
->🎨 Design Setup Master</h2>
+    <h2 class="card-header" style="color: #2F4F38;">🎨 Design Setup Master</h2>
 
     <div class="form-section">
+        
+        <!-- 🟢 Select & Input Row 🟢 -->
         <div class="form-row">
-            <select id="designSelect" onchange="selectDesign(this.value)" style="flex:2;"></select>
-            <button class="btn-del" id="delBtn" onclick="deleteDesign()">Delete</button>
+            <select id="designSelect" onchange="selectDesign(this.value)" style="width: 100%;"></select>
         </div>
         <div class="form-row">
-            <input type="text" id="newDesign" placeholder="Enter New Design No" style="flex:2;">
-            <button class="btn-add" id="addBtn" onclick="addDesign()">+ Add</button>
+            <input type="text" id="newDesign" placeholder="Enter New / Rename Design No" style="width: 100%;">
         </div>
         
+        <!-- 🟢 4 Action Buttons in One Row 🟢 -->
+        <div class="action-row">
+            <button class="action-btn btn-del" id="delBtn" onclick="deleteDesign()">🗑️ Del</button>
+            <button class="action-btn btn-edit" id="renameBtn" onclick="renameDesign()">✏️ Edit</button>
+            <button class="action-btn btn-add" id="addBtn" onclick="addDesign()">➕ Add</button>
+            <button class="action-btn btn-save" id="saveBtn" onclick="updateDesign()">💾 Save</button>
+        </div>
+        
+        <hr style="border: 0; height: 1px; background: #D1DED1; margin: 10px 0;">
+
+        <!-- 🟢 Auto-Populating Form Data 🟢 -->
         <div class="form-row">
             <div class="form-group"><label>Warp 1 (Grnd / Base)</label><input type="text" id="warpCount" placeholder="2/60"></div>
             <div class="form-group"><label>Warp 2 (Top Beam)</label><input type="text" id="warpCount2" placeholder="2/40"></div>
@@ -132,23 +186,26 @@
         </div>
         
         <div class="form-row">
-            <!-- 🟢 Finish Inputs -->
             <div class="form-group"><label>Finish Reed</label><input type="number" id="reed" oninput="updateFinishReed()"></div>
             <div class="form-group"><label>Finish Pick</label><input type="number" id="pick" oninput="updateFinishPick()"></div>
             <div class="form-group"><label>Finish Width</label><input type="number" id="width" placeholder="66" step="0.01" oninput="updateFinishWidth()"></div>
-            <div class="form-group"><label>Weave</label><input type="text" id="weave"></div>
+            
+            <div class="form-group">
+                <label>Weave</label>
+                <input type="text" id="weave" readonly placeholder="Select Weave" onclick="openWeaveDropdown()" style="cursor: pointer;">
+            </div>
         </div>
 
         <div class="form-row">
-            <!-- 🟢 Onloom Inputs Auto-Calculate -->
             <div class="form-group"><label>Onloom Reed</label><input type="number" id="onloomReed" oninput="calcOnloomWidth()"></div>
             <div class="form-group"><label>Onloom Pick</label><input type="number" id="onloomPick"></div>
             <div class="form-group"><label>Onloom Width</label><input type="number" id="onloomWidth" step="0.01"></div>
             <div class="form-group"><label>Type of Process</label><input type="text" id="typeOfProcess" placeholder="e.g., Bleaching, Dyeing"></div>
         </div>
         
-        <div class="form-group" style="margin-top: 10px;">
-            <label>Design Bitmap / Photo Upload</label>
+        <!-- 🟢 Dedicated Photo Upload Section 🟢 -->
+        <div class="form-group" style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #4A7C59;">
+            <label style="font-size: 13px; color: #2F4F38; margin-bottom: 5px;">🖼️ Upload Design Photo</label>
             <button type="button" class="custom-upload-btn" onclick="openChoiceModal()">📷 Take Photo / 🖼️ Choose from Gallery</button>
             
             <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden-file-input" onchange="handleFileSelect(this)">
@@ -159,7 +216,8 @@
             <img id="bitmapImgTag" src="" alt="Bitmap" onclick="openFullscreenImage(this.src)">
         </div>
         
-        <button class="btn-edit" id="editBtn" onclick="updateDesign()">✏️ Update / Edit Design</button>
+        <!-- 🟢 Separate Photo Save Button 🟢 -->
+        <button class="action-btn btn-photo-save" id="photoSaveBtn" onclick="savePhotoOnly()">🖼️ Save Photo</button>
     </div>
 </div>
 
@@ -178,6 +236,20 @@
     <img id="fullscreenImg" src="" alt="Fullscreen Preview">
 </div>
 
+<!-- Custom Weave Dropdown Modal -->
+<div id="weaveOverlay" class="weave-overlay" onclick="closeWeaveDropdown(event)">
+    <div class="weave-dropdown-box">
+        <label class="weave-option"><span>Plain stripe</span><input type="radio" name="weaveSelection" value="Plain stripe"></label>
+        <label class="weave-option"><span>Plain check</span><input type="radio" name="weaveSelection" value="Plain check"></label>
+        <label class="weave-option"><span>Dobby stripe</span><input type="radio" name="weaveSelection" value="Dobby stripe"></label>
+        <label class="weave-option"><span>Dobby check</span><input type="radio" name="weaveSelection" value="Dobby check"></label>
+        <label class="weave-option"><span>Seersucker stripe</span><input type="radio" name="weaveSelection" value="Seersucker stripe"></label>
+        <label class="weave-option"><span>Seersucker check</span><input type="radio" name="weaveSelection" value="Seersucker check"></label>
+        <label class="weave-option"><span>Twill Checks</span><input type="radio" name="weaveSelection" value="Twill Checks"></label>
+        <label class="weave-option"><span>Twill Stripes</span><input type="radio" name="weaveSelection" value="Twill Stripes"></label>
+    </div>
+</div>
+
 <script>
     let designList = [];
     let tempBitmapData = "";
@@ -191,7 +263,10 @@
         return true; 
     }
 
-    function cleanDesignName(str) { return str ? str.toString().replace('#', '').trim().toLowerCase() : ''; }
+    // UPDATED: Better cleaning logic to handle '#' symbols and extra spaces reliably
+    function cleanDesignName(str) { 
+        return str ? str.toString().replace(/#/g, '').replace(/\s+/g, ' ').trim().toLowerCase() : ''; 
+    }
     
     function getSpecKey(designNo) {
         let specs = JSON.parse(localStorage.getItem('design_specs') || '{}');
@@ -214,31 +289,42 @@
         let masterNames = Array.isArray(masters) ? masters.map(d => d.name || d.designNo).filter(Boolean) : [];
         designList = Array.from(new Set([...preDesigns, ...masterNames, ...Object.keys(specs)]));
         loadDesignDropdown();
+
+        // Bind Weave Radio Buttons
+        document.querySelectorAll('input[name="weaveSelection"]').forEach((radioBtn) => {
+            radioBtn.addEventListener("change", function(event) {
+                document.getElementById("weave").value = event.target.value;
+                setTimeout(() => { document.getElementById('weaveOverlay').style.display = 'none'; }, 200);
+            });
+        });
     });
+
+    // 🟢 WEAVE DROPDOWN LOGIC 🟢
+    window.openWeaveDropdown = function() {
+        document.getElementById('weaveOverlay').style.display = 'flex';
+        let currentValue = document.getElementById('weave').value;
+        document.querySelectorAll('input[name="weaveSelection"]').forEach(radio => {
+            radio.checked = (radio.value === currentValue);
+        });
+    };
+
+    window.closeWeaveDropdown = function(event) {
+        if(event.target.id === 'weaveOverlay') document.getElementById('weaveOverlay').style.display = 'none';
+    };
 
     // 🟢 AUTO CALCULATION LOGIC 🟢
     function updateFinishReed() {
         let fReed = parseFloat(document.getElementById('reed').value) || 0;
-        if(fReed > 0) {
-            document.getElementById('onloomReed').value = fReed - 8;
-        } else {
-            document.getElementById('onloomReed').value = '';
-        }
+        document.getElementById('onloomReed').value = (fReed > 0) ? fReed - 8 : '';
         calcOnloomWidth();
     }
 
     function updateFinishPick() {
         let fPick = parseFloat(document.getElementById('pick').value) || 0;
-        if(fPick > 0) {
-            document.getElementById('onloomPick').value = fPick - 4;
-        } else {
-            document.getElementById('onloomPick').value = '';
-        }
+        document.getElementById('onloomPick').value = (fPick > 0) ? fPick - 4 : '';
     }
 
-    function updateFinishWidth() {
-        calcOnloomWidth();
-    }
+    function updateFinishWidth() { calcOnloomWidth(); }
 
     function calcOnloomWidth() {
         let fReed = parseFloat(document.getElementById('reed').value) || 0;
@@ -254,6 +340,7 @@
         }
     }
 
+    // 🟢 PHOTO UPLOAD LOGIC 🟢
     window.openChoiceModal = () => document.getElementById('choiceModal').style.display = 'flex';
     window.closeChoiceModal = () => document.getElementById('choiceModal').style.display = 'none';
 
@@ -293,6 +380,7 @@
         };
     }
 
+    // 🟢 CLOUD SYNC LOGIC 🟢
     async function syncDesignMasterToCloud(updatedList, updatedSpecs, activeDesignNo) {
         let designMasters = Array.isArray(JSON.parse(localStorage.getItem('design_masters_data'))) ? JSON.parse(localStorage.getItem('design_masters_data')) : [];
         
@@ -301,31 +389,15 @@
             let s = updatedSpecs[specKey] || {};
             let mIndex = designMasters.findIndex(m => cleanDesignName(m.name || m.designNo) === cleanDesignName(activeDesignNo));
             let masterObj = {
-                name: activeDesignNo,
-                designNo: activeDesignNo,
-                warp1: s.warp || '',
-                baseBeamCount: s.warp || '',
-                warp2: s.warp2 || '',
-                topBeamCount: s.warp2 || '',
-                weftCount: s.weft || '',
-                weft2: s.weft2 || '',
-                width: s.width || '',
-                reed: s.reed || '',
-                pick: s.pick || '',
-                onloomReed: s.onloomReed || '', 
-                onloomPick: s.onloomPick || '', 
-                onloomWidth: s.onloomWidth || '', 
-                weave: s.weave || '',
-                typeOfProcess: s.typeOfProcess || '',
-                status: s.status || 'running',
-                bitmap: s.bitmap || ''
+                name: activeDesignNo, designNo: activeDesignNo,
+                warp1: s.warp || '', baseBeamCount: s.warp || '', warp2: s.warp2 || '', topBeamCount: s.warp2 || '',
+                weftCount: s.weft || '', weft2: s.weft2 || '', width: s.width || '', reed: s.reed || '', pick: s.pick || '',
+                onloomReed: s.onloomReed || '', onloomPick: s.onloomPick || '', onloomWidth: s.onloomWidth || '', 
+                weave: s.weave || '', typeOfProcess: s.typeOfProcess || '', status: s.status || 'running', bitmap: s.bitmap || ''
             };
 
-            if (mIndex > -1) {
-                designMasters[mIndex] = { ...designMasters[mIndex], ...masterObj };
-            } else {
-                designMasters.push(masterObj);
-            }
+            if (mIndex > -1) { designMasters[mIndex] = { ...designMasters[mIndex], ...masterObj }; } 
+            else { designMasters.push(masterObj); }
         }
 
         localStorage.setItem('pre_design_numbers', JSON.stringify(updatedList));
@@ -344,136 +416,16 @@
         }
     }
 
-    window.addDesign = async function() {
-        if (!checkUserPermission()) { alert("Access Denied!"); return; }
-        
-        let designNo = document.getElementById('newDesign').value.trim();
-        if(!designNo) { alert("Design Number type pannu"); return; }
-
-        let cleanDNo = cleanDesignName(designNo);
-        let alreadyExists = designList.some(d => cleanDesignName(d) === cleanDNo);
-
-        if(alreadyExists) {
-            if(!confirm("இந்த டிசைனுக்கு ஏற்கனவே என்ட்ரி செய்யப்பட்டுள்ளது. மீண்டும் ரீ-என்ட்ரி செய்ய வேண்டுமா?")) return;
-            designList = designList.filter(d => cleanDesignName(d) !== cleanDNo);
-        }
-
-        document.getElementById('addBtn').innerText = "Saving...⏳";
-        designList.push(designNo);
-        
-        let warp1 = document.getElementById('warpCount').value.trim();
-        let warp2 = document.getElementById('warpCount2').value.trim();
-        let weft1 = document.getElementById('weftCount').value.trim();
-        let weft2 = document.getElementById('weftCount2').value.trim();
-
-        let specs = { 
-            warp: warp1,
-            baseBeamCount: warp1,
-            warp2: warp2,
-            topBeamCount: warp2,
-            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1,
-            weft: weft1, 
-            weftCount: weft1, 
-            weft2: weft2,
-            width: document.getElementById('width').value.trim(), 
-            reed: document.getElementById('reed').value.trim(), 
-            pick: document.getElementById('pick').value.trim(), 
-            onloomReed: document.getElementById('onloomReed').value.trim(),
-            onloomPick: document.getElementById('onloomPick').value.trim(),
-            onloomWidth: document.getElementById('onloomWidth').value.trim(),
-            weave: document.getElementById('weave').value.trim(), 
-            weaveType: document.getElementById('weave').value.trim(), 
-            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), 
-            status: 'running', 
-            bitmap: tempBitmapData 
-        };
-        
-        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
-        let key = getSpecKey(designNo);
-        designSpecs[key] = specs; 
-        
-        try {
-            await syncDesignMasterToCloud(designList, designSpecs, designNo);
-
-            tempBitmapData = ""; 
-            loadDesignDropdown();
-            document.getElementById('newDesign').value = '';
-            
-            if(window.showNotification) window.showNotification("Design Saved Successfully!");
-        } catch (err) {
-            if(window.showNotification) window.showNotification("Error saving: " + err.message, "error");
-        } finally {
-            document.getElementById('addBtn').innerText = "+ Add";
-        }
-    };
-
-    window.updateDesign = async function() {
-        if (!checkUserPermission()) { alert("Access Denied!"); return; }
-        
-        let designNo = document.getElementById('designSelect').value;
-        if(!designNo) { alert("Select Design First!"); return; }
-        
-        document.getElementById('editBtn').innerText = "Updating...⏳";
-        
-        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
-        let key = getSpecKey(designNo);
-        let existing = designSpecs[key] || {};
-        
-        let finalBitmap = (tempBitmapData && tempBitmapData !== "") ? tempBitmapData : (existing.bitmap || "");
-
-        let warp1 = document.getElementById('warpCount').value.trim();
-        let warp2 = document.getElementById('warpCount2').value.trim();
-        let weft1 = document.getElementById('weftCount').value.trim();
-        let weft2 = document.getElementById('weftCount2').value.trim();
-
-        let updatedSpecs = { 
-            ...existing,
-            warp: warp1, 
-            baseBeamCount: warp1,
-            warp2: warp2, 
-            topBeamCount: warp2,
-            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1,
-            weft: weft1, 
-            weftCount: weft1, 
-            weft2: weft2,
-            width: document.getElementById('width').value.trim(), 
-            reed: document.getElementById('reed').value.trim(), 
-            pick: document.getElementById('pick').value.trim(), 
-            onloomReed: document.getElementById('onloomReed').value.trim(),
-            onloomPick: document.getElementById('onloomPick').value.trim(),
-            onloomWidth: document.getElementById('onloomWidth').value.trim(),
-            weave: document.getElementById('weave').value.trim(), 
-            weaveType: document.getElementById('weave').value.trim(), 
-            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), 
-            status: existing.status || 'running',
-            bitmap: finalBitmap 
-        };
-
-        designSpecs[key] = updatedSpecs;
-        
-        try {
-            await syncDesignMasterToCloud(designList, designSpecs, designNo);
-            tempBitmapData = ""; 
-            
-            if(window.showNotification) window.showNotification("Design Updated Successfully!");
-        } catch (err) {
-            if(window.showNotification) window.showNotification("Error updating! " + err.message, "error");
-        } finally {
-            document.getElementById('editBtn').innerText = "✏️ Update / Edit Design";
-        }
-    };
-
+    // 🟢 4 BUTTONS FUNCTIONS (Row 1) 🟢
+    
     window.deleteDesign = async function() {
         if (!checkUserPermission()) { alert("Access Denied!"); return; }
         
         let designNo = document.getElementById('designSelect').value;
-        if(!designNo) {
-            alert("Delete செய்ய ஒரு Design-ஐ தேர்ந்தெடுக்கவும்!");
-            return;
-        }
+        if(!designNo) { alert("Delete செய்ய ஒரு Design-ஐ தேர்ந்தெடுக்கவும்!"); return; }
         
         if(confirm(designNo + " delete pannalama?")){
-            document.getElementById('delBtn').innerText = "Del...⏳";
+            document.getElementById('delBtn').innerText = "⏳...";
             
             designList = designList.filter(x => cleanDesignName(x) !== cleanDesignName(designNo));
             
@@ -491,19 +443,196 @@
             try {
                 localStorage.removeItem('selected_design_number');
                 await syncDesignMasterToCloud(designList, designSpecs, null);
-
-                loadDesignDropdown();
-                clearForm();
-                
+                loadDesignDropdown(); clearForm();
                 if(window.showNotification) window.showNotification("Design deleted successfully!");
             } catch (err) {
                 if(window.showNotification) window.showNotification("Error deleting! " + err.message, "error");
-            } finally {
-                document.getElementById('delBtn').innerText = "Delete";
-            }
+            } finally { document.getElementById('delBtn').innerText = "🗑️ Del"; }
         }
     };
 
+    window.renameDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+
+        let oldDesignNo = document.getElementById('designSelect').value;
+        let newDesignNo = document.getElementById('newDesign').value.trim();
+
+        if(!oldDesignNo) { alert("Please select a design from the dropdown to rename."); return; }
+        if(!newDesignNo) { alert("Please enter the new design name in the box above."); return; }
+
+        let cleanOld = cleanDesignName(oldDesignNo);
+        let cleanNew = cleanDesignName(newDesignNo);
+
+        if(cleanOld === cleanNew) return; 
+
+        if (designList.some(d => cleanDesignName(d) === cleanNew)) {
+            alert("இந்த பெயரில் ஏற்கனவே ஒரு Design உள்ளது! (This design name already exists)");
+            return;
+        }
+
+        if(confirm(`"${oldDesignNo}" என்பதை "${newDesignNo}" என பெயர் மாற்றம் செய்யலாமா?`)) {
+            document.getElementById('renameBtn').innerText = "⏳...";
+
+            let index = designList.findIndex(d => cleanDesignName(d) === cleanOld);
+            if(index !== -1) designList[index] = newDesignNo;
+
+            let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+            let oldKey = getSpecKey(oldDesignNo);
+            if (designSpecs[oldKey]) {
+                designSpecs[newDesignNo] = { ...designSpecs[oldKey] }; 
+                delete designSpecs[oldKey]; 
+            }
+
+            let preDesigns = JSON.parse(localStorage.getItem('pre_design_numbers')) || [];
+            let pIndex = preDesigns.findIndex(d => cleanDesignName(d) === cleanOld);
+            if (pIndex !== -1) {
+                preDesigns[pIndex] = newDesignNo;
+                localStorage.setItem('pre_design_numbers', JSON.stringify(preDesigns));
+            }
+
+            let designMasters = JSON.parse(localStorage.getItem('design_masters_data')) || [];
+            let mIndex = designMasters.findIndex(m => cleanDesignName(m.name || m.designNo) === cleanOld);
+            if (mIndex !== -1) {
+                designMasters[mIndex].name = newDesignNo;
+                designMasters[mIndex].designNo = newDesignNo;
+            }
+
+            try {
+                localStorage.setItem('selected_design_number', newDesignNo);
+                await syncDesignMasterToCloud(designList, designSpecs, newDesignNo);
+                
+                localStorage.setItem('design_masters_data', JSON.stringify(designMasters));
+                if (window.firebaseSave) { await window.firebaseSave('design_masters_data', designMasters); }
+
+                loadDesignDropdown();
+                document.getElementById('newDesign').value = '';
+                if(window.showNotification) window.showNotification("Design renamed successfully!");
+            } catch (err) {
+                if(window.showNotification) window.showNotification("Error renaming! " + err.message, "error");
+            } finally { document.getElementById('renameBtn').innerText = "✏️ Edit"; }
+        }
+    };
+
+    window.addDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('newDesign').value.trim();
+        if(!designNo) { alert("Design Number type pannu"); return; }
+
+        let cleanDNo = cleanDesignName(designNo);
+        let alreadyExists = designList.some(d => cleanDesignName(d) === cleanDNo);
+
+        if(alreadyExists) {
+            if(!confirm("இந்த டிசைனுக்கு ஏற்கனவே என்ட்ரி செய்யப்பட்டுள்ளது. மீண்டும் ரீ-என்ட்ரி செய்ய வேண்டுமா?")) return;
+            designList = designList.filter(d => cleanDesignName(d) !== cleanDNo);
+        }
+
+        document.getElementById('addBtn').innerText = "⏳...";
+        designList.push(designNo);
+        
+        let warp1 = document.getElementById('warpCount').value.trim();
+        let warp2 = document.getElementById('warpCount2').value.trim();
+        let weft1 = document.getElementById('weftCount').value.trim();
+        let weft2 = document.getElementById('weftCount2').value.trim();
+
+        let specs = { 
+            warp: warp1, baseBeamCount: warp1, warp2: warp2, topBeamCount: warp2,
+            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1,
+            weft: weft1, weftCount: weft1, weft2: weft2,
+            width: document.getElementById('width').value.trim(), reed: document.getElementById('reed').value.trim(), 
+            pick: document.getElementById('pick').value.trim(), onloomReed: document.getElementById('onloomReed').value.trim(),
+            onloomPick: document.getElementById('onloomPick').value.trim(), onloomWidth: document.getElementById('onloomWidth').value.trim(),
+            weave: document.getElementById('weave').value.trim(), weaveType: document.getElementById('weave').value.trim(), 
+            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), status: 'running', bitmap: tempBitmapData 
+        };
+        
+        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let key = getSpecKey(designNo);
+        designSpecs[key] = specs; 
+        
+        try {
+            await syncDesignMasterToCloud(designList, designSpecs, designNo);
+            tempBitmapData = ""; loadDesignDropdown(); document.getElementById('newDesign').value = '';
+            if(window.showNotification) window.showNotification("Design Saved Successfully!");
+        } catch (err) {
+            if(window.showNotification) window.showNotification("Error saving: " + err.message, "error");
+        } finally { document.getElementById('addBtn').innerText = "➕ Add"; }
+    };
+
+    window.updateDesign = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('designSelect').value;
+        if(!designNo) { alert("Select Design First!"); return; }
+        
+        document.getElementById('saveBtn').innerText = "⏳...";
+        
+        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let key = getSpecKey(designNo);
+        let existing = designSpecs[key] || {};
+        
+        let finalBitmap = (tempBitmapData && tempBitmapData !== "") ? tempBitmapData : (existing.bitmap || "");
+        let warp1 = document.getElementById('warpCount').value.trim();
+        let warp2 = document.getElementById('warpCount2').value.trim();
+        let weft1 = document.getElementById('weftCount').value.trim();
+        let weft2 = document.getElementById('weftCount2').value.trim();
+
+        let updatedSpecs = { 
+            ...existing, warp: warp1, baseBeamCount: warp1, warp2: warp2, topBeamCount: warp2,
+            baseCount: warp2 ? `${warp1}, ${warp2}` : warp1, weft: weft1, weftCount: weft1, weft2: weft2,
+            width: document.getElementById('width').value.trim(), reed: document.getElementById('reed').value.trim(), 
+            pick: document.getElementById('pick').value.trim(), onloomReed: document.getElementById('onloomReed').value.trim(),
+            onloomPick: document.getElementById('onloomPick').value.trim(), onloomWidth: document.getElementById('onloomWidth').value.trim(),
+            weave: document.getElementById('weave').value.trim(), weaveType: document.getElementById('weave').value.trim(), 
+            typeOfProcess: document.getElementById('typeOfProcess').value.trim(), status: existing.status || 'running', bitmap: finalBitmap 
+        };
+
+        designSpecs[key] = updatedSpecs;
+        
+        try {
+            await syncDesignMasterToCloud(designList, designSpecs, designNo);
+            tempBitmapData = ""; 
+            if(window.showNotification) window.showNotification("Design Details Saved!");
+        } catch (err) {
+            if(window.showNotification) window.showNotification("Error updating! " + err.message, "error");
+        } finally { document.getElementById('saveBtn').innerText = "💾 Save"; }
+    };
+
+    window.savePhotoOnly = async function() {
+        if (!checkUserPermission()) { alert("Access Denied!"); return; }
+        
+        let designNo = document.getElementById('designSelect').value;
+        if(!designNo) { alert("Please select a Design first to save photo!"); return; }
+        
+        if(!tempBitmapData || tempBitmapData === "") {
+            alert("Please take a photo or select from gallery first.");
+            return;
+        }
+
+        document.getElementById('photoSaveBtn').innerText = "Saving...⏳";
+
+        let designSpecs = JSON.parse(localStorage.getItem('design_specs') || '{}');
+        let key = getSpecKey(designNo);
+        
+        if(designSpecs[key]) {
+            designSpecs[key].bitmap = tempBitmapData;
+        } else {
+            alert("Design details not found. Please add design first.");
+            document.getElementById('photoSaveBtn').innerText = "🖼️ Save Photo";
+            return;
+        }
+
+        try {
+            await syncDesignMasterToCloud(designList, designSpecs, designNo);
+            tempBitmapData = ""; 
+            if(window.showNotification) window.showNotification("Photo Uploaded Successfully!");
+            else alert("Photo Uploaded Successfully!");
+        } catch (err) {
+            if(window.showNotification) window.showNotification("Error saving photo: " + err.message, "error");
+        } finally { document.getElementById('photoSaveBtn').innerText = "🖼️ Save Photo"; }
+    };
+
+    // 🟢 UPDATED: LOAD DATA TO DROPDOWN & FORM 🟢
     function loadDesignDropdown() {
         let select = document.getElementById('designSelect');
         let html = '<option value="">Select Design</option>';
@@ -516,37 +645,46 @@
         else { clearForm(); }
     }
 
+    // UPDATED FUNCTION: Fetches data from both Specs and Master Data logic
     window.selectDesign = function(val){
         localStorage.setItem('selected_design_number', val);
         tempBitmapData = ""; 
 
         if(val) {
+            // 1. Get from design_specs
             let specs = JSON.parse(localStorage.getItem('design_specs') || '{}');
             let key = getSpecKey(val);
-            let data = specs[key] || {};
+            let specData = specs[key] || {};
 
-            document.getElementById('warpCount').value = data.warp || data.baseBeamCount || '';
+            // 2. Fallback: Get from design_masters_data
+            let masters = JSON.parse(localStorage.getItem('design_masters_data')) || [];
+            let masterData = masters.find(m => cleanDesignName(m.name || m.designNo) === cleanDesignName(val)) || {};
+
+            // Combine both datas (Specs priorities overwrites Master Data)
+            let data = { ...masterData, ...specData };
+
+            document.getElementById('warpCount').value = data.warp || data.baseBeamCount || data.warp1 || '';
             document.getElementById('warpCount2').value = data.warp2 || data.topBeamCount || '';
-            document.getElementById('weftCount').value = data.weft || data.weftCount || '';
+            document.getElementById('weftCount').value = data.weft || data.weftCount || data.weft1 || '';
             document.getElementById('weftCount2').value = data.weft2 || '';
             
-            let fReed = data.reed || '';
-            let fPick = data.pick || '';
-            let fWidth = data.width || '';
-
-            document.getElementById('reed').value = fReed;
-            document.getElementById('pick').value = fPick;
+            // Checking old storage keys for reeds/picks
+            let fReed = data.reed || data.finishReed || ''; 
+            let fPick = data.pick || data.finishPick || ''; 
+            let fWidth = data.width || data.finishWidth || '';
+            
+            document.getElementById('reed').value = fReed; 
+            document.getElementById('pick').value = fPick; 
             document.getElementById('width').value = fWidth;
             
-            let oReed = data.onloomReed || '';
-            let oPick = data.onloomPick || '';
+            let oReed = data.onloomReed || ''; 
+            let oPick = data.onloomPick || ''; 
             let oWidth = data.onloomWidth || '';
 
-            // Auto Calculation on Load if Data is Missing
-            let parsedFReed = parseFloat(fReed) || 0;
-            let parsedFPick = parseFloat(fPick) || 0;
+            let parsedFReed = parseFloat(fReed) || 0; 
+            let parsedFPick = parseFloat(fPick) || 0; 
             let parsedFWidth = parseFloat(fWidth) || 0;
-
+            
             if (!oReed && parsedFReed > 0) oReed = parsedFReed - 8;
             if (!oPick && parsedFPick > 0) oPick = parsedFPick - 4;
             
@@ -556,10 +694,10 @@
                 oWidth = parsedFWidth.toFixed(2);
             }
 
-            document.getElementById('onloomReed').value = oReed;
-            document.getElementById('onloomPick').value = oPick;
+            document.getElementById('onloomReed').value = oReed; 
+            document.getElementById('onloomPick').value = oPick; 
             document.getElementById('onloomWidth').value = oWidth;
-
+            
             document.getElementById('weave').value = data.weave || data.weaveType || '';
             document.getElementById('typeOfProcess').value = data.typeOfProcess || '';
             
@@ -570,14 +708,21 @@
                 document.getElementById('bitmapImgTag').src = "";
                 document.getElementById('bitmapPreviewBox').style.display = 'none'; 
             }
+
+            // Sync weave radio button with current input
+            document.querySelectorAll('input[name="weaveSelection"]').forEach(radio => {
+                radio.checked = (radio.value === document.getElementById('weave').value);
+            });
+
         } else { clearForm(); }
     };
 
     function clearForm() {
-        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(el => el.value = '');
+        document.querySelectorAll('input[type="text"]:not(#newDesign), input[type="number"]').forEach(el => el.value = '');
         tempBitmapData = ""; 
         document.getElementById('bitmapImgTag').src = "";
         document.getElementById('bitmapPreviewBox').style.display = 'none';
+        document.querySelectorAll('input[name="weaveSelection"]').forEach(radio => radio.checked = false);
     }
 </script>
 </body>

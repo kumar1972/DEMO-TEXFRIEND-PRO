@@ -1,79 +1,67 @@
 function translateColorToTamil(colorName) {
     if (!colorName) return '-';
-    var original = colorName.trim();
-    var c = original.toLowerCase();
+    
+    // 1. புள்ளிகள் (..), கமா மற்றும் கூடுதல் ஸ்பேஸ்களை முழுமையாக நீக்குகிறது
+    var cleanName = String(colorName).replace(/[.,]/g, '').replace(/\s+/g, ' ').trim();
+    var c = cleanName.toLowerCase();
 
-    // 📌 விரிவுபடுத்தப்பட்ட நிறங்கள் அகராதி (Extended Dictionary)
+    // 📌 சுத்தப்படுத்தப்பட்ட மேப்பிங் அகராதி (Cleaned Dictionary)
     var map = {
-        'gold': 'கோல்டு',
-        'l. olive': 'L. ஆலிவ்',
-        'd. olive': 'D. ஆலிவ்',
+        'red': 'ரெட்',
         'grey': 'கிரே',
         'gray': 'கிரே',
-        't.salavai': 'T. சலவை',
-        't. salavai': 'T. சலவை',
-        't. white': 'T. சலவை',
-        '1/2 salavai': '1/2 சலவை',
-        '1/2 white': '1/2 சலவை',
+        'l grey': 'L. கிரே',
+        'l gray': 'L. கிரே',
+        'd grey': 'D. கிரே',
+        'd gray': 'D. கிரே',
+        'khaki': 'காக்கி',
+        'l khaki': 'L. காக்கி',
+        'd khaki': 'D. காக்கி',
+        'cream': 'கிரீம்',
+        'navy': 'நேவி',
+        'green': 'கிரீன்',
+        'l green': 'L. கிரீன்',
+        'd green': 'D. கிரீன்',
         'white': 'வெள்ளை',
         'black': 'கருப்பு',
         'blue': 'ப்ளூ',
         'yellow': 'மஞ்சள்',
-        'red': 'ரெட்',
-        'green': 'கிரீன்',
-        'p. green': 'கிளி பச்சை',
+        '1/2 salavai': '1/2 சலவை',
+        '1/2 white': '1/2 சலவை',
+        't salavai': 'T. சலவை',
+        't white': 'T. சலவை',
         'brown': 'பிரவுன்',
-        'khaki': 'காக்கி',
-        'l. khaki': 'L. காக்கி',
-        'd. khaki': 'D. காக்கி',
         'rose': 'ரோஸ்',
         'orange': 'ஆரஞ்சு',
         'violet': 'வைலட்',
         'pink': 'பிங்க்',
-        'navy': 'நேவி',
-        'l. navy': 'L. நேவி',
-        'd. navy': 'D. நேவி',
         'maroon': 'மெரூன்',
         'olive': 'ஆலிவ்',
-        'l. blue': 'L. ப்ளூ',
-        'r. blue': 'R. ப்ளூ',
-        'turq': 'டர்க்',
+        'l olive': 'L. ஆலிவ்',
+        'd olive': 'D. ஆலிவ்',
         'purple': 'பர்புள்',
-        'cream': 'கிரீம்',
         'beige': 'பேஜ்',
-        'biscuit': 'பிஸ்கட்',
-        'majenda': 'மெஜந்தா',
         'silver': 'சில்வர்',
-        'peach': 'பீச்',
-        'sky blue': 'வான ப்ளூ',
-        'bottle green': 'பாட்டில் கிரீன்',
-        'onion': 'ஆனியன்'
+        'peach': 'பீச்'
+        'Mint': 'மிண்ட்'
     };
 
     if (map[c]) return map[c];
 
-    // Regex மூலம் இன்னும் எளிதாக மாற்றலாம்
-    let translated = original;
-    
-    // Prefix மாற்றுதல்
-    translated = translated.replace(/^t\.\s*/i, 'T. ')
-                           .replace(/^l\.\s*/i, 'L. ')
-                           .replace(/^d\.\s*/i, 'D. ')
-                           .replace(/^r\.\s*/i, 'R. ')
-                           .replace(/^p\.\s*/i, 'P. ');
+    // Fallback: ஒருவேளை அகராதியில் இல்லாத புதிய வார்த்தை வந்தால் தனித்தனியாக மாற்றும்
+    let translated = cleanName;
+    translated = translated.replace(/^l\b/i, 'L. ')
+                           .replace(/^d\b/i, 'D. ')
+                           .replace(/^t\b/i, 'T. ');
 
-    // பொதுவான நிறங்களை மாற்றுதல்
     let colorMap = {
-        'gold': 'கோல்டு', 'grey': 'கிரே', 'gray': 'கிரே', 'salavai': 'சலவை',
-        'white': 'வெள்ளை', 'black': 'கருப்பு', 'blue': 'ப்ளூ', 'yellow': 'மஞ்சள்',
-        'red': 'ரெட்', 'green': 'கிரீன்', 'brown': 'பிரவுன்', 'khaki': 'காக்கி',
-        'rose': 'ரோஸ்', 'orange': 'ஆரஞ்சு', 'pink': 'பிங்க்', 'maroon': 'மெரூன்',
-        'olive': 'ஆலிவ்', 'purple': 'பர்புள்', 'cream': 'கிரீம்', 'beige': 'பேஜ்',
-        'biscuit': 'பிஸ்கட்', 'majenda': 'மெஜந்தா', 'navy': 'நேவி'
+        'grey': 'கிரே', 'gray': 'கிரே', 'red': 'ரெட்', 'green': 'கிரீன்',
+        'blue': 'ப்ளூ', 'navy': 'நேவி', 'cream': 'கிரீம்', 'salavai': 'சலவை',
+        'khaki': 'காக்கி','Mint': 'மிண்ட்'
     };
 
     for (let key in colorMap) {
-        let regex = new RegExp(key, 'gi');
+        let regex = new RegExp('\\b' + key + '\\b', 'gi');
         translated = translated.replace(regex, colorMap[key]);
     }
 

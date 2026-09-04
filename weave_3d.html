@@ -120,12 +120,6 @@ input, select {
     outline: none;
 }
 
-/* Hide Native Color Picker on Warp/Weft UI */
-#warpInputsContainer input[type=color],
-#weftInputsContainer input[type=color] {
-    display: none !important;
-}
-
 .hidden-sys-input {
     display: none !important;
 }
@@ -226,21 +220,44 @@ input, select {
     gap: 4px;
 }
 
+/* YARN ENTRY ROW (NEW 4-COLUMN LAYOUT) */
 .scroll-box > div {
     background: #172b23;
     border: 1px solid #2e5041;
     border-radius: 6px;
     padding: 4px 6px;
     display: grid;
-    grid-template-columns: 25px 1fr 45px; 
+    grid-template-columns: 28px 1fr 34px 45px; 
     align-items: center;
     gap: 6px;
 }
 
 .scroll-box label {
-    font-size: 0.6rem !important;
+    font-size: 0.65rem !important;
     margin: 0;
     color: #78d18a;
+    font-weight: 900;
+}
+
+.yarn-name-display {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #edf7ef;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    text-align: left;
+    padding-left: 2px;
+}
+
+.yarn-color-btn {
+    width: 100%;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .scroll-box input[type="number"] {
@@ -251,17 +268,6 @@ input, select {
     padding: 4px;
     font-weight: bold;
     font-size: 0.8rem;
-    border-radius: 6px;
-}
-
-.design-colour-name {
-    width: 100%;
-    height: 34px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-    outline: none;
     border-radius: 6px;
 }
 
@@ -287,21 +293,9 @@ input, select {
 .btn-col-del { width: 30px; height: 20px; font-size: .55rem; }
 .col-del-row { display: flex; gap: 3px; justify-content: center; margin-left: 0; margin-bottom: 4px; }
 
-.save-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
-.save-row button { border: 0; border-radius: 8px; padding: 8px; font-weight: 800; color: #fff; cursor: pointer; }
-.save-row .save { background: #338e47; }
-.save-row .preview { background: #217eaf; }
-
 .main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
 .main-actions button { width: 100%; }
 .main-actions .wide { grid-column: 1 / -1; }
-
-.menu-panel { display: none; margin-top: 8px; animation: panelIn .18s ease; }
-.menu-panel.active { display: block; }
-
-@keyframes panelIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-.info-box { background: #0e1b16; border: 1px solid #28483a; border-radius: 8px; padding: 8px; font-size: .65rem; line-height: 1.5; }
-.info-box b { color: #9be4a8; }
 
 /* FULLSCREEN 3D */
 .fs-modal { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: #000; z-index: 999999; flex-direction: column; }
@@ -314,65 +308,19 @@ input, select {
 .fs-hint { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(20,37,30,.85); color: #b8d8bf; padding: 6px 10px; border-radius: 20px; font-size: .55rem; pointer-events: none; white-space: nowrap; }
 
 /* PRINT — PROFESSIONAL DESIGN SHEET */
-.print-modal {
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(2,8,6,.90);
-    z-index:1000000;
-    justify-content:center;
-    align-items:center;
-    padding:12px;
-    backdrop-filter:blur(5px);
-    -webkit-backdrop-filter:blur(5px);
-}
-.print-sheet {
-    background:#f4f7f5;
-    color:#101615;
-    width:100%;
-    max-width:860px;
-    max-height:96vh;
-    overflow:auto;
-    border-radius:14px;
-    box-shadow:0 22px 70px rgba(0,0,0,.45);
-    border:1px solid #789485;
-}
-.print-toolbar {
-    position:sticky;
-    top:0;
-    z-index:5;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:10px 12px;
-    background:linear-gradient(135deg,#123b2b,#1f6045);
-    color:#fff;
-    border-radius:14px 14px 0 0;
-}
+.print-modal { display:none; position:fixed; inset:0; background:rgba(2,8,6,.90); z-index:1000000; justify-content:center; align-items:center; padding:12px; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+.print-sheet { background:#f4f7f5; color:#101615; width:100%; max-width:860px; max-height:96vh; overflow:auto; border-radius:14px; box-shadow:0 22px 70px rgba(0,0,0,.45); border:1px solid #789485; }
+.print-toolbar { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:linear-gradient(135deg,#123b2b,#1f6045); color:#fff; border-radius:14px 14px 0 0; }
 .print-toolbar-title { font-size:.82rem; font-weight:900; letter-spacing:.3px; }
 .print-toolbar-sub { font-size:.54rem; opacity:.78; margin-top:2px; }
 .print-toolbar-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
-.print-toolbar-actions select,
-.print-toolbar-actions button {
-    height:32px;
-    border-radius:7px;
-    border:1px solid rgba(255,255,255,.22);
-    font-size:.58rem;
-    font-weight:900;
-}
+.print-toolbar-actions select, .print-toolbar-actions button { height:32px; border-radius:7px; border:1px solid rgba(255,255,255,.22); font-size:.58rem; font-weight:900; }
 .print-toolbar-actions select { background:#fff; color:#153127; padding:0 7px; }
 .print-toolbar-actions button { padding:0 11px; color:#fff; cursor:pointer; }
 .print-toolbar-actions .print-main { background:#2e9d55; }
 .print-toolbar-actions .print-close { background:#704343; }
 .print-toolbar-actions .print-preview-only { background:#315e89; }
-.print-sheet-inner {
-    margin:12px;
-    background:#fff;
-    border:1px solid #c9d4ce;
-    box-shadow:0 4px 18px rgba(20,50,35,.10);
-    padding:12px;
-}
+.print-sheet-inner { margin:12px; background:#fff; border:1px solid #c9d4ce; box-shadow:0 4px 18px rgba(20,50,35,.10); padding:12px; }
 .print-section-title { display:flex; align-items:center; gap:6px; font-size:10px; font-weight:950; color:#153c2c; border-bottom:1.5px solid #315847; padding:5px 0 4px; margin:7px 0 5px; letter-spacing:.2px; }
 .print-section-title .section-code { margin-left:auto; font-size:6.5px; color:#708078; font-weight:800; }
 .print-order-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(38px,1fr)); gap:3px; max-height:68px; overflow:hidden; }
@@ -390,8 +338,8 @@ input, select {
 
 /* WARP YARN TABLE CSS */
 .yarn-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; font-size: 8px; }
-.yarn-table th, .yarn-table td { border: 1px solid #9caea4; padding: 4px 2px; text-align: center; vertical-align: middle; page-break-inside: avoid; }
-.yarn-table th { background: #eef2f0; font-weight: 900; color: #153c2c; }
+.yarn-table th, .yarn-table td { border: 1px solid #9caea4; padding: 4px 2px; text-align: center; vertical-align: middle; page-break-inside: avoid; color: #111827 !important; }
+.yarn-table th { background: #eef2f0; font-weight: 900; color: #153c2c !important; }
 .color-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.2); vertical-align: middle; }
 
 @media (max-width:600px) {
@@ -404,127 +352,34 @@ input, select {
     .print-sheet-inner { margin:8px; padding:9px; }
 }
 
-/* ================= COLOUR MASTER STYLES ================= */
-.colour-master-card {
-    background: #102019;
-    border: 1px solid #315746;
-    border-radius: 10px;
-    padding: 8px;
-    margin-bottom: 8px;
-}
-
-.colour-master-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-.colour-master-title b { color: #9be4a8; font-size: .8rem; }
-.colour-master-title span { font-size: .55rem; color: #9fc5aa; }
-
-.colour-master-tabs {
-    display: flex;
-    gap: 4px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-}
-.colour-master-tab {
-    flex: 0 0 auto;
-    border: 1px solid #39614f;
-    background: #203b30;
-    color: #b8d8bf;
-    border-radius: 12px;
-    padding: 4px 8px;
-    font-size: .58rem;
-    font-weight: 800;
-    cursor: pointer;
-}
-.colour-master-tab.active { background: #2d9148; color: #fff; border-color: #9be4a8; }
-
-.colour-shade-list, .colour-popup-grid { 
-    display: grid; 
-    grid-template-columns: repeat(6, 1fr); 
-    gap: 4px; 
-    margin-top: 6px; 
-}
-
-.swatch-card {
-    background: #172b23;
-    border: 1px solid #395648;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-.swatch-card.selected { border-color: #9be4a8; box-shadow: 0 0 0 1px #2d9148; background: #1e382d; }
-
-.swatch-color {
-    height: 22px;
-    width: 22px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    flex-shrink: 0;
-}
-
-.swatch-details { padding: 4px 2px 0 2px; text-align: center; width: 100%; }
-.swatch-name { font-size: .45rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.swatch-pantone { font-size: .4rem; color: #f59e0b; font-weight: 700; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.colour-master-actions { display: grid; grid-template-columns: 1fr; gap: 4px; margin-top: 8px; }
-.colour-master-actions button { border: 0; border-radius: 6px; padding: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; color: #fff; background: linear-gradient(135deg, #10B981, #059669); }
-
-/* ================= COLOUR POPUP ================= */
-.colour-popup { display: none; position: fixed; inset: 0; z-index: 9999999; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 8px; }
+/* ================= FULLSCREEN COLOUR POPUP ================= */
+.colour-popup { display: none; position: fixed; inset: 0; z-index: 9999999; background: #14251e; flex-direction: column; padding: 10px; overflow: hidden; }
 .colour-popup.active { display: flex; }
 
-.colour-popup-box {
-    width: 100%;
-    max-width: 480px;
-    max-height: 95vh;
-    overflow: auto;
-    background: #14251e;
-    border: 1px solid #3c6752;
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-}
+.colour-popup-box { width: 100vw !important; max-width: none !important; height: 100vh !important; max-height: none !important; background: #14251e !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+.colour-popup-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-shrink: 0; padding: 10px; padding-bottom: 0;}
+.colour-popup-head b { color: #f59e0b; font-size: .95rem; }
+.colour-popup-close { background: #ef4444; border: 0; color: #fff; border-radius: 50%; width: 28px; height: 28px; font-weight: 900; font-size:0.85rem; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.search-box { width: calc(100% - 20px); padding: 8px; border-radius: 8px; border: 1px solid #395648; background: #0d1813; color: #fff; font-size: .8rem; margin: 10px; margin-top: 0; flex-shrink: 0; }
+.colour-master-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin: 0 10px 8px; flex-shrink: 0; scrollbar-width: none; }
+.colour-master-tabs::-webkit-scrollbar { display: none; }
+.colour-master-tab { flex: 0 0 auto; border: 1px solid #39614f; background: #1b362c; color: #b8d8bf; border-radius: 6px; padding: 8px 14px; font-size: .7rem; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.colour-master-tab.active { background: #f59e0b; color: #14251e; border-color: #f59e0b; font-weight: 900; }
+.colour-popup-grid { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 10px; align-content: start; }
+.swatch-card { background: #172b23; border: 1px solid #395648; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px; }
+.swatch-card.selected { border-color: #f59e0b; box-shadow: 0 0 0 1px #f59e0b; background: #1e382d; }
+.swatch-color { height: 36px; width: 36px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 6px rgba(0,0,0,0.4); flex-shrink: 0; margin-bottom: 6px; }
+.swatch-details { text-align: center; width: 100%; }
+.swatch-name { font-size: .62rem; font-weight: 900; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.swatch-pantone { font-size: .52rem; color: #f59e0b; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.colour-popup-footer { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-top: 1px solid #2c4b3d; flex-shrink: 0; background: #14251e; }
+.colour-use-btn { background: #10b981; border: 0; border-radius: 8px; padding: 12px; color: #fff; font-weight: 900; font-size: .85rem; cursor: pointer; width: 100%; text-align: center; }
 
-.colour-popup-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.colour-popup-head b { color: #9be4a8; font-size: .85rem; }
-.colour-popup-close { background: #633b3b; border: 0; color: #fff; border-radius: 6px; padding: 4px 8px; font-weight: 900; font-size:0.75rem; }
-
-.search-box { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #395648; background: #0d1813; color: #fff; font-size: .7rem; margin-bottom: 8px; }
-.colour-popup-grid { max-height: 40vh; overflow-y: auto; padding-right: 2px; }
-
-.colour-popup-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #2c4b3d; }
-.colour-popup-footer button { border: 0; border-radius: 6px; padding: 10px; color: #fff; font-weight: 900; font-size: .75rem; }
-.colour-use-btn { background: #2d9148; }
-.colour-cancel-btn { background: #633b3b; }
-
-.pantone-modal { display: none; position: fixed; inset: 0; z-index: 9999999; background: rgba(0,0,0,.85); align-items: center; justify-content: center; padding: 12px; }
-.pantone-modal.active { display: flex; }
-
+/* DENTING MODAL */
 .pm-form-box { background: #172b23; padding: 10px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed #395648; }
 .pm-label { font-size:0.65rem; color:#f59e0b; margin-bottom:4px; display:block; font-weight:bold; }
 .pm-label-w { font-size:0.65rem; color:#9be4a8; margin-bottom:4px; display:block; font-weight:bold; }
-
-#dentingModal {
-    padding: 0 !important;
-    align-items: stretch !important;
-    justify-content: stretch !important;
-}
-#dentingModal .colour-popup-box {
-    width: 100vw !important;
-    max-width: none !important;
-    height: 100vh !important;
-    max-height: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    padding: 10px !important;
-    overflow: auto !important;
-}
+#dentingModal { padding: 0 !important; align-items: stretch !important; justify-content: stretch !important; }
 .denting-tabs { display:flex; gap:6px; margin:4px 0 10px; position:sticky; top:0; z-index:3; background:#14251e; padding-bottom:6px; }
 .denting-tab { flex:1; border:1px solid #39614f; background:#203b30; color:#b8d8bf; border-radius:8px; padding:9px 6px; font-weight:900; font-size:.72rem; }
 .denting-tab.active { background:#2d9148; color:#fff; }
@@ -539,7 +394,6 @@ input, select {
 .preset-grid button { border:1px solid #39614f; background:#244638; color:#aee9ba; border-radius:7px; padding:7px 4px; font-size:.62rem; font-weight:900; }
 .adv-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
 .adv-grid button { border:0; border-radius:7px; padding:9px 5px; background:#217eaf; color:#fff; font-weight:900; font-size:.65rem; }
-@media(max-width:430px){ .manual-row{grid-template-columns:38px 1fr 38px}.preset-grid{grid-template-columns:1fr 1fr 1fr} }
 
 @media(max-width: 430px) {
     body { padding: 4px; }
@@ -551,14 +405,11 @@ input, select {
     .matrix-cell { width: 30px; height: 30px; }
     .main-actions { grid-template-columns: 1fr 1fr; }
     .main-actions .wide { grid-column: 1 / -1; }
-    
-    .colour-shade-list, .colour-popup-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
-    .swatch-color { height: 20px; width: 20px; }
-    .swatch-details { padding: 2px 1px 0 1px; }
-    .swatch-name { font-size: 0.45rem; }
-    .swatch-pantone { font-size: 0.4rem; }
+    .colour-popup-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .swatch-color { height: 32px; width: 32px; }
+    .swatch-name { font-size: 0.58rem; }
+    .swatch-pantone { font-size: 0.48rem; }
 }
-
 </style>
 </head>
 <body>
@@ -614,24 +465,10 @@ input, select {
             <span id="activeYarnHint" style="font-weight: 800; color: #a9d6b2;">Total Ends: 0</span>
         </div>
 
-        <div class="colour-master-card" id="colourMasterCard">
-            <div class="colour-master-title">
-                <b>🎨 Advanced Colours & Pantone</b>
-                <span>Manage Shades</span>
-            </div>
-            <div class="colour-master-tabs" id="colourMasterTabs"></div>
-            <div id="colourShadeList" class="colour-shade-list"></div>
-            <div class="colour-master-actions">
-                <button onclick="openColorManager()">➕ Add New Colour / Pantone</button>
-            </div>
-        </div>
-
         <div id="warpPanel" class="yarn-panel active">
-            <label style="display:none;">WARP — <span id="warpCountDisplay">10</span> வரிகள்</label>
             <div id="warpInputsContainer" class="scroll-box"></div>
         </div>
         <div id="weftPanel" class="yarn-panel">
-            <label style="display:none;">WEFT — <span id="weftCountDisplay">6</span> வரிகள்</label>
             <div id="weftInputsContainer" class="scroll-box"></div>
         </div>
     </div>
@@ -647,7 +484,6 @@ input, select {
             <div id="gridEditorSection"></div>
         </div>
 
-        <!-- 3D View மற்றும் Print பட்டன்கள் மட்டும் (Full Width) -->
         <div class="main-actions" style="grid-template-columns: 1fr; gap: 10px; margin-top: 4px;">
             <button class="btn btn-green" style="padding: 14px; font-size: 0.95rem; font-weight: 900; letter-spacing: 1px;" onclick="openFullscreen()">
                 🧊 3D VIEW PREVIEW
@@ -656,7 +492,6 @@ input, select {
                 🖨️ PRINT DESIGN
             </button>
         </div>
-        
     </div>
 
 <!-- FULLSCREEN 3D -->
@@ -664,12 +499,13 @@ input, select {
     <div class="fs-header">
         <div class="fs-title">🧊 3D Weave Preview</div>
         <div class="fs-header-actions">
-            <button style="background:#217eaf" onclick="refreshFullscreen3D()">🔄 Refresh</button>
+            <!-- REFRESH BUTTON REMOVED & REPLACED WITH PRINT CAD BUTTON -->
+            <button style="background:#217eaf;font-size:0.75rem;padding:6px 14px;" onclick="print3DOnly()">🖨️ Print CAD</button>
             <button style="background:#633b3b" onclick="closeFullscreen()">✖ Close</button>
         </div>
     </div>
     <div id="fsContent" class="fs-content">
-        <canvas id="weaveCanvas" width="720" height="520"></canvas>
+        <canvas id="weaveCanvas" width="1080" height="720"></canvas>
         <div class="fs-hint">👆 Drag • 🤏 Pinch Zoom</div>
     </div>
 </div>
@@ -706,26 +542,21 @@ input, select {
 <div id="colourPopup" class="colour-popup">
     <div class="colour-popup-box">
         <div class="colour-popup-head">
-            <b id="colourPopupTitle">Select Shade</b>
+            <div>
+                <b id="colourPopupTitle">🎨 Ultimate Color Studio</b>
+                <div id="editingTargetInfo" style="font-size:0.55rem; color:#9fc5aa; margin-top:1px;">Editing Line</div>
+            </div>
             <button class="colour-popup-close" onclick="closeColourPopup()">✕</button>
         </div>
-        
-        <div class="colour-master-tabs" id="popupMasterTabs" style="margin-bottom: 8px;"></div>
-
-        <input type="text" id="colourSearchInput" class="search-box" placeholder="🔍 Search Colour Name or Pantone (e.g., 19-4052)..." onkeyup="filterColourPopup()">
-        
+        <input type="text" id="colourSearchInput" class="search-box" placeholder="🔍 Search color name or Pantone..." onkeyup="filterColourPopup()">
+        <div class="colour-master-tabs" id="popupMasterTabs"></div>
         <div id="colourPopupGrid" class="colour-popup-grid"></div>
-
-        <div style="margin-top: 10px; font-size: 0.65rem; color: #a9d6b2; display: flex; align-items: center; justify-content: center; background: #0d1813; padding: 6px; border-radius: 6px; border: 1px dashed #315746;">
-            <label style="margin:0; display:flex; align-items:center; gap:6px; cursor:pointer;">
-                <input type="checkbox" id="syncColorCheck" checked style="width: 14px !important; min-width: 14px !important; height: 14px !important; min-height: 14px !important; margin: 0; accent-color: #2d9148;">
-                அதே நிறம் உள்ள எல்லா இடங்களிலும் மாற்றவும் (Sync All)
-            </label>
-        </div>
-        
         <div class="colour-popup-footer">
-            <button class="colour-use-btn" onclick="applySelectedColour()">✅ Select</button>
-            <button class="colour-cancel-btn" onclick="closeColourPopup()">Cancel</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="syncColorCheck" checked style="width: 16px !important; min-width: 16px !important; height: 16px !important; min-height: 16px !important; margin: 0; accent-color: #10b981;">
+                <label for="syncColorCheck" style="margin:0; font-size: 0.65rem; color: #a9d6b2; cursor:pointer;">Sync (எல்லா இடத்திலும் மாற்று)</label>
+            </div>
+            <button class="colour-use-btn" onclick="applySelectedColour()">✅ Apply Shade</button>
         </div>
     </div>
 </div>
@@ -737,13 +568,11 @@ input, select {
             <b style="font-size:0.95rem;color:#f59e0b;">📐 Denting & Drawing — Advanced Editor</b>
             <button class="colour-popup-close" onclick="closeDentingModal()">✕</button>
         </div>
-
         <div class="denting-tabs">
             <button class="denting-tab active" id="dentTabBtn" onclick="showDentingPane('dent')">📐 Denting Order</button>
             <button class="denting-tab" id="drawTabBtn" onclick="showDentingPane('draw')">🧵 Drawing Order</button>
             <button class="denting-tab" id="advTabBtn" onclick="showDentingPane('adv')">⚙️ Advanced</button>
         </div>
-
         <div id="dentPane" class="denting-pane active">
             <div class="pm-form-box">
                 <label class="pm-label-w">Denting Pattern</label>
@@ -760,10 +589,8 @@ input, select {
                     <button class="btn btn-green" style="padding:6px 9px;min-height:30px;" onclick="addDentingManualRow()">➕ Add Dent</button>
                 </div>
                 <div id="dentingManualRows"></div>
-                <div style="font-size:.58rem;color:#9fc5aa;margin-top:5px;">ஒவ்வொரு Dent-க்கும் Ends எண்ணிக்கையை தனித்தனியாக மாற்றலாம். 0 = Missing / Empty Dent.</div>
             </div>
         </div>
-
         <div id="drawPane" class="denting-pane">
             <div class="pm-form-box">
                 <label class="pm-label-w">Drawing / Frame Order</label>
@@ -780,10 +607,8 @@ input, select {
                     <button class="btn btn-green" style="padding:6px 9px;min-height:30px;" onclick="addDrawingManualRow()">➕ Add Frame</button>
                 </div>
                 <div id="drawingManualRows"></div>
-                <div style="font-size:.58rem;color:#9fc5aa;margin-top:5px;">Frame order-ஐ தனித்தனியாக edit செய்யலாம்.</div>
             </div>
         </div>
-
         <div id="advPane" class="denting-pane">
             <div class="pm-form-box">
                 <label class="pm-label-w">Advanced Denting Options</label>
@@ -793,13 +618,9 @@ input, select {
                     <button onclick="setDentPreset('0')">Missing Dent</button>
                     <button onclick="setDentPreset('2,2,0,3')">2,2,Missing,3</button>
                 </div>
-                <div style="font-size:.62rem;color:#b8d8bf;line-height:1.5;margin-top:9px;">
-                    <b>0</b> = Missing / Empty Dent. உதாரணம்: <b>2,2,0,3</b> என்றால் 2 ends, 2 ends, missing dent, 3 ends என்று வரிசையாக repeat ஆகும்.
-                </div>
             </div>
             <div id="dentingResultDisplay" style="background:#09110d;border:1px dashed #4a7c59;padding:12px;border-radius:8px;font-size:.75rem;color:#b8d8bf;line-height:1.6;margin-top:8px;"></div>
         </div>
-
         <div class="colour-popup-footer" style="grid-template-columns:1fr 1fr;position:sticky;bottom:0;background:#14251e;">
             <button class="colour-use-btn" onclick="closeDentingModal();autoRefresh3D();saveCurrentDesign();">✅ OK — Save Pattern</button>
             <button class="colour-cancel-btn" onclick="closeDentingModal()">Cancel</button>
@@ -807,47 +628,9 @@ input, select {
     </div>
 </div>
 
-<!-- PANTONE MODAL -->
-<div id="colorManagerModal" class="pantone-modal">
-    <div class="colour-popup-box" style="max-width: 340px; padding: 12px;">
-        <div class="colour-popup-head">
-            <b id="cmPopupTitle" style="font-size:0.9rem;">🎨 Add New Shade</b>
-            <button class="colour-popup-close" style="padding:4px 8px; font-size:0.7rem;" onclick="closeColorManager()">✕</button>
-        </div>
-        
-        <div class="pm-form-box">
-            <label class="pm-label">Quick Auto-Fill (Pantone)</label>
-            <div style="display:flex; gap:6px;">
-                <input type="text" id="cmPantone" placeholder="e.g. 19-4052" style="height:32px; min-height:32px; font-size:0.75rem;">
-                <button class="btn btn-blue" onclick="searchPantoneDB()" style="min-width: 60px; height:32px; min-height:32px; padding: 0; font-size:0.7rem;">🔍 Find</button>
-            </div>
-        </div>
-
-        <label class="pm-label-w">Category</label>
-        <select id="cmCategory" onchange="handleCatChange()" style="height:32px; min-height:32px; font-size:0.75rem; margin-bottom:8px; background:#fff; color:#000;"></select>
-
-        <label class="pm-label-w">Shade Name</label>
-        <input type="text" id="cmName" placeholder="e.g. Navy Blue" style="height:32px; min-height:32px; font-size:0.75rem; margin-bottom:8px;">
-
-        <label class="pm-label-w">Pick Colour</label>
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; background: #0d1813; padding: 6px; border-radius: 6px; border: 1px solid #3c6752;">
-            <div id="cmHexWrapper" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3c6752; overflow: hidden; background: #22c55e; position: relative; flex-shrink: 0; cursor: pointer;">
-                <input type="color" id="cmHexPicker" value="#22c55e" style="position: absolute; top: -10px; left: -10px; width: 60px; height: 60px; opacity: 0; cursor: pointer; padding: 0; border: none;" oninput="document.getElementById('cmHex').value = this.value.toLowerCase(); document.getElementById('cmHexWrapper').style.background = this.value;">
-            </div>
-            <input type="text" id="cmHex" value="#22c55e" style="height:32px; min-height:32px; font-size:0.8rem; font-weight:bold; letter-spacing:1px; text-transform:lowercase; margin:0;" oninput="let v = this.value.toLowerCase(); if(/^#[0-9a-f]{6}$/i.test(v)){ document.getElementById('cmHexPicker').value = v; document.getElementById('cmHexWrapper').style.background = v; }" placeholder="#hexcode">
-        </div>
-
-        <button class="btn btn-green" style="width: 100%; height: 38px; font-size:0.8rem;" onclick="saveNewColorAdvanced()">💾 Save Colour</button>
-        
-        <div id="cmDeleteBtnContainer" style="display:none; margin-top: 8px;">
-            <button class="btn btn-red" style="width: 100%; height: 38px; font-size:0.8rem; background:#dc2626;" onclick="deleteShadeAdvanced()">🗑️ Delete Colour</button>
-        </div>
-    </div>
-</div>
-
 <script>
 /* =========================================================
-   GLOBAL DATA
+   GLOBAL DATA & TRANSLATIONS
 ========================================================= */
 let currentWarpCount = 10;
 let currentWeftCount = 6;
@@ -860,61 +643,23 @@ let weavePatterns = {
     custom: [[0,0,1,1], [0,1,1,0], [1,1,0,0], [1,0,0,1]]
 };
 
-/* =========================================================
-   COLOUR TRANSLATION MAP (கலர் பெயர்கள் - config.js / உங்களது தரவு முறைப்படி)
-========================================================= */
 const COLOR_TRANSLATIONS = {
-    'gold': 'கோல்டு',
-        'l. olive': 'L. ஆலிவ்',
-        'd. olive': 'D. ஆலிவ்',
-        'grey': 'கிரே',
-        'gray': 'கிரே',
-        't.salavai': 'T. சலவை',
-        't. salavai': 'T. சலவை',
-        't. white': 'T. சலவை',
-        '1/2 salavai': '1/2 சலவை',
-        '1/2 white': '1/2 சலவை',
-        'white': 'வெள்ளை',
-        'black': 'கருப்பு',
-        'blue': 'ப்ளூ',
-        'yellow': 'மஞ்சள்',
-        'red': 'ரெட்',
-        'green': 'கிரீன்',
-        'p. green': 'கிளி பச்சை',
-        'brown': 'பிரவுன்',
-        'khaki': 'காக்கி',
-        'l. khaki': 'L. காக்கி',
-        'd. khaki': 'D. காக்கி',
-        'rose': 'ரோஸ்',
-        'orange': 'ஆரஞ்சு',
-        'violet': 'வைலட்',
-        'pink': 'பிங்க்',
-        'navy': 'நேவி',
-        'l. navy': 'L. நேவி',
-        'd. navy': 'D. நேவி',
-        'maroon': 'மெரூன்',
-        'olive': 'ஆலிவ்',
-        'l. blue': 'L. ப்ளூ',
-        'r. blue': 'R. ப்ளூ',
-        'turq': 'டர்க்',
-        'purple': 'பர்புள்',
-        'cream': 'கிரீம்',
-        'beige': 'பேஜ்',
-        'biscuit': 'பிஸ்கட்',
-        'majenda': 'மெஜந்தா',
-        'silver': 'சில்வர்',
-        'peach': 'பீச்',
-        'sky blue': 'வான ப்ளூ',
-        'bottle green': 'பாட்டில் கிரீன்',
-        'onion': 'ஆனியன்'
-    };
+    'gold': 'கோல்டு', 'l. olive': 'L. ஆலிவ்', 'd. olive': 'D. ஆலிவ்', 'grey': 'கிரே', 'gray': 'கிரே',
+    't.salavai': 'T. சலவை', 't. salavai': 'T. சலவை', 't. white': 'T. சலவை', '1/2 salavai': '1/2 சலவை',
+    '1/2 white': '1/2 சலவை', 'white': 'வெள்ளை', 'black': 'கருப்பு', 'blue': 'ப்ளூ', 'yellow': 'மஞ்சள்',
+    'red': 'ரெட்', 'green': 'கிரீன்', 'p. green': 'கிளி பச்சை', 'brown': 'பிரவுன்', 'khaki': 'காக்கி',
+    'l. khaki': 'L. காக்கி', 'd. khaki': 'D. காக்கி', 'rose': 'ரோஸ்', 'orange': 'ஆரஞ்சு', 'violet': 'வைலட்',
+    'pink': 'பிங்க்', 'navy': 'நேவி', 'l. navy': 'L. நேவி', 'd. navy': 'D. நேவி', 'maroon': 'மெரூன்',
+    'olive': 'ஆலிவ்', 'l. blue': 'L. ப்ளூ', 'r. blue': 'R. ப்ளூ', 'turq': 'டர்க்', 'purple': 'பர்புள்',
+    'cream': 'கிரீம்', 'beige': 'பேஜ்', 'biscuit': 'பிஸ்கட்', 'majenda': 'மெஜந்தா', 'silver': 'சில்வர்',
+    'peach': 'பீச்', 'sky blue': 'வான ப்ளூ', 'bottle green': 'பாட்டில் கிரீன்', 'onion': 'ஆனியன்',
+    'khaki': 'காக்கி', 'rose': 'ரோஸ்', 'magenta': 'மெஜந்தா', 'beige': 'பேஜ்', 'sand': 'சண்ட்', 'violet': 'வைலட்'
+};
 
 function getLocalizedColorName(engName) {
     if (!engName) return "";
     let clean = engName.trim();
     let lower = clean.toLowerCase();
-    
-    // First check config/master data if available
     let tamil = "";
     if (typeof texfriendColourMaster !== 'undefined') {
         for (let cat of texfriendColourMaster) {
@@ -925,26 +670,40 @@ function getLocalizedColorName(engName) {
             }
         }
     }
-    
-    // Fallback to direct map
-    if (!tamil) {
-        tamil = COLOR_TRANSLATIONS[lower] || "";
-    }
-
-    if (tamil) {
-        return `${clean} (${tamil})`;
-    }
+    if (!tamil) { tamil = COLOR_TRANSLATIONS[lower] || ""; }
+    if (tamil) { return `${clean} (${tamil})`; }
     return clean;
 }
 
+function getShadeName(hex, orig) {
+    if (orig && orig.trim() !== "") {
+        let clean = orig;
+        if (orig.includes("<")) {
+            let tmp = document.createElement("div");
+            tmp.innerHTML = orig;
+            clean = tmp.textContent || tmp.innerText || "";
+            clean = clean.replace(/\(Tap to map tone\)/g, "").replace(/Select Colour/g, "Custom").trim();
+        }
+        return getLocalizedColorName(clean) || clean;
+    }
+    let h = String(hex).toLowerCase();
+    if (typeof texfriendColourMaster !== 'undefined') {
+        for(let m of texfriendColourMaster) {
+            for(let s of m.shades) {
+                if(s.hex.toLowerCase() === h) return getLocalizedColorName(s.name) || s.name;
+            }
+        }
+    }
+    return "Custom";
+}
+
 /* =========================================================
-   PATTERN EXPANSION HELPER
+   HELPERS & DATA
 ========================================================= */
 function expandPattern(str) {
     if(!str) return [];
     let s = String(str).toLowerCase().replace(/\s+/g, '');
     s = s.replace(/[x×*]/g, '*');
-    
     let parts = s.split(',');
     let res = [];
     for(let p of parts) {
@@ -953,9 +712,7 @@ function expandPattern(str) {
             let [val, count] = p.split('*');
             let v = parseInt(val.replace(/[^0-9]/g, ''));
             let c = parseInt(count.replace(/[^0-9]/g, ''));
-            if(!isNaN(v) && !isNaN(c) && c > 0) {
-                for(let i=0; i<c; i++) res.push(v);
-            }
+            if(!isNaN(v) && !isNaN(c) && c > 0) { for(let i=0; i<c; i++) res.push(v); }
         } else {
             let v = parseInt(p.replace(/[^0-9]/g, ''));
             if(!isNaN(v)) res.push(v);
@@ -964,57 +721,43 @@ function expandPattern(str) {
     return res;
 }
 
-/* =========================================================
-   HELPERS
-========================================================= */
 const $ = id => document.getElementById(id);
-
-function safeJSON(key, fallback=null) {
-    try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } 
-    catch(e) { return fallback; }
-}
+function safeJSON(key, fallback=null) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch(e) { return fallback; } }
 function clone(x) { return JSON.parse(JSON.stringify(x)); }
 function cleanDesignName(str) { return str ? str.toString().replace(/#/g, '').trim().toLowerCase() : ''; }
 function designName(d) { return String(d?.designNo ?? d?.design_no ?? d?.designNumber ?? d?.design_number ?? d?.name ?? d?.design ?? d?.id ?? "Unnamed").trim(); }
 function setStatus(x) { const el = $("designStatus"); if(el) el.textContent = x; }
+function escapeColourText(value) { return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
 function colorName(n) {
     if(!n) return "#ffffff";
     let s = String(n).toLowerCase().trim();
     if(/^#[0-9a-f]{6}$/i.test(s)) return s;
     if(/^#[0-9a-f]{3}$/i.test(s)) return "#" + s[1]+s[1] + s[2]+s[2] + s[3]+s[3];
-    let m = [
-        ["black","#111827"], ["கருப்பு","#111827"], ["white","#f8fafc"], ["வெள்ளை","#f8fafc"],
-        ["red","#ef4444"], ["சிவப்பு","#ef4444"], ["green","#22c55e"], ["blue","#1e3a8a"],
-        ["navy","#1e3a8a"], ["yellow","#eab308"], ["gold","#fbbf24"], ["orange","#f97316"],
-        ["brown","#92400e"], ["maroon","#9f1239"], ["pink","#ec4899"], ["purple","#8b5cf6"],
-        ["violet","#8b5cf6"], ["grey","#64748b"], ["gray","#64748b"], ["சாம்பல்","#64748b"],
-        ["d. grey","#334155"], ["d. gray","#334155"], ["d. கிரே","#334155"],
-        ["l. grey","#94a3b8"], ["l. gray","#94a3b8"], ["l. கிரே","#94a3b8"],
-        ["cream","#fdfbf7"], ["கிரீம்","#fdfbf7"], ["1/2 salavai","#fdfbf7"],
-        ["1/2 சலவை","#fdfbf7"], ["t. salavai","#fdfbf7"], ["t. சலவை","#fdfbf7"]
+    let m = [ 
+        ["black","#111827"], ["கருப்பு","#111827"], 
+        ["white","#f8fafc"], ["வெள்ளை","#f8fafc"],
+        ["red","#ef4444"], ["சிவப்பு","#ef4444"], 
+        ["green","#22c55e"], ["பச்சை","#22c55e"],
+        ["blue","#2563eb"], ["நீலம்","#2563eb"], 
+        ["navy","#0f4c81"], ["நேவி","#0f4c81"], 
+        ["yellow","#eab308"], ["மஞ்சள்","#eab308"],
+        ["gold", "#ffd700"], ["grey", "#64748b"], 
+        ["gray", "#64748b"], ["pink", "#ec4899"], 
+        ["brown", "#92400e"], ["orange", "#f97316"], 
+        ["purple", "#8b5cf6"]
     ];
     for(let [a,b] of m) if(s.includes(a)) return b;
     return "#94a3b8"; 
 }
 
 function normLine(x, warp) {
-    x = x || {};
-    let lowerX = {};
-    for (let k in x) { lowerX[k.toLowerCase()] = x[k]; }
-    
-    let color = lowerX.color ?? lowerX.colour ?? lowerX.col ?? lowerX.colourname ?? "";
+    x = x || {}; let lowerX = {}; for (let k in x) lowerX[k.toLowerCase()] = x[k];
+    let color = lowerX.color ?? lowerX.colour ?? lowerX.col ?? lowerX.colourname ?? lowerX.colourName ?? "";
     let amount = warp ? (lowerX.ends ?? lowerX.end ?? lowerX.count ?? lowerX.qty ?? lowerX.orderends) : (lowerX.picks ?? lowerX.pick ?? lowerX.count ?? lowerX.qty ?? lowerX.orderpicks);
     let rowSpan = lowerX.span ?? lowerX.setrows ?? lowerX.set_rows ?? lowerX.group ?? lowerX.row_span ?? 1;
     let repCount = lowerX.repeat ?? lowerX.setrep ?? lowerX.set_repeat ?? lowerX.multiplier ?? lowerX.rep_count ?? 1;
-    
-    return { 
-        origName: color || "", 
-        color: colorName(color).toLowerCase(),
-        amount: parseInt(amount)||0, 
-        span: parseInt(rowSpan)>1 ? parseInt(rowSpan) : "", 
-        repeat: parseInt(repCount)>1 ? parseInt(repCount) : "" 
-    };
+    return { origName: color || "", color: colorName(color).toLowerCase(), amount: parseInt(amount)||0, span: parseInt(rowSpan)>1 ? parseInt(rowSpan) : "", repeat: parseInt(repCount)>1 ? parseInt(repCount) : "" };
 }
 
 function sanitizeDesignObj(d) {
@@ -1054,68 +797,71 @@ function mergeDesigns(items) {
         if(!n || n==="unnamed") return;
         let old = map.get(n); 
         if(!old) map.set(n, d);
-        else map.set(n, { 
-            ...old, ...d, 
-            warpLines: pickRicherArray(old.warpLines, d.warpLines),
-            weftLines: pickRicherArray(old.weftLines, d.weftLines),
-            warpRanges: pickRicherArray(old.warpRanges, d.warpRanges),
-            weftRanges: pickRicherArray(old.weftRanges, d.weftRanges),
-            customMatrix: d.customMatrix?.length ? d.customMatrix : old.customMatrix, 
-            dentingPattern: d.dentingPattern || old.dentingPattern, 
-            drawingPattern: d.drawingPattern || old.drawingPattern 
-        });
+        else map.set(n, { ...old, ...d, warpLines: pickRicherArray(old.warpLines, d.warpLines), weftLines: pickRicherArray(old.weftLines, d.weftLines), warpRanges: pickRicherArray(old.warpRanges, d.warpRanges), weftRanges: pickRicherArray(old.weftRanges, d.weftRanges), customMatrix: d.customMatrix?.length ? d.customMatrix : old.customMatrix, dentingPattern: d.dentingPattern || old.dentingPattern, drawingPattern: d.drawingPattern || old.drawingPattern });
     });
     return [...map.values()];
 }
 
 /* =========================================================
-   YARN SETTINGS & UI
+   YARN SETTINGS & UI (4-COLUMN LAYOUT)
 ========================================================= */
 function renderUIWithData(w=[], f=[]) {
-    let wc = Math.max(10, w.length);
-    let fc = Math.max(6, f.length);
+    try {
+        if (!Array.isArray(w)) w = []; if (!Array.isArray(f)) f = [];
+        let wc = Math.max(10, w.length); let fc = Math.max(6, f.length);
 
-    currentWarpCount = wc; currentWeftCount = fc;
-    $("warpCountDisplay").textContent = wc; $("weftCountDisplay").textContent = fc;
-    $("warpTabCount").textContent = wc; $("weftTabCount").textContent = fc;
+        currentWarpCount = wc; currentWeftCount = fc;
+        if($("warpCountDisplay")) $("warpCountDisplay").textContent = wc; 
+        if($("weftCountDisplay")) $("weftCountDisplay").textContent = fc;
+        if($("warpTabCount")) $("warpTabCount").textContent = wc; 
+        if($("weftTabCount")) $("weftTabCount").textContent = fc;
 
-    let wRanges = activeDesignObj?.warpRanges || []; let fRanges = activeDesignObj?.weftRanges || [];
-    let wh = ""; let fh = "";
+        let wRanges = activeDesignObj?.warpRanges || []; let fRanges = activeDesignObj?.weftRanges || [];
+        let wh = ""; let fh = "";
 
-    for(let i=0; i<wc; i++) {
-        let x = w[i] ? normLine(w[i], true) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
-        let lineNum = i + 1; let match = wRanges.find(r => r.start == lineNum);
-        let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
-        let safeOrig = escapeColourText(x.origName);
+        for(let i=0; i<wc; i++) {
+            let x = w[i] ? normLine(w[i], true) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
+            let lineNum = i + 1; let match = wRanges.find(r => r.start == lineNum);
+            let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
+            let safeOrig = escapeColourText(x.origName);
+            let displayName = getShadeName(x.color, x.origName);
 
-        wh += `<div>
-            <label>W${i+1}</label>
-            <input type="color" id="wC${i+1}" value="${x.color}" data-orig="${safeOrig}">
-            <input type="number" id="wE${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('warp'); autoRefresh3D();">
-            <div class="set-box">
-                <input type="number" id="wSpan${i+1}" value="${spanVal}">
-                <input type="number" id="wRep${i+1}" value="${repVal}">
-            </div>
-        </div>`;
-    }
-    for(let i=0; i<fc; i++) {
-        let x = f[i] ? normLine(f[i], false) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
-        let lineNum = i + 1; let match = fRanges.find(r => r.start == lineNum);
-        let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
-        let safeOrig = escapeColourText(x.origName);
+            wh += `<div>
+                <label>W${i+1}</label>
+                <div class="yarn-name-display" id="wNameDisp${i+1}" onclick="openColourPickerForEntry('warp', ${i+1})" title="${displayName}">${displayName}</div>
+                <button type="button" class="yarn-color-btn" id="wBtn${i+1}" style="background:${x.color};" onclick="openColourPickerForEntry('warp', ${i+1})"></button>
+                <input type="color" id="wC${i+1}" value="${x.color}" data-orig="${safeOrig}" style="display:none;">
+                <input type="number" id="wE${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('warp'); autoRefresh3D();">
+                <div class="set-box" style="display:none;">
+                    <input type="number" id="wSpan${i+1}" value="${spanVal}">
+                    <input type="number" id="wRep${i+1}" value="${repVal}">
+                </div>
+            </div>`;
+        }
+        for(let i=0; i<fc; i++) {
+            let x = f[i] ? normLine(f[i], false) : { origName: "", color: i ? "#334155" : "#f8fafc", amount: 0, span: "", repeat: "" };
+            let lineNum = i + 1; let match = fRanges.find(r => r.start == lineNum);
+            let spanVal = match ? (match.end - match.start + 1) : (x.span > 1 ? x.span : ""); let repVal = match ? match.set : (x.repeat > 1 ? x.repeat : "");
+            let safeOrig = escapeColourText(x.origName);
+            let displayName = getShadeName(x.color, x.origName);
 
-        fh += `<div>
-            <label>Wft${i+1}</label>
-            <input type="color" id="weftC${i+1}" value="${x.color}" data-orig="${safeOrig}">
-            <input type="number" id="weftP${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('weft'); autoRefresh3D();">
-            <div class="set-box">
-                <input type="number" id="weftSpan${i+1}" value="${spanVal}">
-                <input type="number" id="weftRep${i+1}" value="${repVal}">
-            </div>
-        </div>`;
-    }
-    $("warpInputsContainer").innerHTML = wh; $("weftInputsContainer").innerHTML = fh;
-    updateYarnSummary("warp");
+            fh += `<div>
+                <label>Wft${i+1}</label>
+                <div class="yarn-name-display" id="weftNameDisp${i+1}" onclick="openColourPickerForEntry('weft', ${i+1})" title="${displayName}">${displayName}</div>
+                <button type="button" class="yarn-color-btn" id="weftBtn${i+1}" style="background:${x.color};" onclick="openColourPickerForEntry('weft', ${i+1})"></button>
+                <input type="color" id="weftC${i+1}" value="${x.color}" data-orig="${safeOrig}" style="display:none;">
+                <input type="number" id="weftP${i+1}" value="${x.amount||''}" min="0" inputmode="numeric" oninput="updateYarnSummary('weft'); autoRefresh3D();">
+                <div class="set-box" style="display:none;">
+                    <input type="number" id="weftSpan${i+1}" value="${spanVal}">
+                    <input type="number" id="weftRep${i+1}" value="${repVal}">
+                </div>
+            </div>`;
+        }
+        
+        if($("warpInputsContainer")) $("warpInputsContainer").innerHTML = wh; 
+        if($("weftInputsContainer")) $("weftInputsContainer").innerHTML = fh;
+        updateYarnSummary("warp");
+    } catch(err) { console.error("UI Render Error:", err); }
 }
 
 function calculateYarnDetails(type) {
@@ -1172,19 +918,22 @@ function getWarpTotalEnds() {
 
 function updateYarnSummary(type) {
     let details = calculateYarnDetails(type);
-    $("activeYarnCount").textContent = details.activeRows + " / " + details.count;
+    if($("activeYarnCount")) $("activeYarnCount").textContent = details.activeRows + " / " + details.count;
     let hint = type === "warp" ? "Total Ends" : "Total Picks";
-    $("activeYarnHint").textContent = `${hint}: ${details.totalYarns}`;
+    if($("activeYarnHint")) $("activeYarnHint").textContent = `${hint}: ${details.totalYarns}`;
 }
 
 function showYarnTab(t) {
-    $("warpPanel").classList.toggle("active", t === "warp"); $("weftPanel").classList.toggle("active", t === "weft");
-    $("warpTab").classList.toggle("active", t === "warp"); $("weftTab").classList.toggle("active", t === "weft");
+    if($("warpPanel")) $("warpPanel").classList.toggle("active", t === "warp"); 
+    if($("weftPanel")) $("weftPanel").classList.toggle("active", t === "weft");
+    if($("warpTab")) $("warpTab").classList.toggle("active", t === "warp"); 
+    if($("weftTab")) $("weftTab").classList.toggle("active", t === "weft");
     updateYarnSummary(t);
 }
 
 function populateDesignSelect(auto = true) {
     let s = $("designSelect"); let cur = activeDesignObj ? designName(activeDesignObj) : safeJSON("weave_last_design_name", "");
+    if(!s) return;
     s.innerHTML = '<option value="">-- டிசைனைத் தேர்ந்தெடுக்கவும் --</option>';
     allCloudDesigns.forEach((d,i) => { let o = document.createElement("option"); o.value = i; o.textContent = "🎨 " + designName(d); s.appendChild(o); });
     if(auto && allCloudDesigns.length) { 
@@ -1209,28 +958,37 @@ async function importFromFirebase(manual = false) {
 }
 
 function loadSelectedDesign() {
-    let s = $("designSelect");
-    if(!s) return;
-    let i = parseInt(s.value);
-    if(isNaN(i) || !allCloudDesigns[i]) {
-        let foundIdx = allCloudDesigns.findIndex(d => cleanDesignName(designName(d)) === cleanDesignName(s.value) || designName(d) === s.value);
-        if(foundIdx >= 0) { i = foundIdx; s.value = i; } else { return; }
-    }
-    activeDesignObj = clone(allCloudDesigns[i]);
-    let dName = designName(activeDesignObj);
-    localStorage.setItem("weave_last_design_name", dName);
-    $("activeDesignText").textContent = "Active Design: " + dName;
-    
-    if($("dentingPatternInput")) $("dentingPatternInput").value = activeDesignObj.dentingPattern || "2";
-    if($("drawingPatternInput")) $("drawingPatternInput").value = activeDesignObj.drawingPattern || "1,2,3,4";
+    try {
+        let s = $("designSelect");
+        if(!s || s.value === "") return;
+        let i = parseInt(s.value);
+        if(isNaN(i) || !allCloudDesigns[i]) {
+            let foundIdx = allCloudDesigns.findIndex(d => cleanDesignName(designName(d)) === cleanDesignName(s.value) || designName(d) === s.value);
+            if(foundIdx >= 0) { i = foundIdx; s.value = i; } else { return; }
+        }
+        
+        activeDesignObj = clone(allCloudDesigns[i]);
+        let dName = designName(activeDesignObj);
+        localStorage.setItem("weave_last_design_name", dName);
+        if($("activeDesignText")) $("activeDesignText").textContent = "Active Design: " + dName;
+        
+        if($("dentingPatternInput")) $("dentingPatternInput").value = activeDesignObj.dentingPattern || "2";
+        if($("drawingPatternInput")) $("drawingPatternInput").value = activeDesignObj.drawingPattern || "1,2,3,4";
 
-    let w = activeDesignObj.warpLines || activeDesignObj.warp || []; 
-    let f = activeDesignObj.weftLines || activeDesignObj.weft || [];
-    renderUIWithData(w, f);
-    let type = activeDesignObj.type || "plain";
-    if(activeDesignObj.customMatrix?.length) { weavePatterns.custom = clone(activeDesignObj.customMatrix); if(activeDesignObj.type === "custom") type = "custom"; }
-    if(!weavePatterns[type]) type = "plain"; $("weaveType").value = type;
-    onWeaveChange(false);
+        let rawWarp = activeDesignObj.warpLines || activeDesignObj.warp || [];
+        let rawWeft = activeDesignObj.weftLines || activeDesignObj.weft || [];
+
+        renderUIWithData(rawWarp, rawWeft);
+        
+        let type = activeDesignObj.type || "plain";
+        if(activeDesignObj.customMatrix?.length) { weavePatterns.custom = clone(activeDesignObj.customMatrix); if(activeDesignObj.type === "custom") type = "custom"; }
+        if(!weavePatterns[type]) type = "plain"; 
+        if($("weaveType")) $("weaveType").value = type;
+        onWeaveChange(false);
+        
+    } catch(err) {
+        console.error("Load Design Error:", err);
+    }
 }
 
 function getCurrentData() {
@@ -1263,7 +1021,7 @@ function getCurrentData() {
 
     return { 
         warpLines: w, weftLines: f, warpRanges: wRanges, weftRanges: fRanges, 
-        customMatrix: clone(weavePatterns.custom), type: $("weaveType").value,
+        customMatrix: clone(weavePatterns.custom), type: $("weaveType")?.value || "plain",
         dentingPattern: dentP, drawingPattern: drawP
     };
 }
@@ -1287,9 +1045,10 @@ async function saveCurrentDesign() {
         activeDesignObj = clone(data); 
         localStorage.setItem("weave_last_design_name", name);
         
-        $("activeDesignText").textContent = "Active Design: " + name; populateDesignSelect(false);
+        if($("activeDesignText")) $("activeDesignText").textContent = "Active Design: " + name; 
+        populateDesignSelect(false);
         let idx = allCloudDesigns.findIndex(x => cleanDesignName(designName(x)) === cleanDesignName(name)); 
-        if(idx >= 0) $("designSelect").value = idx;
+        if(idx >= 0 && $("designSelect")) $("designSelect").value = idx;
         
         setStatus("✅ Saved Successfully — Local");
         draw3DWeave(); alert("✅ Design வெற்றிகரமாக Save / Update ஆகிவிட்டது!");
@@ -1297,15 +1056,16 @@ async function saveCurrentDesign() {
 }
 
 function onWeaveChange() {
-    let t = $("weaveType").value;
-    if(t === "plain") { weavePatterns.custom = clone(weavePatterns.plain); $("gridEditorSection").style.display="none"; }
-    else if(t === "twill") { weavePatterns.custom = clone(weavePatterns.twill); $("gridEditorSection").style.display="none"; }
-    else { $("gridEditorSection").style.display="block"; buildGridEditor(); }
+    let t = $("weaveType")?.value || "plain";
+    if(t === "plain") { weavePatterns.custom = clone(weavePatterns.plain); if($("gridEditorSection")) $("gridEditorSection").style.display="none"; }
+    else if(t === "twill") { weavePatterns.custom = clone(weavePatterns.twill); if($("gridEditorSection")) $("gridEditorSection").style.display="none"; }
+    else { if($("gridEditorSection")) $("gridEditorSection").style.display="block"; buildGridEditor(); }
     if($("fsModal")?.style.display === "flex") draw3DWeave();
 }
 
 function buildGridEditor() {
-    let box = $("matrixGridContainer"); let m = weavePatterns.custom;
+    let box = $("gridEditorSection"); if(!box) return;
+    let m = weavePatterns.custom;
     if(!Array.isArray(m) || !m.length) { weavePatterns.custom = [[1,0], [0,1]]; m = weavePatterns.custom; }
     box.innerHTML = ""; let top = document.createElement("div"); top.className = "col-del-row";
     for(let c=0; c<(m[0]?.length||0); c++) { let b = document.createElement("button"); b.className="btn-col-del"; b.textContent="✕"; b.onclick = () => removeCol(c); top.appendChild(b); }
@@ -1323,38 +1083,26 @@ function addRowTop() { let cols = weavePatterns.custom[0]?.length || 4; weavePat
 function removeRow(i) { if(weavePatterns.custom.length<=2) return; weavePatterns.custom.splice(i,1); buildGridEditor(); draw3DWeave(); }
 function removeLastRow() { removeRow(weavePatterns.custom.length-1); }
 function removeLastCol() { removeCol((weavePatterns.custom[0]?.length||1)-1); }
-function duplicateSet() {
-    let m = weavePatterns.custom; let p = prompt("Rows duplicate range (example 1-4)", "1-"+m.length); if(!p) return;
-    let a = p.split("-").map(Number); if(a.length!==2 || a[0]<1 || a[1]>m.length || a[0]>a[1]) { alert("❌ 1-4 போன்ற format கொடுக்கவும்"); return; }
-    let selected = m.slice(a[0]-1, a[1]).map(r => [...r]); weavePatterns.custom = selected.concat(m.map(r => [...r])); buildGridEditor(); draw3DWeave();
-}
 
 /* =========================================================
-   CANVAS 3D RENDER ENGINE (3 REPEATS & 1:1 MM SCALE)
+   CANVAS 3D RENDER ENGINE
 ========================================================= */
 function isWarpUp(r, c, type, draftArr) {
     let m = type === "custom" ? weavePatterns.custom : (weavePatterns[type] || weavePatterns.custom);
     if(!m || !m.length || !m[0]?.length) return true;
     let rr = (m.length-1) - (r%m.length); 
-    
-    let frame = 1;
-    if (draftArr && draftArr.length > 0) {
-        frame = draftArr[c % draftArr.length];
-    } else {
-        frame = c + 1;
-    }
-    
+    let frame = draftArr && draftArr.length > 0 ? draftArr[c % draftArr.length] : c + 1;
     let cc = (frame - 1) % m[0].length;
     if(isNaN(cc) || cc < 0) cc = c % m[0].length; 
     return m[rr][cc] === 1;
 }
-
 function rgb(hex) {
-    hex = hex || "#fff"; if(/^#[0-9a-f]{3}$/i.test(hex)) hex = "#" + hex[1]+hex[1] + hex[2]+hex[2] + hex[3]+hex[3];
+    hex = hex || "#fff"; 
+    if(/^#[0-9a-f]{3}$/i.test(hex)) hex = "#" + hex[1]+hex[1] + hex[2]+hex[2] + hex[3]+hex[3];
     if(!/^#[0-9a-f]{6}$/i.test(hex)) hex = "#ffffff";
-    return { r: parseInt(hex.slice(1,3), 16)||255, g: parseInt(hex.slice(3,5), 16)||255, b: parseInt(hex.slice(5,7), 16)||255 };
+    let r = parseInt(hex.slice(1,3), 16); let g = parseInt(hex.slice(3,5), 16); let b = parseInt(hex.slice(5,7), 16);
+    return { r: isNaN(r) ? 255 : r, g: isNaN(g) ? 255 : g, b: isNaN(b) ? 255 : b };
 }
-
 function shade(a, f) { return `rgb(${Math.max(0, Math.min(255, Math.round(a.r*f)))}, ${Math.max(0, Math.min(255, Math.round(a.g*f)))}, ${Math.max(0, Math.min(255, Math.round(a.b*f)))})`; }
 
 let drawFramePending = false;
@@ -1365,306 +1113,154 @@ function draw3DWeave() {
     requestAnimationFrame(() => {
         drawFramePending = false;
 
-        const c = $("weaveCanvas");
-        const host = $("fsContent");
+        const c = $("weaveCanvas"); const host = $("fsContent");
         if(!c || !host) return;
 
         const rect = host.getBoundingClientRect();
-        const W = Math.max(320, Math.floor(rect.width));
-        const H = Math.max(240, Math.floor(rect.height));
+        const W = Math.max(320, Math.floor(rect.width)); const H = Math.max(240, Math.floor(rect.height));
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        c.width = Math.floor(W * dpr);
-        c.height = Math.floor(H * dpr);
-
-        const ctx = c.getContext("2d", {alpha:false});
-        if(!ctx) return;
-
+        c.width = Math.floor(W * dpr); c.height = Math.floor(H * dpr);
+        const ctx = c.getContext("2d", {alpha:false}); if(!ctx) return;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = "#00000";
-        ctx.fillRect(0, 0, W, H);
+        ctx.clearRect(0, 0, W, H); ctx.fillStyle = "#000000"; ctx.fillRect(0, 0, W, H);
 
-        let baseWarp = [];
-        let w_idx = 1;
-
+        let baseWarp = []; let w_idx = 1;
         while(w_idx <= currentWarpCount) {
-            const co = $("wC"+w_idx);
-            const e  = $("wE"+w_idx);
-            const sInp = $("wSpan"+w_idx);
-            const rInp = $("wRep"+w_idx);
-
-            if(!co || !e) {
-                w_idx++;
-                continue;
-            }
-
-            const n = Math.max(0, parseInt(e.value) || 0);
-            const span = Math.max(1, parseInt(sInp?.value) || 1);
-            const repeat = Math.max(1, parseInt(rInp?.value) || 1);
-
+            const co = $("wC"+w_idx); const e  = $("wE"+w_idx); const sInp = $("wSpan"+w_idx); const rInp = $("wRep"+w_idx);
+            if(!co || !e) { w_idx++; continue; }
+            const n = Math.max(0, parseInt(e.value) || 0); const span = Math.max(1, parseInt(sInp?.value) || 1); const repeat = Math.max(1, parseInt(rInp?.value) || 1);
             if(span > 1 && repeat > 1) {
                 const setSequence = [];
-
                 for(let s=0; s<span; s++) {
-                    const currIdx = w_idx + s;
-                    if(currIdx > currentWarpCount) break;
-
-                    const rCo = $("wC"+currIdx);
-                    const rE  = $("wE"+currIdx);
-
-                    if(rCo && rE) {
-                        const rN = Math.max(0, parseInt(rE.value) || 0);
-                        const rColor = rgb(rCo.value);
-                        for(let j=0; j<rN; j++) setSequence.push(rColor);
-                    }
+                    const currIdx = w_idx + s; if(currIdx > currentWarpCount) break;
+                    const rCo = $("wC"+currIdx); const rE  = $("wE"+currIdx);
+                    if(rCo && rE) { const rN = Math.max(0, parseInt(rE.value) || 0); const rColor = rgb(rCo.value); for(let j=0; j<rN; j++) setSequence.push(rColor); }
                 }
-
-                for(let rep=0; rep<repeat; rep++) {
-                    baseWarp.push(...setSequence);
-                }
-
+                for(let rep=0; rep<repeat; rep++) baseWarp.push(...setSequence);
                 w_idx += span;
             } else {
-                if(n > 0) {
-                    const color = rgb(co.value);
-                    for(let j=0; j<n; j++) baseWarp.push(color);
-                }
+                if(n > 0) { const color = rgb(co.value); for(let j=0; j<n; j++) baseWarp.push(color); }
                 w_idx++;
             }
         }
 
-        let baseWeft = [];
-        let f_idx = 1;
-
+        let baseWeft = []; let f_idx = 1;
         while(f_idx <= currentWeftCount) {
-            const co = $("weftC"+f_idx);
-            const p  = $("weftP"+f_idx);
-            const sInp = $("weftSpan"+f_idx);
-            const rInp = $("weftRep"+f_idx);
-
-            if(!co || !p) {
-                f_idx++;
-                continue;
-            }
-
-            const n = Math.max(0, parseInt(p.value) || 0);
-            const span = Math.max(1, parseInt(sInp?.value) || 1);
-            const repeat = Math.max(1, parseInt(rInp?.value) || 1);
-
+            const co = $("weftC"+f_idx); const p  = $("weftP"+f_idx); const sInp = $("weftSpan"+f_idx); const rInp = $("weftRep"+f_idx);
+            if(!co || !p) { f_idx++; continue; }
+            const n = Math.max(0, parseInt(p.value) || 0); const span = Math.max(1, parseInt(sInp?.value) || 1); const repeat = Math.max(1, parseInt(rInp?.value) || 1);
             if(span > 1 && repeat > 1) {
                 const setSequence = [];
-
                 for(let s=0; s<span; s++) {
-                    const currIdx = f_idx + s;
-                    if(currIdx > currentWeftCount) break;
-
-                    const rCo = $("weftC"+currIdx);
-                    const rP  = $("weftP"+currIdx);
-
-                    if(rCo && rP) {
-                        const rN = Math.max(0, parseInt(rP.value) || 0);
-                        const rColor = rgb(rCo.value);
-                        for(let j=0; j<rN; j++) setSequence.push(rColor);
-                    }
+                    const currIdx = f_idx + s; if(currIdx > currentWeftCount) break;
+                    const rCo = $("weftC"+currIdx); const rP  = $("weftP"+currIdx);
+                    if(rCo && rP) { const rN = Math.max(0, parseInt(rP.value) || 0); const rColor = rgb(rCo.value); for(let j=0; j<rN; j++) setSequence.push(rColor); }
                 }
-
-                for(let rep=0; rep<repeat; rep++) {
-                    baseWeft.push(...setSequence);
-                }
-
+                for(let rep=0; rep<repeat; rep++) baseWeft.push(...setSequence);
                 f_idx += span;
             } else {
-                if(n > 0) {
-                    const color = rgb(co.value);
-                    for(let j=0; j<n; j++) baseWeft.push(color);
-                }
+                if(n > 0) { const color = rgb(co.value); for(let j=0; j<n; j++) baseWeft.push(color); }
                 f_idx++;
             }
         }
 
         if(baseWarp.length === 0 && activeDesignObj && Array.isArray(activeDesignObj.warpLines)) {
-            const wRanges = Array.isArray(activeDesignObj.warpRanges) ? activeDesignObj.warpRanges : [];
-            let i = 0;
-
+            const wRanges = Array.isArray(activeDesignObj.warpRanges) ? activeDesignObj.warpRanges : []; let i = 0;
             while(i < activeDesignObj.warpLines.length) {
-                const lineNum = i + 1;
-                const range = wRanges.find(r => Number(r.start) === lineNum);
-
+                const lineNum = i + 1; const range = wRanges.find(r => Number(r.start) === lineNum);
                 if(range && Number(range.end) >= Number(range.start) && Number(range.set) > 1) {
                     const setSeq = [];
-
                     for(let j=Number(range.start)-1; j<Number(range.end) && j<activeDesignObj.warpLines.length; j++) {
-                        const l = activeDesignObj.warpLines[j] || {};
-                        const endsCount = parseInt(l.ends ?? l.amount ?? l.end ?? l.qty ?? 0) || 0;
-                        const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff"));
-                        for(let k=0; k<endsCount; k++) setSeq.push(col);
+                        const l = activeDesignObj.warpLines[j] || {}; const endsCount = parseInt(l.ends ?? l.amount ?? l.end ?? l.qty ?? 0) || 0;
+                        const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff")); for(let k=0; k<endsCount; k++) setSeq.push(col);
                     }
-
-                    for(let rep=0; rep<Number(range.set); rep++) {
-                        baseWarp.push(...setSeq);
-                    }
-
+                    for(let rep=0; rep<Number(range.set); rep++) baseWarp.push(...setSeq);
                     i = Number(range.end);
                 } else {
-                    const l = activeDesignObj.warpLines[i] || {};
-                    const endsCount = parseInt(l.ends ?? l.amount ?? l.end ?? l.qty ?? 0) || 0;
-                    const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff"));
-                    for(let k=0; k<endsCount; k++) baseWarp.push(col);
-                    i++;
+                    const l = activeDesignObj.warpLines[i] || {}; const endsCount = parseInt(l.ends ?? l.amount ?? l.end ?? l.qty ?? 0) || 0;
+                    const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff")); for(let k=0; k<endsCount; k++) baseWarp.push(col); i++;
                 }
             }
         }
 
         if(baseWeft.length === 0 && activeDesignObj && Array.isArray(activeDesignObj.weftLines)) {
-            const fRanges = Array.isArray(activeDesignObj.weftRanges) ? activeDesignObj.weftRanges : [];
-            let i = 0;
-
+            const fRanges = Array.isArray(activeDesignObj.weftRanges) ? activeDesignObj.weftRanges : []; let i = 0;
             while(i < activeDesignObj.weftLines.length) {
-                const lineNum = i + 1;
-                const range = fRanges.find(r => Number(r.start) === lineNum);
-
+                const lineNum = i + 1; const range = fRanges.find(r => Number(r.start) === lineNum);
                 if(range && Number(range.end) >= Number(range.start) && Number(range.set) > 1) {
                     const setSeq = [];
-
                     for(let j=Number(range.start)-1; j<Number(range.end) && j<activeDesignObj.weftLines.length; j++) {
-                        const l = activeDesignObj.weftLines[j] || {};
-                        const picksCount = parseInt(l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0) || 0;
-                        const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff"));
-                        for(let k=0; k<picksCount; k++) setSeq.push(col);
+                        const l = activeDesignObj.weftLines[j] || {}; const picksCount = parseInt(l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0) || 0;
+                        const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff")); for(let k=0; k<picksCount; k++) setSeq.push(col);
                     }
-
-                    for(let rep=0; rep<Number(range.set); rep++) {
-                        baseWeft.push(...setSeq);
-                    }
-
+                    for(let rep=0; rep<Number(range.set); rep++) baseWeft.push(...setSeq);
                     i = Number(range.end);
                 } else {
-                    const l = activeDesignObj.weftLines[i] || {};
-                    const picksCount = parseInt(l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0) || 0;
-                    const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff"));
-                    for(let k=0; k<picksCount; k++) baseWeft.push(col);
-                    i++;
+                    const l = activeDesignObj.weftLines[i] || {}; const picksCount = parseInt(l.picks ?? l.pick ?? l.amount ?? l.qty ?? 0) || 0;
+                    const col = rgb(colorName(l.color || l.colour || l.colourName || "#ffffff")); for(let k=0; k<picksCount; k++) baseWeft.push(col); i++;
                 }
             }
         }
 
-        if(!baseWarp.length) baseWarp = [rgb("#1e3a8a"), rgb("#ffffff")];
-        if(!baseWeft.length) baseWeft = [rgb("#ffffff"), rgb("#1e3a8a")];
-
-        const singleWarp = baseWarp.slice();
-        const singleWeft = baseWeft.slice();
-        const singleWarpLen = singleWarp.length;
-        const singleWeftLen = singleWeft.length;
-
-        const warp = [...singleWarp, ...singleWarp];
-        const weft = [...singleWeft, ...singleWeft];
-
-        const realWarpLength = warp.length;
-        const realWeftLength = weft.length;
+        if(!baseWarp.length) baseWarp = [rgb("#1e3a8a"), rgb("#ffffff")]; if(!baseWeft.length) baseWeft = [rgb("#ffffff"), rgb("#1e3a8a")];
+        const singleWarp = baseWarp.slice(); const singleWeft = baseWeft.slice();
+        const singleWarpLen = singleWarp.length; const singleWeftLen = singleWeft.length;
+        const warp = [...singleWarp, ...singleWarp]; const weft = [...singleWeft, ...singleWeft];
+        const realWarpLength = warp.length; const realWeftLength = weft.length;
 
         let reed = parseFloat(activeDesignObj?.finishedReed ?? activeDesignObj?.reed ?? activeDesignObj?.reedCount);
         let pick = parseFloat(activeDesignObj?.finishedPick ?? activeDesignObj?.finishPick ?? activeDesignObj?.pick ?? activeDesignObj?.weftPick ?? activeDesignObj?.pickCount);
-        if(!isFinite(reed) || reed <= 0) reed = 64;
-        if(!isFinite(pick) || pick <= 0) pick = 48;
+        if(!isFinite(reed) || reed <= 0) reed = 64; if(!isFinite(pick) || pick <= 0) pick = 48;
 
-        const physW_mm = (realWarpLength / reed) * 25.4;
-        const physH_mm = (realWeftLength / pick) * 25.4;
+        const physW_mm = (realWarpLength / reed) * 25.4; const physH_mm = (realWeftLength / pick) * 25.4;
 
-        let dentArr = expandPattern($("dentingPatternInput")?.value || "2");
-        if(!dentArr.length) dentArr = [2];
+        /* FIX: exact one-repeat dimensions used by the DATA BOX */
+        const repeat_width_mm = (singleWarpLen / reed) * 25.4;
+        const repeat_height_mm = (singleWeftLen / pick) * 25.4;
 
-        let drawArr = expandPattern($("drawingPatternInput")?.value || "1,2,3,4");
-        if(!drawArr.length) drawArr = [1,2,3,4];
+        let dentArr = expandPattern($("dentingPatternInput")?.value || "2"); if(!dentArr.length) dentArr = [2];
+        let drawArr = expandPattern($("drawingPatternInput")?.value || "1,2,3,4"); if(!drawArr.length) drawArr = [1,2,3,4];
 
-        let dentsRequired = 0;
-        let endsRemaining = realWarpLength;
-        let dIdx = 0;
-
-        while(endsRemaining > 0) {
-            const patternValue = Math.max(0, parseInt(dentArr[dIdx % dentArr.length]) || 0);
-            dentsRequired++;
-            if(patternValue > 0) { endsRemaining -= Math.min(patternValue, endsRemaining); }
-            dIdx++;
-            if(dIdx > 50000) break;
-        }
-
+        let dentsRequired = 0; let endsRemaining = realWarpLength; let dIdx = 0;
+        while(endsRemaining > 0) { const patternValue = Math.max(0, parseInt(dentArr[dIdx % dentArr.length]) || 0); dentsRequired++; if(patternValue > 0) { endsRemaining -= Math.min(patternValue, endsRemaining); } dIdx++; if(dIdx > 50000) break; }
         if(dentsRequired <= 0) dentsRequired = realWarpLength;
 
-        const RULER = 32;
-        const availW = Math.max(10, W - RULER);
-        const availH = Math.max(10, H - RULER);
-
+        const RULER = 32; const availW = Math.max(10, W - RULER); const availH = Math.max(10, H - RULER);
         let px_per_mm = Math.min(availW / Math.max(0.01, physW_mm), availH / Math.max(0.01, physH_mm));
         if(!isFinite(px_per_mm) || px_per_mm <= 0) px_per_mm = 2;
 
-        const drawW = physW_mm * px_per_mm;
-        const drawH = physH_mm * px_per_mm;
-        const left = RULER;
-        const bottom = H - RULER;
-        const top = bottom - drawH;
+        const drawW = physW_mm * px_per_mm; const drawH = physH_mm * px_per_mm;
+        const left = RULER; const bottom = H - RULER; const top = bottom - drawH;
+        const dentWidthPx = drawW / Math.max(1, dentsRequired); const cellH = drawH / Math.max(1, realWeftLength);
 
-        const dentWidthPx = drawW / Math.max(1, dentsRequired);
-        const cellH = drawH / Math.max(1, realWeftLength);
-
-        const warpPositions = [];
-        let endIndex = 0;
-        let dentIndex = 0;
-
+        const warpPositions = []; let endIndex = 0; let dentIndex = 0;
         while(endIndex < realWarpLength && dentIndex < dentsRequired) {
-            const requestedEnds = Math.max(0, parseInt(dentArr[dentIndex % dentArr.length]) || 0);
-            const x = left + dentIndex * dentWidthPx;
-
-            if(requestedEnds === 0) {
-                warpPositions.push({ colIndex: -1, x, w: dentWidthPx, isEmpty: true });
-            } else {
-                const actualEnds = Math.min(requestedEnds, realWarpLength - endIndex);
-                const yarnW = dentWidthPx / Math.max(1, actualEnds);
-                for(let e=0; e<actualEnds; e++) {
-                    warpPositions.push({ colIndex: endIndex, x: x + e * yarnW, w: yarnW, isEmpty: false });
-                    endIndex++;
-                }
-            }
-            dentIndex++;
+            const requestedEnds = Math.max(0, parseInt(dentArr[dentIndex % dentArr.length]) || 0); const x = left + dentIndex * dentWidthPx;
+            if(requestedEnds === 0) { warpPositions.push({ colIndex: -1, x, w: dentWidthPx, isEmpty: true }); } 
+            else { const actualEnds = Math.min(requestedEnds, realWarpLength - endIndex); const yarnW = dentWidthPx / Math.max(1, actualEnds);
+                for(let e=0; e<actualEnds; e++) { warpPositions.push({ colIndex: endIndex, x: x + e * yarnW, w: yarnW, isEmpty: false }); endIndex++; }
+            } dentIndex++;
         }
 
-        const type = $("weaveType")?.value || "plain";
-        const useGradient = dentWidthPx >= 1.4 && cellH >= 1.4;
+        const type = $("weaveType")?.value || "plain"; const useGradient = dentWidthPx >= 1.4 && cellH >= 1.4;
 
         for(let r=0; r<realWeftLength; r++) {
-            const y = bottom - ((r + 1) * cellH);
-            const weftColor = weft[r % weft.length];
-
+            const y = bottom - ((r + 1) * cellH); const weftColor = weft[r % weft.length];
             for(const wp of warpPositions) {
                 if(wp.x >= left + drawW) continue;
-
-                if(wp.isEmpty) {
-                    ctx.fillStyle = shade(weftColor, useGradient ? 0.90 : 0.85);
-                    ctx.fillRect(wp.x, y, Math.max(0.6, wp.w + 0.35), Math.max(0.6, cellH + 0.35));
-                    continue;
-                }
-
-                const up = isWarpUp(r, wp.colIndex, type, drawArr);
-                const baseColor = up ? warp[wp.colIndex % warp.length] : weftColor;
-
-                if(useGradient) {
-                    let g;
-                    if(up) { g = ctx.createLinearGradient(wp.x, y, wp.x + wp.w, y); } 
-                    else { g = ctx.createLinearGradient(wp.x, y, wp.x, y + cellH); }
-                    g.addColorStop(0, shade(baseColor, 0.45));
-                    g.addColorStop(0.35, shade(baseColor, 1.08));
-                    g.addColorStop(0.65, shade(baseColor, 1.20));
-                    g.addColorStop(1, shade(baseColor, 0.45));
-                    ctx.fillStyle = g;
-                } else {
-                    ctx.fillStyle = shade(baseColor, up ? 0.95 : 0.82);
-                }
+                if(wp.isEmpty) { ctx.fillStyle = shade(weftColor, useGradient ? 0.90 : 0.85); ctx.fillRect(wp.x, y, Math.max(0.6, wp.w + 0.35), Math.max(0.6, cellH + 0.35)); continue; }
+                const up = isWarpUp(r, wp.colIndex, type, drawArr); const baseColor = up ? warp[wp.colIndex % warp.length] : weftColor;
+                if(useGradient) { let g; if(up) { g = ctx.createLinearGradient(wp.x, y, wp.x + wp.w, y); } else { g = ctx.createLinearGradient(wp.x, y, wp.x, y + cellH); }
+                    g.addColorStop(0, shade(baseColor, 0.45)); g.addColorStop(0.35, shade(baseColor, 1.08)); g.addColorStop(0.65, shade(baseColor, 1.20)); g.addColorStop(1, shade(baseColor, 0.45)); ctx.fillStyle = g;
+                } else { ctx.fillStyle = shade(baseColor, up ? 0.95 : 0.82); }
                 ctx.fillRect(wp.x, y, Math.max(0.6, wp.w + 0.35), Math.max(0.6, cellH + 0.35));
             }
         }
 
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, bottom, W, RULER);
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, top, RULER, bottom - top);
+        // DRAW WHITE SCALES
+        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, bottom, left + drawW, RULER);
+        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, top, RULER, drawH);
         ctx.fillStyle = "#f1f5f9"; ctx.fillRect(0, bottom, RULER, RULER);
 
         ctx.beginPath();
@@ -1672,7 +1268,7 @@ function draw3DWeave() {
         ctx.lineWidth = 1;
         ctx.moveTo(RULER + 0.5, top);
         ctx.lineTo(RULER + 0.5, bottom + 0.5);
-        ctx.lineTo(W, bottom + 0.5);
+        ctx.lineTo(left + drawW + 0.5, bottom + 0.5);
         ctx.stroke();
 
         const max_mm_x = drawW / Math.max(0.01, px_per_mm);
@@ -1708,9 +1304,7 @@ function draw3DWeave() {
         ctx.fillStyle = "#000000"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
         ctx.fillText("cm", RULER / 2, bottom + RULER / 2);
 
-        const repeat_width_mm = (singleWarpLen / reed) * 25.4;
-        const repeat_height_mm = (singleWeftLen / pick) * 25.4;
-
+        // DATA BOX (Top Right of Fabric)
         const text1 = `W: (${singleWarpLen} ÷ ${reed}) × 25.4 = ${repeat_width_mm.toFixed(2)} mm`;
         const text2 = `H: (${singleWeftLen} ÷ ${pick}) × 25.4 = ${repeat_height_mm.toFixed(2)} mm`;
 
@@ -1718,15 +1312,27 @@ function draw3DWeave() {
         const tw1 = ctx.measureText(text1).width;
         const tw2 = ctx.measureText(text2).width;
 
-        const boxWidth = Math.min(W - 20, Math.max(tw1, tw2) + 30);
+        const boxWidth = Math.max(tw1, tw2) + 24; 
         const boxHeight = 46;
-        const boxX = Math.max(left + 5, left + drawW - boxWidth - 10);
-        const boxY = Math.max(10, top + 10);
 
-        ctx.fillStyle = "rgba(0,0,0,.85)"; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1.5;
-        ctx.fillRect(boxX, boxY, boxWidth, boxHeight); ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
-        ctx.fillStyle = "#ffffff"; ctx.textAlign = "right"; ctx.textBaseline = "middle";
-        ctx.fillText(text1, W - 25, boxY + 16); ctx.fillText(text2, W - 25, boxY + 34);
+        let boxX = (left + drawW) - boxWidth - 10;
+        if (boxX < left + 10) boxX = left + 10;
+        if (boxX + boxWidth > W - 10) boxX = W - boxWidth - 10;
+
+        let boxY = top + 10;
+        if (boxY < 10) boxY = 10;
+
+        ctx.fillStyle = "rgba(20,37,30,.85)"; 
+        ctx.strokeStyle = "#4caf50"; 
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(boxX, boxY, boxWidth, boxHeight); 
+        ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+        
+        ctx.fillStyle = "#ffffff"; 
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text1, boxX + (boxWidth / 2), boxY + 16);
+        ctx.fillText(text2, boxX + (boxWidth / 2), boxY + 31);
     });
 }
 
@@ -1740,6 +1346,13 @@ function openDentingModal() {
     if(!modal) return;
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
+    
+    // Auto Native Fullscreen Request
+    try {
+        if (modal.requestFullscreen) modal.requestFullscreen();
+        else if (modal.webkitRequestFullscreen) modal.webkitRequestFullscreen();
+    } catch(e) {}
+    
     buildManualDentingEditor();
     buildManualDrawingEditor();
     calculateAdvancedDenting();
@@ -1749,24 +1362,31 @@ function closeDentingModal() {
     const modal = $("dentingModal");
     if(modal) modal.classList.remove("active");
     document.body.style.overflow = "";
+    
+    try {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+    } catch(e) {}
 }
 
 function showDentingPane(name) {
     ["dent","draw","adv"].forEach(x => { $(x+"Pane")?.classList.toggle("active", x === name); });
-    $("dentTabBtn")?.classList.toggle("active", name === "dent");
-    $("drawTabBtn")?.classList.toggle("active", name === "draw");
-    $("advTabBtn")?.classList.toggle("active", name === "adv");
+    if($("dentTabBtn")) $("dentTabBtn").classList.toggle("active", name === "dent");
+    if($("drawTabBtn")) $("drawTabBtn").classList.toggle("active", name === "draw");
+    if($("advTabBtn")) $("advTabBtn").classList.toggle("active", name === "adv");
 }
 
 function setDentPreset(value) {
-    $("dentingPatternInput").value = value;
+    if($("dentingPatternInput")) $("dentingPatternInput").value = value;
     buildManualDentingEditor();
     calculateAdvancedDenting();
     autoRefresh3D();
 }
 
 function setDrawingPreset(value) {
-    $("drawingPatternInput").value = value;
+    if($("drawingPatternInput")) $("drawingPatternInput").value = value;
     buildManualDrawingEditor();
     calculateAdvancedDenting();
     autoRefresh3D();
@@ -1787,30 +1407,30 @@ function buildManualDentingEditor() {
 function syncManualDenting() {
     const box=$("dentingManualRows"); if(!box) return;
     const vals=[...box.querySelectorAll("input")].map(x=>Math.max(0,parseInt(x.value)||0));
-    if(vals.length) $("dentingPatternInput").value=vals.join(",");
+    if(vals.length && $("dentingPatternInput")) $("dentingPatternInput").value=vals.join(",");
 }
 
 function addDentingManualRow() {
     syncManualDenting();
-    const vals=expandPattern($("dentingPatternInput").value||"2");
+    const vals=expandPattern($("dentingPatternInput")?.value||"2");
     vals.push(vals.length ? vals[vals.length-1] : 2);
-    $("dentingPatternInput").value=vals.join(",");
+    if($("dentingPatternInput")) $("dentingPatternInput").value=vals.join(",");
     buildManualDentingEditor();
     calculateAdvancedDenting();
 }
 
 function removeDentingManualRow(i) {
-    const vals=expandPattern($("dentingPatternInput").value||"2");
+    const vals=expandPattern($("dentingPatternInput")?.value||"2");
     if(vals.length<=1) return;
     vals.splice(i,1);
-    $("dentingPatternInput").value=vals.join(",");
+    if($("dentingPatternInput")) $("dentingPatternInput").value=vals.join(",");
     buildManualDentingEditor();
     calculateAdvancedDenting();
 }
 
 function buildManualDrawingEditor() {
     const box=$("drawingManualRows"); if(!box) return;
-    const arr=expandPattern($("drawingPatternInput")?.value||"1,2,3,4");
+    const arr=expandPattern($("drawingPatternInput")?.value || "1,2,3,4");
     const values=arr.length?arr:[1,2,3,4];
     box.innerHTML=values.map((v,i)=>`
         <div class="manual-row">
@@ -1823,23 +1443,23 @@ function buildManualDrawingEditor() {
 function syncManualDrawing() {
     const box=$("drawingManualRows"); if(!box) return;
     const vals=[...box.querySelectorAll("input")].map(x=>Math.max(1,parseInt(x.value)||1));
-    if(vals.length) $("drawingPatternInput").value=vals.join(",");
+    if(vals.length && $("drawingPatternInput")) $("drawingPatternInput").value=vals.join(",");
 }
 
 function addDrawingManualRow() {
     syncManualDrawing();
     const vals=expandPattern($("drawingPatternInput").value||"1,2,3,4");
     vals.push(vals.length ? vals[vals.length-1] : 1);
-    $("drawingPatternInput").value=vals.join(",");
+    if($("drawingPatternInput")) $("drawingPatternInput").value=vals.join(",");
     buildManualDrawingEditor();
     calculateAdvancedDenting();
 }
 
 function removeDrawingManualRow(i) {
-    const vals=expandPattern($("drawingPatternInput").value||"1,2,3,4");
+    const vals=expandPattern($("drawingPatternInput")?.value||"1,2,3,4");
     if(vals.length<=1) return;
     vals.splice(i,1);
-    $("drawingPatternInput").value=vals.join(",");
+    if($("drawingPatternInput")) $("drawingPatternInput").value=vals.join(",");
     buildManualDrawingEditor();
     calculateAdvancedDenting();
 }
@@ -1850,6 +1470,7 @@ function calculateAdvancedDenting() {
     let drawStr=$("drawingPatternInput")?.value.trim()||"1,2,3,4";
     let dentArr=expandPattern(dentStr); if(!dentArr.length) dentArr=[2];
     let drawArr=expandPattern(drawStr); if(!drawArr.length) drawArr=[1,2,3,4];
+    if(!$("dentingResultDisplay")) return;
     if(totalEnds===0){ $("dentingResultDisplay").innerHTML="<span style='color:#ef4444;'>டேட்டா இல்லை — Warp Ends முதலில் உள்ளிடவும்.</span>"; return; }
     let dentsUsed=0,endsCounted=0,emptyDents=0,ptr=0;
     while(endsCounted<totalEnds && ptr<50000){
@@ -1865,7 +1486,9 @@ function calculateAdvancedDenting() {
       <div style="font-size:.6rem;color:#78d18a;margin-top:8px;">Denting: ${dentArr.join(", ")} &nbsp; | &nbsp; Drawing: ${drawArr.join(", ")}</div>`;
 }
 
+/* ================= FULLSCREEN 3D  ================= */
 let scale = 1, pointX = 0, pointY = 0, panning = false, startX = 0, startY = 0, lastDist = 0;
+
 function openFullscreen() { 
     let savedDent = localStorage.getItem("saved_denting_pattern");
     let savedDraw = localStorage.getItem("saved_drawing_pattern");
@@ -1873,25 +1496,83 @@ function openFullscreen() {
     if(savedDraw && $("drawingPatternInput")) $("drawingPatternInput").value = savedDraw;
 
     const modal = $("fsModal"); if(!modal) return; 
-    modal.style.display="flex"; scale=1; pointX=0; pointY=0; panning=false; 
+    modal.style.display="flex"; 
+    
+    try {
+        if (modal.requestFullscreen) modal.requestFullscreen();
+        else if (modal.webkitRequestFullscreen) modal.webkitRequestFullscreen();
+        else if (modal.msRequestFullscreen) modal.msRequestFullscreen();
+    } catch(e) { console.log("Fullscreen API blocked"); }
+
+    scale=1; pointX=0; pointY=0; panning=false; 
     requestAnimationFrame(()=>{ draw3DWeave(); updateTransform(); }); 
 }
 
 function refreshFullscreen3D() { scale=1; pointX=0; pointY=0; draw3DWeave(); updateTransform(); }
-function closeFullscreen() { const modal = $("fsModal"); if(!modal) return; modal.style.display="none"; const c = $("weaveCanvas"); if(c) { const ctx = c.getContext("2d"); if(ctx) ctx.clearRect(0,0,c.width,c.height); c.style.transform="translate(0px,0px) scale(1)"; } scale=1; pointX=0; pointY=0; panning=false; lastDist=0; }
-function updateTransform() { const c=$("weaveCanvas"); if(c) c.style.transform=`translate(${pointX}px,${pointY}px) scale(${scale})`; }
+
+function closeFullscreen() { 
+    const modal = $("fsModal"); if(!modal) return; 
+    modal.style.display="none"; 
+    
+    try {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+    } catch(e) {}
+
+    const c = $("weaveCanvas"); 
+    if(c) { 
+        const ctx = c.getContext("2d"); 
+        if(ctx) ctx.clearRect(0,0,c.width,c.height); 
+        c.style.transform="translate(0px,0px) scale(1)"; 
+    } 
+    scale=1; pointX=0; pointY=0; panning=false; lastDist=0; 
+}
+
+function updateTransform() { 
+    const c=$("weaveCanvas"); 
+    if(c) c.style.transform=`translate3d(${pointX}px,${pointY}px,0) scale(${scale})`; 
+}
 
 const fsContent = $("fsContent");
 if(fsContent) {
-    fsContent.addEventListener("touchstart", e => { if(e.touches.length===1) { panning=true; startX=e.touches[0].clientX-pointX; startY=e.touches[0].clientY-pointY; } else if(e.touches.length===2) { panning=false; lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); } }, {passive:false});
-    fsContent.addEventListener("touchmove", e => { e.preventDefault();
-        if(e.touches.length===1 && panning) { pointX=e.touches[0].clientX-startX; pointY=e.touches[0].clientY-startY; updateTransform(); }
-        else if(e.touches.length===2) { let d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); if(lastDist) scale = Math.max(1, Math.min(5, scale*d/lastDist)); lastDist = d; updateTransform(); }
+    fsContent.addEventListener("touchstart", e => { 
+        if(e.touches.length===1) { 
+            panning=true; startX=e.touches[0].clientX-pointX; startY=e.touches[0].clientY-pointY; 
+        } else if(e.touches.length===2) { 
+            panning=false; lastDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); 
+        } 
     }, {passive:false});
+
+    fsContent.addEventListener("touchmove", e => { 
+        e.preventDefault();
+        if(e.touches.length===1 && panning) { 
+            pointX=e.touches[0].clientX-startX; pointY=e.touches[0].clientY-startY; updateTransform(); 
+        }
+        else if(e.touches.length===2) { 
+            let d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); 
+            if(lastDist) {
+                scale = Math.max(0.1, Math.min(25, scale * (d / lastDist))); 
+            }
+            lastDist = d; 
+            updateTransform(); 
+        }
+    }, {passive:false});
+
     fsContent.addEventListener("touchend", () => { panning=false; lastDist=0; });
+    
+    fsContent.addEventListener("wheel", e => {
+        e.preventDefault();
+        let zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
+        scale = Math.max(0.1, Math.min(25, scale * zoomFactor));
+        updateTransform();
+    }, {passive:false});
 }
+
 document.addEventListener("keydown", e => { if(e.key==="Escape" && $("fsModal")?.style.display==="flex") closeFullscreen(); });
 
+/* ================= PRINT MODULE ================= */
 function getPrintMatrix() {
     let type = $("weaveType")?.value || "plain";
     let m = type === "custom" ? weavePatterns.custom : weavePatterns[type];
@@ -1925,7 +1606,6 @@ function buildWarpTable(lines, drawArr) {
     let ranges = activeDesignObj?.warpRanges || [];
     let i = 0;
     
-    // Grouping the identical repeated sets
     while(i < lines.length) {
         let lineNum = i + 1;
         let range = ranges.find(r => Number(r.start) === lineNum);
@@ -1979,7 +1659,6 @@ function buildWarpTable(lines, drawArr) {
             item.rows.forEach(r => { blockTotalEnds += (parseInt(r.ends) || 0); });
             let totalEndsInGroup = blockTotalEnds * totalRep;
             
-            // Continuous drawing calculation for the ENTIRE SET
             let frames = [];
             let drawLen = drawArr.length;
             for(let k = 0; k < totalEndsInGroup; k++) {
@@ -1987,27 +1666,26 @@ function buildWarpTable(lines, drawArr) {
             }
             globalEndIndex += totalEndsInGroup;
 
-            // Single line continuous draw array
             let frameStr = frames.length <= 4 ? frames.join(",") : frames.slice(0, 3).join(",") + "..." + frames[frames.length-1];
 
-            // Print the Set ONCE, spanning the grouped rows
             item.rows.forEach((l, sIdx) => {
-                let name = l.colourName || String(l.color).toUpperCase();
+                let name = l.colourName || l.origName || "";
                 let cleanName = name;
-                if (name.includes("<")) {
+                if (name && name.includes("<")) {
                     let tmp = document.createElement("div");
                     tmp.innerHTML = name;
                     cleanName = tmp.textContent || tmp.innerText || "";
                     cleanName = cleanName.replace(/\(Tap to map tone\)/g, "").replace(/Select Colour/g, "Custom Shade").trim();
                 }
+                if(!cleanName || cleanName.startsWith("#")) {
+                    cleanName = getShadeName(l.color, l.colourName || l.origName);
+                } else {
+                    cleanName = getLocalizedColorName(cleanName);
+                }
                 if(!cleanName) cleanName = String(l.color).toUpperCase();
-                
-                // Translate colour name to English (Tamil)
-                cleanName = getLocalizedColorName(cleanName);
 
                 let amt = parseInt(l.ends) || 0;
                 
-                // Set Column Logic
                 let setTd = "";
                 if (sIdx === 0) {
                     setTd = `<td rowspan="${spanLen}" style="font-size:10px; font-weight:900; color:#b91c1c; background:#fff5f5; vertical-align:middle; text-align:center; padding:2px;">
@@ -2018,7 +1696,6 @@ function buildWarpTable(lines, drawArr) {
                     </td>`;
                 }
 
-                // Drawing Column Logic (Rowspan for the entire block)
                 let drawTd = "";
                 if (sIdx === 0) {
                     drawTd = `<td rowspan="${spanLen}" style="color:#1e3a8a; font-weight:900; font-size:9px; vertical-align:middle; text-align:center; letter-spacing:0.5px; white-space:nowrap;">${frameStr}</td>`;
@@ -2027,7 +1704,7 @@ function buildWarpTable(lines, drawArr) {
                 h += `<tr>
                     <td>${visualRowIdx++}</td>
                     <td><div class="color-swatch" style="background:${l.color};"></div></td>
-                    <td style="text-align:left; font-weight:800; line-height:1.2;">${cleanName}</td>
+                    <td style="text-align:left; font-weight:800; line-height:1.2; color:#111827 !important;">${cleanName}</td>
                     <td style="font-weight:950; font-size:10px;">${amt}</td>
                     ${setTd}
                     ${drawTd}
@@ -2036,18 +1713,20 @@ function buildWarpTable(lines, drawArr) {
 
         } else {
             let l = item.row;
-            let name = l.colourName || String(l.color).toUpperCase();
+            let name = l.colourName || l.origName || "";
             let cleanName = name;
-            if (name.includes("<")) {
+            if (name && name.includes("<")) {
                 let tmp = document.createElement("div");
                 tmp.innerHTML = name;
                 cleanName = tmp.textContent || tmp.innerText || "";
                 cleanName = cleanName.replace(/\(Tap to map tone\)/g, "").replace(/Select Colour/g, "Custom Shade").trim();
             }
+            if(!cleanName || cleanName.startsWith("#")) {
+                cleanName = getShadeName(l.color, l.colourName || l.origName);
+            } else {
+                cleanName = getLocalizedColorName(cleanName);
+            }
             if(!cleanName) cleanName = String(l.color).toUpperCase();
-            
-            // Translate colour name to English (Tamil)
-            cleanName = getLocalizedColorName(cleanName);
 
             let amt = parseInt(l.ends) || 0;
             
@@ -2063,7 +1742,7 @@ function buildWarpTable(lines, drawArr) {
             h += `<tr>
                 <td>${visualRowIdx++}</td>
                 <td><div class="color-swatch" style="background:${l.color};"></div></td>
-                <td style="text-align:left; font-weight:800; line-height:1.2;">${cleanName}</td>
+                <td style="text-align:left; font-weight:800; line-height:1.2; color:#111827 !important;">${cleanName}</td>
                 <td style="font-weight:950; font-size:10px;">${amt}</td>
                 <td style="font-size:10px; color:#9caea4; vertical-align:middle;">-</td>
                 <td style="color:#1e3a8a; font-weight:900; font-size:9px; vertical-align:middle; text-align:center; letter-spacing:0.5px; white-space:nowrap;">${frameStr}</td>
@@ -2073,6 +1752,42 @@ function buildWarpTable(lines, drawArr) {
 
     h += `</tbody></table>`;
     return h;
+}
+
+
+function buildCompactYarnEntryTable(title, rows, qtyKey, qtyLabel) {
+    const active = Array.isArray(rows) ? rows.filter(r => (parseInt(r?.[qtyKey]) || 0) > 0) : [];
+    let html = `<div class="print-entry-mini">
+        <div class="print-entry-mini-title">${title}</div>
+        <table class="print-entry-mini-table">
+            <thead><tr><th>#</th><th>Shade</th><th>${qtyLabel}</th></tr></thead><tbody>`;
+    if(!active.length){
+        html += `<tr><td colspan="3" style="text-align:center;color:#7a8881;">No entry</td></tr>`;
+    } else {
+        active.forEach((r,i) => {
+            let name = r.colourName || r.color || "";
+            try { name = getLocalizedColorName(name); } catch(e) {}
+            if(!name) name = String(r.color || "Custom Shade").toUpperCase();
+            name = escapeColourText(name);
+            const qty = parseInt(r[qtyKey]) || 0;
+            html += `<tr><td>${i+1}</td><td class="entry-shade">${name}</td><td><b>${qty}</b></td></tr>`;
+        });
+    }
+    html += `</tbody></table></div>`;
+    return html;
+}
+
+function buildWarpWeftEntryDetails(data) {
+    const warpRows = Array.isArray(data?.warpLines) ? data.warpLines : [];
+    const weftRows = Array.isArray(data?.weftLines) ? data.weftLines : [];
+    return `
+        <div class="print-entry-details">
+            <div class="print-section-title" style="margin-top:0;">🧵 WARP / WEFT ENTRY DETAILS <span class="section-code">FROM YARN ENTRY</span></div>
+            <div class="print-entry-grid">
+                ${buildCompactYarnEntryTable("WARP ENTRY", warpRows, "ends", "ENDS")}
+                ${buildCompactYarnEntryTable("WEFT ENTRY", weftRows, "picks", "PICKS")}
+            </div>
+        </div>`;
 }
 
 function buildDesignPrintContent() {
@@ -2103,14 +1818,39 @@ function buildDesignPrintContent() {
             </div>
         </div>
 
+        <!-- 3D DATA BOX DETAILS — same measurement details shown in the 3D black box -->
+        <div class="print-data-box">
+            <div class="print-data-box-title">📐 REPEAT SIZE / CLEARANCE DETAILS</div>
+            <div class="print-data-box-line">
+                W: (${warpTotal || 0} ÷ ${(() => {
+                    let v = parseFloat(activeDesignObj?.finishedReed ?? activeDesignObj?.reed ?? activeDesignObj?.reedCount);
+                    return isFinite(v) && v > 0 ? v : 64;
+                })()}) × 25.4 =
+                <b>${(() => {
+                    let v = parseFloat(activeDesignObj?.finishedReed ?? activeDesignObj?.reed ?? activeDesignObj?.reedCount);
+                    if(!isFinite(v) || v <= 0) v = 64;
+                    return (((warpTotal || 0) / v) * 25.4).toFixed(2);
+                })()} mm</b>
+            </div>
+            <div class="print-data-box-line">
+                H: (${weftTotal || 0} ÷ ${(() => {
+                    let v = parseFloat(activeDesignObj?.finishedPick ?? activeDesignObj?.finishPick ?? activeDesignObj?.pick ?? activeDesignObj?.weftPick ?? activeDesignObj?.pickCount);
+                    return isFinite(v) && v > 0 ? v : 48;
+                })()}) × 25.4 =
+                <b>${(() => {
+                    let v = parseFloat(activeDesignObj?.finishedPick ?? activeDesignObj?.finishPick ?? activeDesignObj?.pick ?? activeDesignObj?.weftPick ?? activeDesignObj?.pickCount);
+                    if(!isFinite(v) || v <= 0) v = 48;
+                    return (((weftTotal || 0) / v) * 25.4).toFixed(2);
+                })()} mm</b>
+            </div>
+        </div>
+
         <div style="display: flex; gap: 15px; margin-bottom: 8px; align-items: flex-start;">
-            <!-- LEFT COLUMN: WARP TABLE WITH SET & CONTINUOUS DRAWING -->
             <div style="flex: 1.3; min-width: 0;">
                 <div class="print-section-title" style="margin-top:0;">🧵 WARPING & DRAWING PLAN <span class="section-code">WARP SEQUENCE</span></div>
                 ${warpTableHTML}
             </div>
             
-            <!-- RIGHT COLUMN: WEAVE GRAPH & DENTING SUMMARY -->
             <div style="flex: 0.7; min-width: 0;">
                 <div class="print-section-title" style="margin-top:0;">📊 WEAVE GRAPH <span class="section-code">${m.length} × ${m[0].length} REPEAT</span></div>
                 <div class="print-graph-wrap" style="margin-bottom:15px;">${buildPrintGraph(m)}</div>
@@ -2126,6 +1866,9 @@ function buildDesignPrintContent() {
                         <span style="font-size:8px;">${escapeColourText(drawArr.join(", "))}</span>
                     </div>
                 </div>
+
+                <!-- WARP / WEFT ENTRY DATA FROM THE YARN ENTRY PAGE -->
+                ${buildWarpWeftEntryDetails(data)}
             </div>
         </div>
 
@@ -2140,155 +1883,493 @@ function openGraphPrintPreview() {
     const box = $("printDesignContent");
     if(!box) return;
     box.innerHTML = buildDesignPrintContent();
-    $("printModalBox").style.display = "flex";
+    if($("printModalBox")) $("printModalBox").style.display = "flex";
 }
 
 function closeGraphPrintPreview() {
-    $("printModalBox").style.display = "none";
+    if($("printModalBox")) $("printModalBox").style.display = "none";
 }
 
 function printDesign() {
     const box = $("printDesignContent");
     if(!box) { alert("Print section load ஆகவில்லை."); return; }
     box.innerHTML = buildDesignPrintContent();
-    $("printModalBox").style.display = "flex";
+    if($("printModalBox")) $("printModalBox").style.display = "flex";
 }
 
-/* =========================================================
-   IFRAME PRINT TECHNIQUE FOR MOBILE (NO BLANK PAGE)
-========================================================= */
+/* 100% SINGLE A4 PAGE FULL PRINT FOR 3D CAD (NO TOP BLACK VOID, FITS IN 1 PAGE ONLY) */
+function print3DOnly() {
+    try {
+        const srcCanvas = document.getElementById("weaveCanvas");
+        if(!srcCanvas) {
+            alert("3D Canvas காணப்படவில்லை.");
+            return;
+        }
+
+        // Accurately detect non-black bounding box of fabric CAD + ruler + scales
+        const sCtx = srcCanvas.getContext("2d");
+        const sW = srcCanvas.width;
+        const sH = srcCanvas.height;
+        const imgData = sCtx.getImageData(0, 0, sW, sH).data;
+
+        let minX = sW, minY = sH, maxX = 0, maxY = 0;
+        let found = false;
+
+        for (let y = 0; y < sH; y += 2) {
+            for (let x = 0; x < sW; x += 2) {
+                const idx = (y * sW + x) * 4;
+                const r = imgData[idx];
+                const g = imgData[idx + 1];
+                const b = imgData[idx + 2];
+                // Non-black pixels threshold
+                if (r > 15 || g > 15 || b > 15) {
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) {
+            minX = 0; minY = 0; maxX = sW; maxY = sH;
+        } else {
+            minX = Math.max(0, minX - 4);
+            minY = Math.max(0, minY - 4);
+            maxX = Math.min(sW, maxX + 4);
+            maxY = Math.min(sH, maxY + 4);
+        }
+
+        const cropW = Math.max(10, maxX - minX);
+        const cropH = Math.max(10, maxY - minY);
+
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = cropW;
+        tempCanvas.height = cropH;
+        const tCtx = tempCanvas.getContext("2d");
+        tCtx.fillStyle = "#ffffff";
+        tCtx.fillRect(0, 0, cropW, cropH);
+        tCtx.drawImage(srcCanvas, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+
+        const dataURL = tempCanvas.toDataURL("image/png");
+        const printWin = window.open("", "_blank", "width=950,height=1100");
+        if(!printWin) {
+            alert("Print window open ஆகவில்லை. Browser pop-up permission allow செய்யவும்.");
+            return;
+        }
+
+        printWin.document.open();
+        printWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TEXFRIEND — 3D CAD Weave Full Print</title>
+<style>
+  @page { 
+      size: A4 landscape; 
+      margin: 8mm; 
+  }
+  * { 
+      -webkit-print-color-adjust: exact !important; 
+      print-color-adjust: exact !important; 
+      box-sizing: border-box; 
+  }
+  html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      width: 100% !important;
+      height: auto !important;
+  }
+  .print-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+      border-bottom: 1.5px solid #14251e;
+      font-family: Arial, sans-serif;
+  }
+  .print-header b { font-size: 13px; color: #153c2c; }
+  .print-header span { font-size: 11px; color: #4b5563; font-weight: bold; }
+  .print-cad-wrap {
+      width: 100%;
+      text-align: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+  }
+  img {
+      max-width: 100% !important;
+      max-height: 172mm !important;
+      object-fit: contain !important;
+      display: inline-block !important;
+      border: 1px solid #64748b;
+      background: #ffffff;
+  }
+</style>
+</head>
+<body>
+  <div class="print-header">
+      <b>TEXFRIEND | 3D CAD WEAVE PREVIEW</b>
+      <span>${escapeColourText(activeDesignObj ? designName(activeDesignObj) : '3D Weave')}</span>
+  </div>
+  <div class="print-cad-wrap">
+      <img src="${dataURL}" alt="3D CAD Weave">
+  </div>
+  <script>
+      window.onload = function() {
+          setTimeout(() => {
+              window.print();
+          }, 400);
+      };
+  <\/script>
+</body>
+</html>`);
+        printWin.document.close();
+        printWin.focus();
+    } catch(e) {
+        console.error("Print 3D Error:", e);
+        alert("3D பிரிண்ட் செய்வதில் சிக்கல். மீண்டும் முயற்சிக்கவும்.");
+    }
+}
+
 function triggerRealPrint() {
     try {
-        const printContent = document.getElementById("printDesignContent").innerHTML;
-        if(!printContent) return;
+        const source = document.getElementById("printDesignContent");
+        if(!source || !source.innerHTML.trim()) {
+            alert("Print section load ஆகவில்லை.");
+            return;
+        }
 
-        let styles = "";
-        document.querySelectorAll('style').forEach(s => {
-            styles += s.outerHTML;
-        });
-
-        const oriVal = document.getElementById("printOrientation") ? document.getElementById("printOrientation").value : "portrait";
-        const scaleVal = document.getElementById("printGraphScale") ? document.getElementById("printGraphScale").value : "medium";
+        const oriVal = document.getElementById("printOrientation")?.value || "portrait";
+        const scaleVal = document.getElementById("printGraphScale")?.value || "medium";
         const size = scaleVal === "large" ? "10mm" : (scaleVal === "small" ? "6mm" : "8mm");
         const font = scaleVal === "large" ? "15px" : (scaleVal === "small" ? "11px" : "13px");
 
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'fixed';
-        iframe.style.right = '0';
-        iframe.style.bottom = '0';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = '0';
-        document.body.appendChild(iframe);
+        const printWin = window.open("", "_blank", "width=900,height=1100");
+        if(!printWin) {
+            alert("Print window open ஆகவில்லை. Browser pop-up permission allow செய்யவும்.");
+            return;
+        }
 
-        const doc = iframe.contentWindow.document;
-        doc.open();
-        
-        let htmlStr = "<!DOCTYPE html><ht" + "ml><he" + "ad><ti" + "tle>Design Sheet</ti" + "tle>";
-        htmlStr += styles;
-        htmlStr += "<sty" + "le>";
-        htmlStr += "@media print { @page { size: A4 " + oriVal + "; margin: 6mm; } html, body { width: 100% !important; height: auto !important; background: #fff !important; color: #000 !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; display: block !important; } body > * { display: block !important; visibility: visible !important; } .print-sheet-inner { border: 1px solid #777 !important; box-shadow: none !important; margin: 0 !important; padding: 2mm !important; } .print-graph-table td:not(.graph-axis) { width: " + size + " !important; height: " + size + " !important; min-width: " + size + " !important; font-size: " + font + " !important; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } .print-info-grid, .print-section-title, .print-order-list, .print-graph-wrap, .print-summary-strip { page-break-inside: avoid !important; break-inside: avoid !important; } }";
-        htmlStr += ".yarn-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; font-size: 8px; } .yarn-table th, .yarn-table td { border: 1px solid #9caea4; padding: 4px 2px; text-align: center; vertical-align: middle; page-break-inside: avoid; } .yarn-table th { background: #eef2f0; font-weight: 900; color: #153c2c; } .color-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.2); vertical-align: middle; }";
-        htmlStr += "</sty" + "le></he" + "ad><bo" + "dy>";
-        htmlStr += "<div class='print-sheet-inner'>" + printContent + "</div>";
-        htmlStr += "</bo" + "dy></ht" + "ml>";
-        
-        doc.write(htmlStr);
-        doc.close();
+        let styles = "";
+        document.querySelectorAll("style").forEach(style => {
+            styles += style.outerHTML;
+        });
 
-        iframe.contentWindow.focus();
-        
+        const printCSS = `
+            @page { size: A4 ${oriVal}; margin: 6mm; }
+
+            html, body {
+                width:100% !important;
+                min-height:100% !important;
+                height:auto !important;
+                background:#fff !important;
+                color:#000 !important;
+                margin:0 !important;
+                padding:0 !important;
+                overflow:visible !important;
+            }
+
+            body {
+                display:block !important;
+                font-family:Arial,sans-serif !important;
+            }
+
+            .print-sheet-inner {
+                width:100% !important;
+                max-width:none !important;
+                box-sizing:border-box !important;
+                margin:0 !important;
+                padding:2mm !important;
+                background:#fff !important;
+                border:1px solid #777 !important;
+                border-radius:0 !important;
+                box-shadow:none !important;
+            }
+
+            .print-hide,
+            .print-toolbar,
+            #printModalBox {
+                display:none !important;
+            }
+
+            .print-graph-table td:not(.graph-axis) {
+                width:${size} !important;
+                height:${size} !important;
+                min-width:${size} !important;
+                font-size:${font} !important;
+            }
+
+            .print-info-grid,
+            .print-section-title,
+            .print-order-list,
+            .print-graph-wrap,
+            .print-summary-strip,
+            .print-data-box,
+            .print-entry-details,
+            .print-entry-mini,
+            .yarn-table {
+                page-break-inside:avoid !important;
+                break-inside:avoid !important;
+            }
+
+            .print-data-box {
+                -webkit-print-color-adjust:exact !important;
+                print-color-adjust:exact !important;
+            }
+
+            .print-entry-details {
+                display:none !important;
+            }
+
+            * {
+                -webkit-print-color-adjust:exact !important;
+                print-color-adjust:exact !important;
+            }
+
+            .yarn-table {
+                width:100% !important;
+                border-collapse:collapse !important;
+            }
+
+            .yarn-table th,
+            .yarn-table td {
+                border:1px solid #9caea4 !important;
+                padding:4px 2px !important;
+                text-align:center !important;
+                vertical-align:middle !important;
+                color: #111827 !important;
+            }
+
+            .yarn-table th {
+                background:#eef2f0 !important;
+                color:#153c2c !important;
+            }
+        `;
+
+        printWin.document.open();
+        printWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TEXFRIEND Design Sheet</title>
+${styles}
+<style>${printCSS}</style>
+</head>
+<body>
+<div class="print-sheet-inner">${source.innerHTML}</div>
+</body>
+</html>`);
+        printWin.document.close();
+
+        printWin.focus();
+
         setTimeout(() => {
-            iframe.contentWindow.print();
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-            }, 2000);
-        }, 500);
+            try {
+                printWin.print();
+            } catch(e) {
+                console.error("Print dialog error:", e);
+                alert("பிரிண்ட் dialog திறக்கவில்லை. மீண்டும் முயற்சிக்கவும்.");
+            }
+        }, 700);
 
-    } catch (e) {
-        console.error(e);
+    } catch(e) {
+        console.error("Real Print Error:", e);
         alert("பிரிண்ட் செய்வதில் சிக்கல். மீண்டும் முயற்சிக்கவும்.");
     }
 }
 
 
 /* =========================================================
-   COLOUR MASTER PANTONE SYSTEM
+   COMPREHENSIVE COLOR STUDIO & PANTONE DATABASE (ALL 15 SEPARATED TABS & 50+ SHADES EACH)
 ========================================================= */
-const TEXFRIEND_COLOUR_KEY = "texfriend_colour_master_v5";
-
-const PANTONE_DB = {
-    "19-4052": { name: "Classic Blue", hex: "#0F4C81" }, "18-1662": { name: "Flame Scarlet", hex: "#CE2029" }, "11-0601": { name: "Bright White", hex: "#F4F5F0" },
-    "19-0303": { name: "Jet Black", hex: "#2D2C2F" }, "17-5104": { name: "Ultimate Gray", hex: "#939597" }, "13-0647": { name: "Illuminating", hex: "#F5DF4D" },
-    "16-1546": { name: "Living Coral", hex: "#FF6F61" }, "18-3838": { name: "Ultra Violet", hex: "#5F4B8B" }, "15-0343": { name: "Greenery", hex: "#8A9A5B" },
-    "15-3919": { name: "Serenity", hex: "#91A8D0" }, "13-1520": { name: "Rose Quartz", hex: "#F7CAC9" }, "18-1438": { name: "Marsala", hex: "#955251" },
-    "18-3224": { name: "Radiant Orchid", hex: "#6B5B95" }, "17-5641": { name: "Emerald", hex: "#009473" }, "17-1463": { name: "Tangerine Tango", hex: "#DD4124" },
-    "15-5519": { name: "Turquoise", hex: "#00B5A6" }, "14-0848": { name: "Mimosa", hex: "#F0C05A" }, "18-3943": { name: "Blue Iris", hex: "#5A5B9F" },
-    "19-1557": { name: "Chili Pepper", hex: "#9B1B30" }, "13-1106": { name: "Sand Dollar", hex: "#DECDBE" }, "19-1664": { name: "True Red", hex: "#BF1932" },
-    "19-4007": { name: "Anthracite", hex: "#28282B" }, "11-4001": { name: "Brilliant White", hex: "#F9FAFC" }, "14-4102": { name: "Glacier Gray", hex: "#B8C2CC" },
-    "19-3911": { name: "Black Beauty", hex: "#26262A" }, "14-1064": { name: "Saffron", hex: "#FFA100" }, "19-1536": { name: "Red Pear", hex: "#7A3334" },
-    "16-1532": { name: "Crabapple", hex: "#D77E70" }, "14-4620": { name: "Island Paradise", hex: "#94C4E1" }, "15-0545": { name: "Jalapeño Red", hex: "#9D2B3D" },
-    "11-0103": { name: "Cream/Egret", hex: "#F2ECE4" }, "19-4039": { name: "Navy Peony", hex: "#223A5E" }, "16-1108": { name: "Twine", hex: "#B39F8D" }, 
-    "17-1501": { name: "Wood Ash", hex: "#978C87" }, "18-4005": { name: "Steel Gray", hex: "#75787B" }, "19-1619": { name: "Maroon", hex: "#6E363C" }, 
-    "19-0312": { name: "Night Sky", hex: "#323133" }, "16-0906": { name: "Simply Taupe", hex: "#AD9F93" }, "18-1031": { name: "Toffee", hex: "#755139" }, 
-    "19-5513": { name: "Dark Green", hex: "#2A4B46" }, "13-0858": { name: "Vibrant Yellow", hex: "#FFDA29" }, "15-1340": { name: "Cadmium Orange", hex: "#F99471" },
-    "18-1663": { name: "Chinese Red", hex: "#C7243A" }, "19-3810": { name: "Eclipse", hex: "#343148" }, "18-1248": { name: "Rust", hex: "#B55A30" },
-    "19-4024": { name: "Dress Blues", hex: "#2B3A48" }, "16-1325": { name: "Copper", hex: "#B27A62" }, "14-4214": { name: "Powder Blue", hex: "#9FBCE2" },
-    "13-0947": { name: "Banana", hex: "#FCB953" }, "15-1040": { name: "Warm Sand", hex: "#CB8E66" }, "19-1725": { name: "Burgundy", hex: "#5C2C35" },
-    "17-1562": { name: "Mandarin Red", hex: "#E2492F" }, "19-0527": { name: "Rifle Green", hex: "#414833" }, "12-0752": { name: "Buttercup", hex: "#E3AB10" },
-    "17-2036": { name: "Magenta", hex: "#D946EF" }, "18-2436": { name: "Fuchsia", hex: "#C026D3" }, "16-5938": { name: "Mint Green", hex: "#34D399" },
-    "11-0907": { name: "Ivory", hex: "#FFEDD5" }, "12-0712": { name: "Vanilla", hex: "#FEF3C7" }, "19-3955": { name: "Royal Blue", hex: "#2563EB" },
-    "19-3748": { name: "Dark Violet", hex: "#6D28D9" }, "15-3920": { name: "Lavender", hex: "#C084FC" }, "16-2130": { name: "Pink", hex: "#EC4899" }
-};
+const TEXFRIEND_COLOUR_KEY = "texfriend_colour_master_v23";
 
 let texfriendColourMaster = [
-    { name:"Red", shades:[{name:"Red", pantone:"19-1664", hex:"#ef4444"}, {name:"Dark Red", pantone:"19-1557", hex:"#b91c1c"}, {name:"Light Red", pantone:"", hex:"#fca5a5"}] },
-    { name:"Pink", shades:[{name:"Pink", pantone:"16-2130", hex:"#ec4899"}, {name:"Hot Pink", pantone:"", hex:"#db2777"}, {name:"Rose", pantone:"", hex:"#e11d48"}] },
-    { name:"Magenta", shades:[{name:"Magenta", pantone:"17-2036", hex:"#d946ef"}, {name:"Fuchsia", pantone:"18-2436", hex:"#c026d3"}] },
-    { name:"Maroon", shades:[{name:"Maroon", pantone:"19-1619", hex:"#800000"}, {name:"Wine", pantone:"19-1536", hex:"#722f37"}, {name:"Burgundy", pantone:"19-1725", hex:"#5c2c35"}] },
-    { name:"Orange", shades:[{name:"Orange", pantone:"15-1340", hex:"#f97316"}, {name:"Dark Orange", pantone:"", hex:"#ea580c"}, {name:"Light Orange", pantone:"", hex:"#fdba74"}] },
-    { name:"Yellow", shades:[{name:"Yellow", pantone:"13-0858", hex:"#eab308"}, {name:"Light Yellow", pantone:"", hex:"#fef08a"}, {name:"Golden Yellow", pantone:"14-1064", hex:"#ca8a04"}] },
-    { name:"Cream", shades:[{name:"Cream", pantone:"11-0103", hex:"#fefce8"}, {name:"Ivory", pantone:"11-0907", hex:"#ffedd5"}, {name:"Vanilla", pantone:"12-0712", hex:"#fef3c7"}] },
-    { name:"Mint", shades:[{name:"Mint Green", pantone:"16-5938", hex:"#34d399"}, {name:"Light Mint", pantone:"", hex:"#a7f3d0"}] },
-    { name:"Green", shades:[{name:"Green", pantone:"", hex:"#22c55e"}, {name:"Light Green", pantone:"", hex:"#86efac"}, {name:"Dark Green", pantone:"19-5513", hex:"#15803d"}, {name:"Emerald", pantone:"17-5641", hex:"#009473"}, {name:"Olive", pantone:"", hex:"#65a30d"}] },
-    { name:"Teal/Cyan", shades:[{name:"Teal", pantone:"", hex:"#14b8a6"}, {name:"Cyan", pantone:"", hex:"#06b6d4"}, {name:"Aqua", pantone:"", hex:"#67e8f9"}] },
-    { name:"Blue", shades:[{name:"Blue", pantone:"18-3949", hex:"#3b82f6"}, {name:"Light Blue", pantone:"14-4214", hex:"#7dd3fc"}, {name:"Dark Blue", pantone:"19-4024", hex:"#1d4ed8"}] },
-    { name:"Navy", shades:[{name:"Navy Blue", pantone:"19-4039", hex:"#1e3a8a"}, {name:"Dark Navy", pantone:"", hex:"#172554"}, {name:"Midnight Blue", pantone:"19-3911", hex:"#1e3a8a"}] },
-    { name:"Violet", shades:[{name:"Violet", pantone:"18-3838", hex:"#8b5cf6"}, {name:"Dark Violet", pantone:"19-3748", hex:"#6d28d9"}, {name:"Lavender", pantone:"15-3920", hex:"#c084fc"}] },
-    { name:"Brown", shades:[{name:"Brown", pantone:"18-1031", hex:"#a16207"}, {name:"Dark Brown", pantone:"", hex:"#713f12"}, {name:"Copper", pantone:"16-1325", hex:"#b45309"}] },
-    { name:"Khaki/Sand", shades:[{name:"Khaki", pantone:"", hex:"#d6d3d1"}, {name:"Sand", pantone:"15-1040", hex:"#e7e5e4"}, {name:"Beige", pantone:"", hex:"#f5f5f4"}] },
-    { name:"Grey", shades:[{name:"Grey", pantone:"17-5104", hex:"#6b7280"}, {name:"Light Grey", pantone:"14-4102", hex:"#d1d5db"}, {name:"Dark Grey", pantone:"18-4005", hex:"#374151"}, {name:"Charcoal", pantone:"", hex:"#1f2937"}] },
-    { name:"Black", shades:[{name:"Black", pantone:"19-0303", hex:"#000000"}, {name:"Jet Black", pantone:"19-3911", hex:"#111827"}, {name:"Soft Black", pantone:"19-4007", hex:"#1c1917"}] },
-    { name:"White", shades:[{name:"White", pantone:"11-0601", hex:"#ffffff"}, {name:"Off White", pantone:"11-4001", hex:"#f8fafc"}, {name:"Snow", pantone:"", hex:"#f9fafb"}] }
+    { name: "Pink", shades: [
+        {name: "Pink", pantone: "16-2130", hex: "#EC4899"}, {name: "Hot Pink", pantone: "17-2033", hex: "#FF69B4"}, {name: "Deep Pink", pantone: "18-2043", hex: "#FF1493"},
+        {name: "Rose Quartz", pantone: "13-1520", hex: "#F7CAC9"}, {name: "Orchid Pink", pantone: "15-2217", hex: "#F2BDCD"}, {name: "Bubblegum", pantone: "17-1937", hex: "#FF69CF"},
+        {name: "Carnation", pantone: "15-1821", hex: "#FFA6C9"}, {name: "Blush", pantone: "13-1408", hex: "#DE5D83"}, {name: "Baby Pink", pantone: "12-1110", hex: "#F4C2C2"},
+        {name: "Flamingo", pantone: "16-1731", hex: "#FC8EAC"}, {name: "Salmon Pink", pantone: "15-1530", hex: "#FF91A4"}, {name: "Cotton Candy", pantone: "11-1900", hex: "#FFBCD9"},
+        {name: "Barbie Pink", pantone: "17-1937", hex: "#DA1884"}, {name: "Telemagenta", pantone: "17-2030", hex: "#CF3476"}, {name: "Coral Pink", pantone: "16-1543", hex: "#F88379"},
+        {name: "Light Pink", pantone: "12-1304", hex: "#FFB6C1"}, {name: "Pale Pink", pantone: "12-1205", hex: "#FADADD"}, {name: "Persian Pink", pantone: "17-2227", hex: "#F77FBE"},
+        {name: "Spanish Pink", pantone: "13-1011", hex: "#F7BFBE"}, {name: "Baker-Miller", pantone: "15-2610", hex: "#FF91AF"}, {name: "Neon Pink", pantone: "17-1938", hex: "#FF6EC7"},
+        {name: "Cherry Blossom", pantone: "13-2005", hex: "#FFB7C5"}, {name: "Duchess Pink", pantone: "14-1911", hex: "#CC8899"}, {name: "Pastel Pink", pantone: "13-1404", hex: "#DEA5A4"},
+        {name: "Thulian Pink", pantone: "17-2120", hex: "#DE6FA1"}, {name: "Mimi Pink", pantone: "12-1305", hex: "#FFDAE9"}, {name: "Cameo Pink", pantone: "14-1314", hex: "#EFBBCC"},
+        {name: "Pink Sherbet", pantone: "14-1905", hex: "#F78FA7"}, {name: "Rose Madder", pantone: "17-1633", hex: "#E32636"}, {name: "Deep Blush", pantone: "15-1624", hex: "#C48082"},
+        {name: "Puce", pantone: "16-1414", hex: "#CC8899"}, {name: "Mountbatten Pink", pantone: "17-1518", hex: "#997A8D"}, {name: "Razzmatazz", pantone: "18-1838", hex: "#E3256B"},
+        {name: "Amaranth", pantone: "17-1831", hex: "#E52B50"}, {name: "Caran D'Ache", pantone: "17-1740", hex: "#E75480"}, {name: "Rose Gold", pantone: "15-1315", hex: "#B76E79"},
+        {name: "Folly", pantone: "17-1935", hex: "#FF004F"}, {name: "Hollywood Cerise", pantone: "18-2133", hex: "#F400A1"}, {name: "Ruby Pink", pantone: "18-1840", hex: "#E0115F"},
+        {name: "Shocking Pink", pantone: "17-1936", hex: "#FC0FC0"}, {name: "Turquoise Pink", pantone: "14-2210", hex: "#F4C2C2"}, {name: "Tea Rose", pantone: "14-1309", hex: "#F4C2C2"},
+        {name: "English Rose", pantone: "16-1422", hex: "#B46363"}, {name: "Bazaar", pantone: "18-1312", hex: "#98777B"}, {name: "Opera Mauve", pantone: "16-2111", hex: "#B784A7"}
+    ]},
+    { name: "Purple", shades: [
+        {name: "Magenta", pantone: "17-2036", hex: "#D946EF"}, {name: "Fuchsia", pantone: "18-2436", hex: "#C026D3"}, {name: "Lavender", pantone: "15-3920", hex: "#C084FC"},
+        {name: "Ultra Violet", pantone: "18-3838", hex: "#5F4B8B"}, {name: "Radiant Orchid", pantone: "18-3224", hex: "#6B5B95"}, {name: "Dark Violet", pantone: "19-3748", hex: "#6D28D9"},
+        {name: "Plum", pantone: "19-3220", hex: "#8E4585"}, {name: "Orchid", pantone: "17-3628", hex: "#DA70D6"}, {name: "Amethyst", pantone: "18-3015", hex: "#9966CC"},
+        {name: "Mauve", pantone: "16-3115", hex: "#E0B0FF"}, {name: "Lilac", pantone: "15-3910", hex: "#C8A2C8"}, {name: "Thistle", pantone: "15-3817", hex: "#D8BFD8"},
+        {name: "Periwinkle", pantone: "17-3934", hex: "#CCCCFF"}, {name: "Heliotrope", pantone: "17-3730", hex: "#DF73FF"}, {name: "Wisteria", pantone: "15-3830", hex: "#C9A0DC"},
+        {name: "Byzantium", pantone: "19-2520", hex: "#702963"}, {name: "Mulberry", pantone: "18-2115", hex: "#C54B8C"}, {name: "Royal Purple", pantone: "19-3330", hex: "#7851A9"},
+        {name: "Grape", pantone: "19-2428", hex: "#6F2DA8"}, {name: "Eggplant", pantone: "19-2311", hex: "#614051"}, {name: "Indigo Dye", pantone: "19-3938", hex: "#00416A"},
+        {name: "Russian Violet", pantone: "19-3815", hex: "#32174D"}, {name: "Electric Purple", pantone: "18-3540", hex: "#BF00FF"}, {name: "Pansy Purple", pantone: "19-2814", hex: "#78184A"},
+        {name: "Phlox", pantone: "17-3020", hex: "#DF00FF"}, {name: "Palatinate", pantone: "19-3536", hex: "#722680"}, {name: "Iris", pantone: "17-3820", hex: "#5A4FCF"},
+        {name: "Deep Purple", pantone: "19-3737", hex: "#36013F"}, {name: "Telemagenta Purple", pantone: "18-2328", hex: "#933758"}, {name: "Dark Lavender", pantone: "17-3812", hex: "#734F96"},
+        {name: "Mallow", pantone: "17-2625", hex: "#D982B5"}, {name: "Clematis", pantone: "18-3840", hex: "#6C3A8D"}, {name: "Bishop", pantone: "19-3542", hex: "#6A2E59"},
+        {name: "Pomp and Power", pantone: "18-3530", hex: "#86608E"}, {name: "Hydrangea", pantone: "16-3820", hex: "#7A63AC"}, {name: "Crocus", pantone: "16-3420", hex: "#BA74B3"}
+    ]},
+    { name: "Orange", shades: [
+        {name: "Living Coral", pantone: "16-1546", hex: "#FF6F61"}, {name: "Tangerine Tango", pantone: "17-1463", hex: "#DD4124"}, {name: "Cadmium Orange", pantone: "15-1340", hex: "#F99471"},
+        {name: "Burnt Orange", pantone: "16-1364", hex: "#CC5500"}, {name: "Coral", pantone: "16-1539", hex: "#FF7F50"}, {name: "Amber Orange", pantone: "16-1356", hex: "#FFBF00"},
+        {name: "Pumpkin", pantone: "16-1453", hex: "#FF7518"}, {name: "Terracotta", pantone: "17-1340", hex: "#E2725B"}, {name: "Ginger", pantone: "16-1350", hex: "#B06500"},
+        {name: "Ochre", pantone: "16-1342", hex: "#CC7722"}, {name: "Caramel", pantone: "16-1148", hex: "#FFD59A"}, {name: "Apricot", pantone: "15-1143", hex: "#FBCEB1"},
+        {name: "Peach", pantone: "14-1212", hex: "#FFE5B4"}, {name: "Persimmon", pantone: "17-1456", hex: "#EC5800"}, {name: "Safety Orange", pantone: "16-1358", hex: "#FF6600"},
+        {name: "Papaya", pantone: "15-1150", hex: "#FFEFD5"}, {name: "Cantaloupe", pantone: "14-1120", hex: "#FFA07A"}, {name: "Mandarin", pantone: "16-1449", hex: "#F37A48"},
+        {name: "Bittersweet", pantone: "17-1456", hex: "#FE6F5E"}, {name: "Flame", pantone: "17-1350", hex: "#E25822"}, {name: "Burnt Sienna", pantone: "17-1430", hex: "#E97451"},
+        {name: "Bronze Orange", pantone: "16-1335", hex: "#CC8833"}, {name: "Melon", pantone: "15-1433", hex: "#FDBCB4"}, {name: "Zinnwaldite", pantone: "16-1320", hex: "#EBC2AD"},
+        {name: "Tangelo", pantone: "16-1442", hex: "#F94D00"}, {name: "Specks Orange", pantone: "15-1325", hex: "#F58220"}, {name: "Golden Orange", pantone: "15-1160", hex: "#FF8C00"},
+        {name: "Cadmium Yellow-Orange", pantone: "15-1150", hex: "#FF8F00"}, {name: "Dark Tangerine", pantone: "16-1450", hex: "#FFA812"}, {name: "Chili Orange", pantone: "17-1450", hex: "#D64000"},
+        {name: "Autumn Orange", pantone: "17-1440", hex: "#FF6200"}, {name: "Desert Orange", pantone: "16-1330", hex: "#CC5801"}, {name: "Neon Orange", pantone: "16-1360", hex: "#FF5F1F"}
+    ]},
+    { name: "Brown", shades: [
+        {name: "Marsala", pantone: "18-1438", hex: "#955251"}, {name: "Toffee", pantone: "18-1031", hex: "#755139"}, {name: "Rust", pantone: "18-1248", hex: "#B55A30"},
+        {name: "Copper", pantone: "16-1325", hex: "#B27A62"}, {name: "Wood Ash", pantone: "17-1501", hex: "#978C87"}, {name: "Chocolate", pantone: "19-1241", hex: "#7B3F00"},
+        {name: "Saddle Brown", pantone: "19-1334", hex: "#8B4513"}, {name: "Sienna", pantone: "18-1250", hex: "#A0522D"}, {name: "Peru", pantone: "17-1143", hex: "#CD853F"},
+        {name: "Dark Brown", pantone: "19-1020", hex: "#3D2314"}, {name: "Cinnamon", pantone: "18-1154", hex: "#D2691E"}, {name: "Mahogany", pantone: "19-1532", hex: "#C04000"},
+        {name: "Chestnut", pantone: "18-1140", hex: "#954535"}, {name: "Bronze", pantone: "18-1124", hex: "#CD7F32"}, {name: "Tan", pantone: "16-1328", hex: "#D2B48C"},
+        {name: "Fawn", pantone: "14-1122", hex: "#E5AA70"}, {name: "Bistre", pantone: "19-1116", hex: "#3D2B1F"}, {name: "Raw Umber", pantone: "18-0935", hex: "#826644"},
+        {name: "Sepia", pantone: "18-1130", hex: "#704214"}, {name: "Café au Lait", pantone: "16-1220", hex: "#A67B5B"}, {name: "Sand", pantone: "15-1040", hex: "#E7E5E4"},
+        {name: "Beige", pantone: "13-1006", hex: "#F5F5DC"}, {name: "Ecru", pantone: "13-0908", hex: "#C2B280"}, {name: "Taupe", pantone: "17-0808", hex: "#483C32"},
+        {name: "Khaki", pantone: "16-0920", hex: "#C3B091"}, {name: "Hazelnut", pantone: "16-1212", hex: "#AE6938"}, {name: "Pecan", pantone: "17-1320", hex: "#482C18"},
+        {name: "Hickory", pantone: "18-1022", hex: "#362B28"}, {name: "Burnt Umber", pantone: "19-1327", hex: "#8A3324"}, {name: "Coffee", pantone: "19-1118", hex: "#6F4E37"},
+        {name: "Mushroom", pantone: "15-1305", hex: "#B5A69B"}, {name: "Praline", pantone: "16-1230", hex: "#D2906C"}, {name: "Acorn", pantone: "17-1038", hex: "#705335"}
+    ]},
+    { name: "Navy", shades: [
+        {name: "Classic Blue", pantone: "19-4052", hex: "#0F4C81"}, {name: "Navy Peony", pantone: "19-4039", hex: "#223A5E"}, {name: "Dress Blues", pantone: "19-4024", hex: "#2B3A48"},
+        {name: "Eclipse", pantone: "19-3810", hex: "#343148"}, {name: "Midnight Blue", pantone: "19-3911", hex: "#191970"}, {name: "Prussian Blue", pantone: "19-3920", hex: "#003153"},
+        {name: "Midnight Navy", pantone: "19-4015", hex: "#000080"}, {name: "Dark Navy", pantone: "19-3929", hex: "#000035"}, {name: "Deep Navy", pantone: "19-3926", hex: "#0A1128"},
+        {name: "Marine Blue", pantone: "19-3935", hex: "#002244"}, {name: "InkTone Navy", pantone: "19-4022", hex: "#121C2A"}, {name: "Shadow Blue", pantone: "19-3922", hex: "#263238"},
+        {name: "Anchor Navy", pantone: "19-4026", hex: "#0F1A2C"}, {name: "Deep Sea Navy", pantone: "19-4030", hex: "#08121D"}, {name: "Storm Navy", pantone: "19-4018", hex: "#1B2A3D"},
+        {name: "Royal Navy", pantone: "19-3936", hex: "#002366"}, {name: "Space Navy", pantone: "19-3942", hex: "#0B1D3A"}, {name: "Night Navy", pantone: "19-4010", hex: "#02020F"},
+        {name: "Abyss Navy", pantone: "19-4020", hex: "#000814"}, {name: "Steel Navy", pantone: "18-4030", hex: "#23395B"}, {name: "Cosmic Navy", pantone: "19-3950", hex: "#1A2E40"},
+        {name: "Twilight Navy", pantone: "19-3925", hex: "#152238"}, {name: "Imperial Navy", pantone: "19-4040", hex: "#002E63"}, {name: "Vanta Navy", pantone: "19-4000", hex: "#050B14"},
+        {name: "Midnight Abyss", pantone: "19-4002", hex: "#030A14"}, {name: "Depths Navy", pantone: "19-4012", hex: "#0C141F"}, {name: "Solid Navy", pantone: "19-4028", hex: "#102136"}
+    ]},
+    { name: "Blue", shades: [
+        {name: "Royal Blue", pantone: "19-3955", hex: "#2563EB"}, {name: "Sapphire", pantone: "19-4056", hex: "#0F52BA"}, {name: "Cobalt", pantone: "19-3950", hex: "#0047AB"},
+        {name: "Denim", pantone: "19-3940", hex: "#1560BD"}, {name: "Lapis Lazuli", pantone: "19-4045", hex: "#26619C"}, {name: "Azure", pantone: "18-4053", hex: "#007FFF"},
+        {name: "Cerulean", pantone: "18-4043", hex: "#007BA7"}, {name: "Slate Blue", pantone: "18-3932", hex: "#6A5ACD"}, {name: "Air Force Blue", pantone: "18-4025", hex: "#5D8AA8"},
+        {name: "Indigo", pantone: "19-3928", hex: "#4B0082"}, {name: "Ultramarine", pantone: "19-3952", hex: "#3F00FF"}, {name: "Steel Blue", pantone: "18-4029", hex: "#4682B4"},
+        {name: "Sky Blue", pantone: "15-4020", hex: "#87CEEB"}, {name: "Baby Blue", pantone: "14-4318", hex: "#89CFF0"}, {name: "Cyan Blue", pantone: "15-4703", hex: "#00FFFF"},
+        {name: "Teal Blue", pantone: "18-4537", hex: "#368BC1"}, {name: "Egyptian Blue", pantone: "18-3945", hex: "#1034A6"}, {name: "Bice Blue", pantone: "17-4131", hex: "#2A6478"},
+        {name: "Carolina Blue", pantone: "15-4323", hex: "#4B9CD3"}, {name: "Cornflower", pantone: "16-4132", hex: "#6495ED"}, {name: "Ice Blue", pantone: "14-4210", hex: "#AFEEEE"},
+        {name: "Pacific Blue", pantone: "17-4728", hex: "#1CA9C9"}, {name: "Ocean Blue", pantone: "18-4038", hex: "#0077BE"}, {name: "Tranquil Blue", pantone: "14-4313", hex: "#A8D8F0"},
+        {name: "Electric Blue", pantone: "16-4535", hex: "#7DF9FF"}, {name: "Hansa Blue", pantone: "17-4041", hex: "#3B82C4"}, {name: "Glacier Blue", pantone: "15-4310", hex: "#779ECB"},
+        {name: "Beryl Blue", pantone: "16-4421", hex: "#5C82A6"}, {name: "Frost Blue", pantone: "14-4310", hex: "#D0F0C0"}, {name: "Neon Blue", pantone: "16-4725", hex: "#1B03A3"},
+        {name: "Vibrant Blue", pantone: "17-4045", hex: "#0047AB"}, {name: "Dull Blue", pantone: "17-4020", hex: "#4682B4"}, {name: "Deep Blue", pantone: "19-3945", hex: "#00008B"}
+    ]},
+    { name: "White", shades: [
+        {name: "Bright White", pantone: "11-0601", hex: "#F4F5F0"}, {name: "Brilliant White", pantone: "11-4001", hex: "#F9FAFC"}, {name: "Cream/Egret", pantone: "11-0103", hex: "#F2ECE4"},
+        {name: "Ivory", pantone: "11-0907", hex: "#FFEDD5"}, {name: "Vanilla", pantone: "12-0712", hex: "#FEF3C7"}, {name: "Bone", pantone: "12-0304", hex: "#E3DAC9"},
+        {name: "Alabaster", pantone: "11-0602", hex: "#F2F0EB"}, {name: "Chalk", pantone: "11-4201", hex: "#E4D5B7"}, {name: "Ghost White", pantone: "11-0603", hex: "#F8F8FF"},
+        {name: "Snow White", pantone: "11-0602", hex: "#FFFAFA"}, {name: "Pearl White", pantone: "11-0701", hex: "#F5F5F5"}, {name: "Milk White", pantone: "11-0901", hex: "#FDFFEF"},
+        {name: "Pure White", pantone: "11-0101", hex: "#FFFFFF"}, {name: "Antique White", pantone: "11-0102", hex: "#FAEBD7"}, {name: "Floral White", pantone: "11-0205", hex: "#FFFAF0"},
+        {name: "Navajo White", pantone: "12-0912", hex: "#FFDEAD"}, {name: "Linen", pantone: "11-0606", hex: "#FAF0E6"}, {name: "Old Lace", pantone: "11-0803", hex: "#FDF5E6"},
+        {name: "Seashell", pantone: "11-0905", hex: "#FFF5EE"}, {name: "Cornsilk", pantone: "12-0811", hex: "#FFF8DC"}, {name: "Ivory Cream", pantone: "11-0908", hex: "#FFFFF0"},
+        {name: "White Smoke", pantone: "11-0604", hex: "#F5F5F5"}, {name: "Plaster White", pantone: "11-0605", hex: "#EFEFEF"}, {name: "Cotton White", pantone: "11-0702", hex: "#F2F2F2"},
+        {name: "Paper White", pantone: "11-0608", hex: "#FAFAFA"}, {name: "Silk White", pantone: "11-0801", hex: "#F8F6F0"}, {name: "Porcelain", pantone: "11-0705", hex: "#FFFFF8"}
+    ]},
+    { name: "Grey", shades: [
+        {name: "Ultimate Gray", pantone: "17-5104", hex: "#939597"}, {name: "Glacier Gray", pantone: "14-4102", hex: "#B8C2CC"}, {name: "Simply Taupe", pantone: "16-0906", hex: "#AD9F93"},
+        {name: "Steel Gray", pantone: "18-4005", hex: "#75787B"}, {name: "Silver", pantone: "14-5002", hex: "#C0C0C0"}, {name: "Platinum", pantone: "13-4108", hex: "#E5E4E2"},
+        {name: "Ash Gray", pantone: "12-0605", hex: "#B2BEB5"}, {name: "Pewter", pantone: "16-4402", hex: "#8A9A86"}, {name: "Smoke", pantone: "14-5714", hex: "#738276"},
+        {name: "Dark Gray", pantone: "18-0201", hex: "#A9A9A9"}, {name: "Light Gray", pantone: "12-4301", hex: "#D3D3D3"}, {name: "Charcoal Gray", pantone: "18-0601", hex: "#625D5D"},
+        {name: "Battleship Gray", pantone: "16-3915", hex: "#848482"}, {name: "Davy's Gray", pantone: "18-0306", hex: "#555555"}, {name: "Iron Gray", pantone: "18-0403", hex: "#434B4D"},
+        {name: "Slate Gray", pantone: "17-4405", hex: "#708090"}, {name: "French Gray", pantone: "14-4103", hex: "#BFB8B0"}, {name: "Coin Gray", pantone: "15-4702", hex: "#989898"},
+        {name: "Flint", pantone: "16-3802", hex: "#6F6F6F"}, {name: "Graphite", pantone: "18-0505", hex: "#383838"}, {name: "Mars Gray", pantone: "16-0000", hex: "#8C92AC"},
+        {name: "Weldon Blue", pantone: "17-4415", hex: "#7C98B3"}, {name: "Shadow Gray", pantone: "16-0312", hex: "#8A7F8D"}, {name: "Mischka", pantone: "14-3812", hex: "#D1CCDC"},
+        {name: "Cascade", pantone: "15-4805", hex: "#8BA8B7"}, {name: "Fog Gray", pantone: "13-4405", hex: "#CBCDCE"}, {name: "Cement", pantone: "15-1110", hex: "#8D8B83"}
+    ]},
+    { name: "Black", shades: [
+        {name: "Jet Black", pantone: "19-0303", hex: "#2D2C2F"}, {name: "Anthracite", pantone: "19-4007", hex: "#28282B"}, {name: "Black Beauty", pantone: "19-3911", hex: "#26262A"},
+        {name: "Night Sky", pantone: "19-0312", hex: "#323133"}, {name: "Charcoal", pantone: "19-3906", hex: "#36454F"}, {name: "Onyx", pantone: "19-3908", hex: "#353839"},
+        {name: "Ebony", pantone: "19-0304", hex: "#555D50"}, {name: "Dark Slate", pantone: "19-4203", hex: "#2F4F4F"}, {name: "Midnight Black", pantone: "19-0301", hex: "#191919"},
+        {name: "Carbon Black", pantone: "19-0202", hex: "#111111"}, {name: "Licorice", pantone: "19-0000", hex: "#1A1110"}, {name: "Ink Black", pantone: "19-0404", hex: "#0B0B0B"},
+        {name: "Oil", pantone: "19-0302", hex: "#222222"}, {name: "Rich Black", pantone: "19-4008", hex: "#010203"}, {name: "Smoky Black", pantone: "19-0502", hex: "#100C08"},
+        {name: "Starlight Black", pantone: "19-0001", hex: "#0A0A0A"}, {name: "Obsidian", pantone: "19-0305", hex: "#1B1B1B"}, {name: "Night", pantone: "19-0308", hex: "#0C090A"},
+        {name: "Deep Black", pantone: "19-0002", hex: "#000000"}, {name: "Raven", pantone: "19-0201", hex: "#181818"}, {name: "Pitch Black", pantone: "19-0300", hex: "#050505"},
+        {name: "Café Noir", pantone: "19-1110", hex: "#4B3B2F"}, {name: "Bistre Noir", pantone: "19-1111", hex: "#261C14"}, {name: "Black Olive", pantone: "19-0414", hex: "#3B3C36"},
+        {name: "Tire Black", pantone: "19-0310", hex: "#343434"}, {name: "Dark Asphalt", pantone: "19-0307", hex: "#212121"}, {name: "Shadow Black", pantone: "19-0402", hex: "#131313"}
+    ]},
+    { name: "Green", shades: [
+        {name: "Greenery", pantone: "15-0343", hex: "#8A9A5B"}, {name: "Emerald", pantone: "17-5641", hex: "#009473"}, {name: "Dark Green", pantone: "19-5513", hex: "#2A4B46"},
+        {name: "Rifle Green", pantone: "19-0527", hex: "#414833"}, {name: "Olive", pantone: "18-0601", hex: "#808000"}, {name: "Sage", pantone: "15-6315", hex: "#9DC183"},
+        {name: "Lime", pantone: "13-0550", hex: "#00FF00"}, {name: "Forest Green", pantone: "19-5918", hex: "#228B22"}, {name: "Teal", pantone: "18-4733", hex: "#008080"},
+        {name: "Spring Green", pantone: "15-6110", hex: "#00FF7F"}, {name: "Chartreuse", pantone: "13-0442", hex: "#7FFF00"}, {name: "Jade", pantone: "16-6032", hex: "#00A86B"},
+        {name: "Viridian", pantone: "17-5430", hex: "#40826D"}, {name: "Pine Green", pantone: "18-5618", hex: "#01796F"}, {name: "Army Green", pantone: "18-0515", hex: "#4B5320"},
+        {name: "Hunter Green", pantone: "19-5511", hex: "#355E3B"}, {name: "Malachite", pantone: "16-6340", hex: "#0BDA51"}, {name: "Sea Green", pantone: "16-5806", hex: "#2E8B57"},
+        {name: "Dark Olive", pantone: "18-0602", hex: "#556B2F"}, {name: "Light Green", pantone: "13-0324", hex: "#90EE90"}, {name: "Pale Green", pantone: "12-0426", hex: "#98FB98"},
+        {name: "Glossy Green", pantone: "15-6216", hex: "#00A877"}, {name: "Neon Green", pantone: "14-0255", hex: "#39FF14"}, {name: "Bottle Green", pantone: "19-5914", hex: "#006A4E"},
+        {name: "Cabbage Green", pantone: "14-0230", hex: "#D0F0C0"}, {name: "Lawn Green", pantone: "12-0435", hex: "#7CFC00"}, {name: "Harlequin", pantone: "13-0330", hex: "#3FFF00"}
+    ]},
+    { name: "Mint", shades: [
+        {name: "Mint Green", pantone: "16-5938", hex: "#34D399"}, {name: "Turquoise", pantone: "15-5519", hex: "#00B5A6"}, {name: "Seafoam", pantone: "13-5414", hex: "#9FE2BF"},
+        {name: "Celadon", pantone: "13-0315", hex: "#ACE1AF"}, {name: "Peridot", pantone: "14-0452", hex: "#E6E200"}, {name: "Moss Green", pantone: "16-0632", hex: "#8A9A5B"},
+        {name: "Shamrock", pantone: "16-6339", hex: "#009E60"}, {name: "Veronese", pantone: "16-5830", hex: "#645452"}, {name: "Light Mint", pantone: "15-5210", hex: "#AAF0D1"},
+        {name: "Aquamarine", pantone: "14-4811", hex: "#7FFFD4"}, {name: "Spearmint", pantone: "15-5720", hex: "#62EE84"}, {name: "Ice Mint", pantone: "14-5912", hex: "#C1F0C1"},
+        {name: "Bright Mint", pantone: "15-5320", hex: "#2ECC71"}, {name: "Deep Mint", pantone: "17-5330", hex: "#16A085"}, {name: "Frost Mint", pantone: "13-5310", hex: "#E8F8F5"},
+        {name: "Electric Mint", pantone: "16-5421", hex: "#00FFCC"}, {name: "Crystal Mint", pantone: "14-5212", hex: "#A3E4D7"}, {name: "Glacier Mint", pantone: "14-5420", hex: "#76D7C4"},
+        {name: "Alpine Mint", pantone: "15-5510", hex: "#48C9B0"}, {name: "Tropical Mint", pantone: "15-5620", hex: "#1ABC9C"}, {name: "Lagoon Mint", pantone: "14-4912", hex: "#17A589"},
+        {name: "Neo Mint", pantone: "14-0114", hex: "#AAF0D2"}, {name: "Pastel Mint", pantone: "13-5910", hex: "#D1F2EB"}, {name: "Beryl Mint", pantone: "15-5416", hex: "#A9DFBF"}
+    ]},
+    { name: "Yellow", shades: [
+        {name: "Illuminating", pantone: "13-0647", hex: "#F5DF4D"}, {name: "Saffron", pantone: "14-1064", hex: "#FFA100"}, {name: "Buttercup", pantone: "12-0752", hex: "#E3AB10"},
+        {name: "Banana", pantone: "13-0947", hex: "#FCB953"}, {name: "Vibrant Yellow", pantone: "13-0858", hex: "#FFDA29"}, {name: "Mustard", pantone: "14-0852", hex: "#E6CA65"},
+        {name: "Citrine", pantone: "13-0758", hex: "#E4D00A"}, {name: "Corn", pantone: "13-0850", hex: "#FBEC5D"}, {name: "Lemon", pantone: "12-0643", hex: "#FDFF00"},
+        {name: "Sunlight", pantone: "12-0804", hex: "#FFF1B6"}, {name: "Daffodil", pantone: "13-0720", hex: "#FFFF33"}, {name: "Canary", pantone: "12-0726", hex: "#FFFF99"},
+        {name: "Neon Yellow", pantone: "13-0752", hex: "#CCFF00"}, {name: "Cream Yellow", pantone: "11-0107", hex: "#FFFDD0"}, {name: "Flax Yellow", pantone: "12-0720", hex: "#EEDC82"},
+        {name: "Mime Yellow", pantone: "13-0740", hex: "#F3E5AB"}, {name: "Cyber Yellow", pantone: "13-0850", hex: "#FFD300"}, {name: "Pastel Yellow", pantone: "12-0813", hex: "#FDFD96"},
+        {name: "Barium Yellow", pantone: "13-0730", hex: "#FFFFE0"}, {name: "Amber Yellow", pantone: "14-0955", hex: "#FFC000"}, {name: "Golden Yellow", pantone: "14-1064", hex: "#FFDF00"},
+        {name: "Deep Yellow", pantone: "14-0847", hex: "#FFCC00"}, {name: "Safety Yellow", pantone: "13-0858", hex: "#EED202"}, {name: "Solar Yellow", pantone: "13-0859", hex: "#FFF300"}
+    ]},
+    { name: "Gold", shades: [
+        {name: "Gold", pantone: "14-1036", hex: "#FFD700"}, {name: "Goldenrod", pantone: "15-1040", hex: "#DAA520"}, {name: "Flax", pantone: "12-0720", hex: "#EEDC82"},
+        {name: "Amber", pantone: "14-1045", hex: "#FFBF00"}, {name: "Topaz", pantone: "14-1038", hex: "#FFC87C"}, {name: "Mimosa", pantone: "14-0848", hex: "#F0C05A"},
+        {name: "Marigold", pantone: "14-1140", hex: "#EAA221"}, {name: "Honey", pantone: "15-1142", hex: "#EB9605"}, {name: "Champagne", pantone: "12-0404", hex: "#F7E7CE"},
+        {name: "Straw", pantone: "13-0919", hex: "#E4D96F"}, {name: "Jasmine", pantone: "12-0722", hex: "#F8DE7E"}, {name: "Flint Gold", pantone: "14-1025", hex: "#D4AF37"},
+        {name: "Metallic Gold", pantone: "14-1040", hex: "#D4AF37"}, {name: "Roman Gold", pantone: "15-1140", hex: "#C59059"}, {name: "Old Gold", pantone: "16-1035", hex: "#CFB53B"},
+        {name: "Pale Gold", pantone: "13-0925", hex: "#E6BE8A"}, {name: "Deep Gold", pantone: "15-1145", hex: "#FFD700"}, {name: "Royal Gold", pantone: "16-1130", hex: "#856D4D"},
+        {name: "Satin Gold", pantone: "15-1142", hex: "#CBA135"}, {name: "Aztec Gold", pantone: "16-1120", hex: "#C39953"}, {name: "Brass Gold", pantone: "15-1135", hex: "#B5A642"},
+        {name: "Desert Gold", pantone: "16-1235", hex: "#E1A95F"}, {name: "Sunburst Gold", pantone: "15-1150", hex: "#E8B923"}, {name: "Imperial Gold", pantone: "16-1040", hex: "#DAB300"}
+    ]},
+    { name: "Khaki", shades: [
+        {name: "Khaki", pantone: "16-0920", hex: "#C3B091"}, {name: "Dark Khaki", pantone: "18-0620", hex: "#BDB76B"}, {name: "Light Khaki", pantone: "14-0615", hex: "#F0E68C"},
+        {name: "Army Khaki", pantone: "16-0725", hex: "#8F8156"}, {name: "Desert Khaki", pantone: "15-1115", hex: "#D1B280"}, {name: "Olive Khaki", pantone: "17-0630", hex: "#9E9057"},
+        {name: "Classic Khaki", pantone: "16-0925", hex: "#B8A378"}, {name: "Urban Khaki", pantone: "15-1020", hex: "#C8B18E"}, {name: "Sahara Khaki", pantone: "16-1110", hex: "#B29C70"},
+        {name: "Vintage Khaki", pantone: "17-0925", hex: "#A38F64"}, {name: "Soft Khaki", pantone: "14-0820", hex: "#E2CFB4"}, {name: "Deep Khaki", pantone: "18-0720", hex: "#7A6D47"},
+        {name: "Warm Khaki", pantone: "15-1120", hex: "#CCA975"}, {name: "Cool Khaki", pantone: "15-0810", hex: "#C5B49D"}, {name: "Shadow Khaki", pantone: "17-0720", hex: "#8C7D55"},
+        {name: "Earth Khaki", pantone: "17-0915", hex: "#A69268"}, {name: "Muted Khaki", pantone: "15-0910", hex: "#B5A482"}, {name: "Raw Khaki", pantone: "16-0815", hex: "#BEAD8E"},
+        {name: "Military Khaki", pantone: "17-0620", hex: "#797143"}, {name: "Fine Khaki", pantone: "15-1015", hex: "#D6C19F"}, {name: "Rich Khaki", pantone: "17-1020", hex: "#B59E75"},
+        {name: "Stone Khaki", pantone: "15-0905", hex: "#C7BAA3"}, {name: "Clay Khaki", pantone: "16-1115", hex: "#A8946C"}, {name: "Subtle Khaki", pantone: "14-0910", hex: "#E3D3BA"},
+        {name: "Brushed Khaki", pantone: "15-1025", hex: "#C2A781"}, {name: "Hessian Khaki", pantone: "16-1020", hex: "#B09A72"}, {name: "Safari Khaki", pantone: "16-0930", hex: "#9E8B65"},
+        {name: "Pale Khaki", pantone: "14-0610", hex: "#F4F0DD"}, {name: "Golden Khaki", pantone: "16-1025", hex: "#BFAF8D"}, {name: "Timber Khaki", pantone: "17-0935", hex: "#8F7D59"},
+        {name: "Faded Khaki", pantone: "15-0915", hex: "#C4B99D"}, {name: "Sun Khaki", pantone: "16-0928", hex: "#BAA982"}, {name: "Bright Khaki", pantone: "14-0720", hex: "#E5D8A8"},
+        {name: "Dune Khaki", pantone: "16-1012", hex: "#C1B191"}, {name: "Washed Khaki", pantone: "15-1008", hex: "#C2B59B"}, {name: "Heavy Khaki", pantone: "18-0725", hex: "#6F6443"},
+        {name: "Parchment Khaki", pantone: "13-0908", hex: "#E8DEC5"}, {name: "Rattan Khaki", pantone: "15-1112", hex: "#D2BD9C"}, {name: "Burlap Khaki", pantone: "16-1108", hex: "#BEAD87"},
+        {name: "Silt Khaki", pantone: "15-1102", hex: "#B8B09C"}, {name: "Loam Khaki", pantone: "17-0910", hex: "#99865F"}, {name: "Chino Khaki", pantone: "15-1116", hex: "#CCA67C"},
+        {name: "Mustard Khaki", pantone: "15-1030", hex: "#D1B168"}, {name: "Flint Khaki", pantone: "16-0918", hex: "#A3997C"}, {name: "Dry Khaki", pantone: "15-1005", hex: "#C8BEA5"},
+        {name: "Tobacco Khaki", pantone: "18-0925", hex: "#736049"}, {name: "Teak Khaki", pantone: "17-1015", hex: "#B2996E"}, {name: "Smooth Khaki", pantone: "14-1005", hex: "#E1D6C1"}
+    ]}
 ];
 
 let activeColourMasterIndex = 0; let selectedColourForPopup = null; let colourPopupTarget = { type:null, index:null };
-let editingShadeIndex = -1;
 
 function loadTexfriendColourMaster() {
     try { const saved = localStorage.getItem(TEXFRIEND_COLOUR_KEY); if(saved) { const parsed = JSON.parse(saved); if(Array.isArray(parsed) && parsed.length) texfriendColourMaster = parsed; } } catch(e) {}
-    renderColourMasterTabs(); renderColourShades();
-}
-function saveTexfriendColourMaster() { localStorage.setItem(TEXFRIEND_COLOUR_KEY, JSON.stringify(texfriendColourMaster)); }
-
-function renderColourMasterTabs() {
-    const box = $("colourMasterTabs"); if(!box) return; box.innerHTML = "";
-    texfriendColourMaster.forEach((colour,i) => {
-        const btn = document.createElement("button"); btn.className = "colour-master-tab" + (i===activeColourMasterIndex ? " active" : "");
-        btn.textContent = colour.name; btn.onclick = () => { activeColourMasterIndex = i; renderColourMasterTabs(); renderColourShades(); }; box.appendChild(btn);
-    });
-}
-
-function renderColourShades() {
-    const box = $("colourShadeList"); if(!box) return; box.innerHTML="";
-    const master = texfriendColourMaster[activeColourMasterIndex]; if(!master) return;
-    master.shades.forEach((shade,i) => {
-        const card = document.createElement("div"); card.className = "swatch-card";
-        let pantoneHTML = shade.pantone ? `<div class="swatch-pantone">PT: ${escapeColourText(shade.pantone)}</div>` : '';
-        card.innerHTML = `<div class="swatch-color" style="background:${shade.hex}"></div><div class="swatch-details"><div class="swatch-name" title="${escapeColourText(shade.name)}">${escapeColourText(shade.name)}</div>${pantoneHTML}</div>`;
-        card.onclick = () => openColorManager(i);
-        box.appendChild(card);
-    });
 }
 
 function renderPopupTabs() {
@@ -2307,16 +2388,32 @@ function renderPopupTabs() {
 }
 
 function openColourPopup(masterName, shadeIndex, targetType=null, targetIndex=null) {
-    const masterIndex = texfriendColourMaster.findIndex(x=>x.name===masterName); if(masterIndex<0) return;
-    const master = texfriendColourMaster[masterIndex]; selectedColourForPopup = master.shades[shadeIndex];
+    const masterIndex = texfriendColourMaster.findIndex(x=>x.name===masterName); 
+    if(masterIndex >= 0) activeColourMasterIndex = masterIndex;
+    const master = texfriendColourMaster[activeColourMasterIndex]; 
+    selectedColourForPopup = master.shades[0];
     colourPopupTarget = { type:targetType, index:targetIndex };
-    $("colourPopupTitle").textContent = "Select Shade"; $("colourPopup").classList.add("active"); $("colourSearchInput").value = ""; 
+    
+    if($("editingTargetInfo")) {
+        let lineNo = targetType === "warp" ? "Warp Line " + targetIndex : "Weft Line " + targetIndex;
+        $("editingTargetInfo").textContent = "Editing: " + lineNo;
+    }
+
+    const popupObj = $("colourPopup");
+    popupObj.classList.add("active"); 
+    $("colourSearchInput").value = ""; 
+    
+    try {
+        if (popupObj.requestFullscreen) popupObj.requestFullscreen();
+        else if (popupObj.webkitRequestFullscreen) popupObj.webkitRequestFullscreen();
+    } catch(e) {}
+
     renderPopupTabs(); 
     renderColourPopupGrid(master); 
 }
 
 function renderColourPopupGrid(master, filterText = "") {
-    const box = $("colourPopupGrid"); box.innerHTML="";
+    const box = $("colourPopupGrid"); if(!box) return; box.innerHTML="";
     let shadesToRender = [];
     if(filterText) {
         texfriendColourMaster.forEach(m => { m.shades.forEach(s => { if(s.name.toLowerCase().includes(filterText) || (s.pantone && s.pantone.toLowerCase().includes(filterText))) { shadesToRender.push(s); } }); });
@@ -2332,181 +2429,73 @@ function renderColourPopupGrid(master, filterText = "") {
 
 function filterColourPopup() { let text = $("colourSearchInput").value.trim().toLowerCase(); const master = texfriendColourMaster[activeColourMasterIndex]; renderColourPopupGrid(master, text); }
 
-function closeColourPopup() { $("colourPopup").classList.remove("active"); }
+function closeColourPopup() { 
+    $("colourPopup").classList.remove("active"); 
+    try {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+    } catch(e) {}
+}
 
+/* FIXED: Sync logic relies on original name (data-orig) if available, falling back to exact hex match */
 function applySelectedColour() {
     if(!selectedColourForPopup) { closeColourPopup(); return; }
-    const target = colourPopupTarget; let oldHex = "";
-    let inputObj = $(target.type === "warp" ? "wC"+target.index : "weftC"+target.index); if(inputObj) oldHex = inputObj.value;
-    let syncAll = $("syncColorCheck")?.checked; let newHex = selectedColourForPopup.hex.toLowerCase(); let newNameHTML = makeColourNameHTML(selectedColourForPopup);
-
-    if(syncAll && oldHex) {
-        for(let i=1; i<=currentWarpCount; i++) { let wInp = $("wC"+i); if(wInp && wInp.value.toLowerCase() === oldHex.toLowerCase()) { wInp.value = newHex; let wName = $("wName"+i); if(wName) wName.innerHTML = newNameHTML; } }
-        for(let i=1; i<=currentWeftCount; i++) { let fInp = $("weftC"+i); if(fInp && fInp.value.toLowerCase() === oldHex.toLowerCase()) { fInp.value = newHex; let fName = $("weftName"+i); if(fName) fName.innerHTML = newNameHTML; } }
-    } else {
-        if(target.type==="warp" && target.index) { const input = $("wC"+target.index); if(input) input.value = newHex; const name = $("wName"+target.index); if(name) name.innerHTML = newNameHTML; }
-        if(target.type==="weft" && target.index) { const input = $("weftC"+target.index); if(input) input.value = newHex; const name = $("weftName"+target.index); if(name) name.innerHTML = newNameHTML; }
-    }
-    saveTexfriendColourMaster(); autoRefresh3D(); closeColourPopup();
-}
-
-function getContrastColor(hex) {
-    hex = (hex || "#ffffff").replace('#', '');
-    if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
-    const r = parseInt(hex.substring(0, 2), 16) || 255;
-    const g = parseInt(hex.substring(2, 4), 16) || 255;
-    const b = parseInt(hex.substring(4, 6), 16) || 255;
-    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return (yiq >= 128) ? '#000000' : '#ffffff';
-}
-
-function makeColourNameHTML(shade) { 
-    let textColor = getContrastColor(shade.hex);
-    let pnt = shade.pantone ? `<span style="font-size: 0.5rem; opacity: 0.85; margin-top: 1px;">PT: ${escapeColourText(shade.pantone)}</span>` : '';
-    return `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; background:${shade.hex}; color:${textColor}; border-radius:6px; padding: 2px;">
-                <span style="font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">${escapeColourText(shade.name)}</span>
-                ${pnt}
-            </div>`; 
-}
-
-function escapeColourText(value) { return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-
-function openColorManager(index = -1) {
-    editingShadeIndex = index;
-    let catSelect = $("cmCategory");
-    catSelect.innerHTML = ""; 
-    texfriendColourMaster.forEach(m => { catSelect.innerHTML += `<option value="${m.name}">${m.name}</option>`; });
-    catSelect.innerHTML += `<option value="_new_">➕ Add New Category</option>`;
+    const target = colourPopupTarget; let oldHex = ""; let oldOrig = "";
+    let inputObj = $(target.type === "warp" ? "wC"+target.index : "weftC"+target.index); 
+    if(inputObj) { oldHex = inputObj.value.toLowerCase(); oldOrig = inputObj.getAttribute("data-orig") || ""; }
     
-    if(index >= 0) {
-        $("cmPopupTitle").innerHTML = "✏️ Edit / Delete Shade";
-        let shade = texfriendColourMaster[activeColourMasterIndex].shades[index];
-        catSelect.value = texfriendColourMaster[activeColourMasterIndex].name;
-        $("cmPantone").value = shade.pantone || ""; 
-        $("cmName").value = shade.name || ""; 
-        
-        let hexVal = (shade.hex || "#22c55e").toLowerCase(); 
-        if(/^#[0-9a-f]{3}$/i.test(hexVal)) {
-            hexVal = "#" + hexVal[1]+hexVal[1] + hexVal[2]+hexVal[2] + hexVal[3]+hexVal[3];
+    let syncAll = $("syncColorCheck")?.checked; 
+    let newHex = selectedColourForPopup.hex.toLowerCase(); 
+    let newName = selectedColourForPopup.name;
+
+    if(syncAll) {
+        for(let i=1; i<=currentWarpCount; i++) { 
+            let wInp = $("wC"+i); 
+            if(wInp) { 
+                let match = false;
+                if(oldOrig !== "") match = (wInp.getAttribute("data-orig") === oldOrig);
+                else match = (wInp.value.toLowerCase() === oldHex);
+                
+                if(match) {
+                    wInp.value = newHex; 
+                    wInp.setAttribute("data-orig", newName);
+                    let wBtn = $("wBtn"+i); if(wBtn) wBtn.style.background = newHex; 
+                    let wDisp = $("wNameDisp"+i); if(wDisp) wDisp.innerHTML = getLocalizedColorName(newName) || newName; 
+                }
+            } 
         }
-        if(!/^#[0-9a-f]{6}$/i.test(hexVal)) {
-            hexVal = "#22c55e";
-        }
-        
-        $("cmHex").value = hexVal; 
-        $("cmHexPicker").value = hexVal;
-        $("cmHexWrapper").style.background = hexVal;
-        $("cmDeleteBtnContainer").style.display = "block";
-    } else {
-        $("cmPopupTitle").innerHTML = "🎨 Add New Shade";
-        catSelect.value = texfriendColourMaster[activeColourMasterIndex]?.name || ""; 
-        $("cmPantone").value = ""; $("cmName").value = ""; 
-        $("cmHex").value = "#22c55e"; 
-        $("cmHexPicker").value = "#22c55e";
-        $("cmHexWrapper").style.background = "#22c55e";
-        $("cmDeleteBtnContainer").style.display = "none";
-    }
-    
-    $("colorManagerModal").classList.add("active");
-}
-
-function handleCatChange() {
-    let catSelect = $("cmCategory");
-    if (catSelect.value === "_new_") {
-        let n = prompt("Enter new category name:");
-        if(n && n.trim() !== "") {
-            n = n.trim();
-            catSelect.innerHTML = `<option value="${n}">${n}</option>` + catSelect.innerHTML;
-            catSelect.value = n;
-        } else {
-            catSelect.selectedIndex = 0;
-        }
-    }
-}
-
-function closeColorManager() { $("colorManagerModal").classList.remove("active"); }
-
-function searchPantoneDB() {
-    let code = $("cmPantone").value.trim().toUpperCase(); if(!code) return;
-    if(PANTONE_DB[code]) { 
-        $("cmName").value = PANTONE_DB[code].name; 
-        let h = PANTONE_DB[code].hex.toLowerCase(); 
-        $("cmHex").value = h; 
-        $("cmHexPicker").value = h; 
-        $("cmHexWrapper").style.background = h;
-        alert(`✅ Pantone Code Found!\nName: ${PANTONE_DB[code].name}\nHex: ${PANTONE_DB[code].hex}`); 
-    } 
-    else { alert("ℹ️ Pantone Not Found in Offline Database.\nYou can manually choose the HEX color below and save it!"); }
-}
-
-function saveNewColorAdvanced() {
-    let catName = $("cmCategory").value.trim() || "Others"; let pantone = $("cmPantone").value.trim().toUpperCase(); let shadeName = $("cmName").value.trim() || (pantone ? `PT ${pantone}` : "New Shade"); let hex = $("cmHex").value.trim().toLowerCase();
-    if(!/^#[0-9a-f]{6}$/i.test(hex)) { alert("❌ Invalid Hex Code! (Use #RRGGBB)"); return; }
-    
-    let newShade = { name: shadeName, pantone: pantone, hex: hex };
-
-    if(editingShadeIndex >= 0) {
-        let oldCatName = texfriendColourMaster[activeColourMasterIndex].name;
-        if(oldCatName.toLowerCase() === catName.toLowerCase()) {
-            texfriendColourMaster[activeColourMasterIndex].shades[editingShadeIndex] = newShade;
-        } else {
-            texfriendColourMaster[activeColourMasterIndex].shades.splice(editingShadeIndex, 1);
-            let newCatIndex = texfriendColourMaster.findIndex(m => m.name.toLowerCase() === catName.toLowerCase());
-            if(newCatIndex >= 0) { texfriendColourMaster[newCatIndex].shades.push(newShade); activeColourMasterIndex = newCatIndex; } 
-            else { texfriendColourMaster.push({ name: catName, shades: [newShade] }); activeColourMasterIndex = texfriendColourMaster.length - 1; }
+        for(let i=1; i<=currentWeftCount; i++) { 
+            let fInp = $("weftC"+i); 
+            if(fInp) { 
+                let match = false;
+                if(oldOrig !== "") match = (fInp.getAttribute("data-orig") === oldOrig);
+                else match = (fInp.value.toLowerCase() === oldHex);
+                
+                if(match) {
+                    fInp.value = newHex; 
+                    fInp.setAttribute("data-orig", newName);
+                    let fBtn = $("weftBtn"+i); if(fBtn) fBtn.style.background = newHex; 
+                    let fDisp = $("weftNameDisp"+i); if(fDisp) fDisp.innerHTML = getLocalizedColorName(newName) || newName; 
+                }
+            } 
         }
     } else {
-        let catIndex = texfriendColourMaster.findIndex(m => m.name.toLowerCase() === catName.toLowerCase()); 
-        if(catIndex >= 0) { texfriendColourMaster[catIndex].shades.push(newShade); activeColourMasterIndex = catIndex; } 
-        else { texfriendColourMaster.push({ name: catName, shades: [newShade] }); activeColourMasterIndex = texfriendColourMaster.length - 1; }
-    }
-
-    saveTexfriendColourMaster(); renderColourMasterTabs(); renderColourShades(); closeColorManager();
-}
-
-function deleteShadeAdvanced() {
-    if (editingShadeIndex >= 0) {
-        if(confirm("Are you sure you want to delete this shade?")) {
-            texfriendColourMaster[activeColourMasterIndex].shades.splice(editingShadeIndex, 1);
-            saveTexfriendColourMaster(); renderColourMasterTabs(); renderColourShades(); closeColorManager();
+        if(target.type==="warp" && target.index) { 
+            const input = $("wC"+target.index); if(input) { input.value = newHex; input.setAttribute("data-orig", newName); }
+            const btn = $("wBtn"+target.index); if(btn) btn.style.background = newHex; 
+            const disp = $("wNameDisp"+target.index); if(disp) disp.innerHTML = getLocalizedColorName(newName) || newName; 
+        }
+        if(target.type==="weft" && target.index) { 
+            const input = $("weftC"+target.index); if(input) { input.value = newHex; input.setAttribute("data-orig", newName); }
+            const btn = $("weftBtn"+target.index); if(btn) btn.style.background = newHex; 
+            const disp = $("weftNameDisp"+target.index); if(disp) disp.innerHTML = getLocalizedColorName(newName) || newName; 
         }
     }
-}
-
-function addColourNameButtons() {
-    for(let i=1; i<=currentWarpCount; i++) {
-        const input = $("wC"+i); if(!input) continue; const parent = input.parentElement; if($("wName"+i)) continue;
-        const name = document.createElement("button"); name.type="button"; name.id="wName"+i; name.className="design-colour-name";
-        let origName = input.getAttribute("data-orig") || "";
-        name.innerHTML = getExistingColourName(input.value, origName); 
-        name.onclick=()=>openColourPickerForEntry("warp", i);
-        parent.replaceChild(name, input); input.style.display="none"; parent.appendChild(input);
-    }
-    for(let i=1; i<=currentWeftCount; i++) {
-        const input = $("weftC"+i); if(!input) continue; const parent = input.parentElement; if($("weftName"+i)) continue;
-        const name = document.createElement("button"); name.type="button"; name.id="weftName"+i; name.className="design-colour-name";
-        let origName = input.getAttribute("data-orig") || "";
-        name.innerHTML = getExistingColourName(input.value, origName); 
-        name.onclick=()=>openColourPickerForEntry("weft", i);
-        parent.replaceChild(name, input); input.style.display="none"; parent.appendChild(input);
-    }
-}
-
-function getExistingColourName(hex, origName = "") {
-    for(const master of texfriendColourMaster) { 
-        for(const shade of master.shades) { 
-            if(shade.hex.toLowerCase()===String(hex).toLowerCase()) {
-                return makeColourNameHTML(shade); 
-            }
-        } 
-    }
-    
-    let textColor = getContrastColor(hex);
-    let displayTxt = origName !== "" ? `${escapeColourText(origName)} <span style="font-size:0.5rem;display:block;opacity:0.8;">(Tap to map tone)</span>` : `Select Colour`;
-    
-    return `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; background:${hex}; color:${textColor}; border-radius:6px; padding: 2px;">
-                <span style="font-size: 0.75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align:center;">${displayTxt}</span>
-            </div>`;
+    localStorage.setItem(TEXFRIEND_COLOUR_KEY, JSON.stringify(texfriendColourMaster)); 
+    autoRefresh3D(); 
+    closeColourPopup();
 }
 
 function openColourPickerForEntry(type, index) {
@@ -2517,15 +2506,45 @@ function openColourPickerForEntry(type, index) {
     selectedColourForPopup = foundShade; openColourPopup(master.name, master.shades.indexOf(foundShade), type, index);
 }
 
-const _originalRenderUIWithData = window.renderUIWithData;
-window.renderUIWithData = function(w=[], f=[]) { _originalRenderUIWithData(w,f); setTimeout(()=>addColourNameButtons(), 0); };
-
 window.addEventListener("load", async () => {
-    loadTexfriendColourMaster(); renderUIWithData([],[]);
-    let cache = safeJSON("weave_designs_cache", []); let local = safeJSON("design_masters_data", []);
-    allCloudDesigns = mergeDesigns([...(Array.isArray(cache)?cache:[]), ...(Array.isArray(local)?local:[])]);
-    if(allCloudDesigns.length) populateDesignSelect(true); else setStatus("ℹ️ Design இல்லை — முதலில் Design data save செய்யவும்");
-    await importFromFirebase(false);
+    try {
+        loadTexfriendColourMaster(); 
+        renderUIWithData([],[]);
+        let cache = safeJSON("weave_designs_cache", []); let local = safeJSON("design_masters_data", []);
+        allCloudDesigns = mergeDesigns([...(Array.isArray(cache)?cache:[]), ...(Array.isArray(local)?local:[])]);
+        populateDesignSelect(true);
+        await importFromFirebase(false);
+    } catch (err) {
+        console.error("Init Error:", err);
+    }
+});
+
+// ===== GRAPH SIZE FIX =====
+document.getElementById('printGraphScale')?.addEventListener('change', function() {
+    let val = this.value; // small, medium, large
+    let size = "8mm";
+    if(val === "small") size = "6mm";
+    if(val === "medium") size = "8mm";
+    if(val === "large") size = "10mm";
+
+    document.querySelectorAll('.print-graph-table td').forEach(td => {
+        if(!td.classList.contains('graph-axis')) {
+            td.style.width = size;
+            td.style.height = size;
+            td.style.minWidth = size;
+        }
+    });
+});
+
+document.getElementById('printOrientation')?.addEventListener('change', function() {
+    if(typeof printDesign === 'function') {
+        setTimeout(() => {
+            let modal = document.getElementById('printModalBox');
+            if(modal && modal.style.display !== 'none') {
+                printDesign();
+            }
+        }, 100);
+    }
 });
 </script>
 

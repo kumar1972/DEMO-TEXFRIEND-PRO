@@ -42,7 +42,7 @@ body{
     width:100%;
     max-width:980px;
     margin:0 auto;
-    background:#ffffff;
+    background:#ffffff !important;
     border:1px solid #e2e8e2;
     border-radius:12px;
     padding:10px;
@@ -126,7 +126,7 @@ body{
 ========================================================= */
 
 .top-form-row-single{
-    background:#F8FAF8;
+    background:#F8FAF8 !important;
     border:1px solid #E2E8E2;
     border-radius:7px;
     padding:7px 10px;
@@ -146,8 +146,8 @@ select{
     padding:7px 10px;
     border-radius:6px;
     border:1px solid #D1DED1;
-    background:#ffffff;
-    color:#1E2B23;
+    background:#ffffff !important;
+    color:#1E2B23 !important;
     font-size:11px;
     font-weight:600;
     outline:none;
@@ -183,7 +183,7 @@ select{
 
 .design-info-box,
 .weft-info-box{
-    background:#F8FAF8;
+    background:#F8FAF8 !important;
     border:1px solid #D1DED1;
     border-radius:6px;
     padding:7px 8px;
@@ -192,13 +192,13 @@ select{
     gap:5px;
     font-size:9px;
     font-weight:600;
-    color:#2F4F38;
+    color:#2F4F38 !important;
     margin-bottom:6px;
 }
 
 .design-info-box div span,
 .weft-info-box div span{
-    color:#4A7C59;
+    color:#4A7C59 !important;
     font-weight:700;
 }
 
@@ -208,8 +208,8 @@ select{
 
 .section-title{
     font-size:10px;
-    color:#ffffff;
-    background:#4A7C59;
+    color:#ffffff !important;
+    background:#4A7C59 !important;
     padding:5px 8px;
     border-radius:6px;
     display:inline-block;
@@ -219,13 +219,15 @@ select{
 }
 
 /* =========================================================
-   TABLE (NO VERTICAL & HORIZONTAL BORDERS)
+   TABLE (NO ROW GRID LINES)
 ========================================================= */
 
 .dual-table-wrapper{
     display:flex;
     gap:2%;
     width:100%;
+    flex-wrap:wrap;
+    margin-bottom: 10px;
 }
 
 .single-table-col{
@@ -236,7 +238,7 @@ select{
 .table-container{
     width:100%;
     overflow:hidden;
-    background:transparent;
+    background:#ffffff !important;
     margin-bottom:4px;
 }
 
@@ -245,24 +247,24 @@ table{
     border-collapse:collapse;
     font-size:11px;
     text-align:center;
-    background:transparent;
+    background:#ffffff !important;
 }
 
 th,
 td{
-    padding:7px 5px;
-    color:#1E2B23;
-    border:none; /* No Lines */
-    background:transparent;
+    padding:6px 4px;
+    color:#1E2B23 !important;
+    border:none !important; 
+    background:#ffffff !important;
 }
 
 th{
-    background:#EAF0EA;
-    color:#2F4F38;
+    background:#EAF0EA !important;
+    color:#2F4F38 !important;
     font-weight:700;
     font-size:10px;
-    border-top:2px solid #4A7C59; /* Header solid borders */
-    border-bottom:2px solid #4A7C59; 
+    border-top:2px solid #4A7C59 !important;
+    border-bottom:2px solid #4A7C59 !important; 
 }
 
 .col-no{
@@ -291,6 +293,8 @@ th{
     width:20%;
     text-align:center;
     font-weight:700;
+    white-space:nowrap;
+    border-left:1px dashed #CBD5CB !important;
 }
 
 .dash-sep{
@@ -320,14 +324,14 @@ th{
 ========================================================= */
 
 .summary-box{
-    background:#F4F7F4;
+    background:#F4F7F4 !important;
     border:1px dashed #CBD5CB;
     border-radius:6px;
     padding:6px 8px;
     text-align:left;
     font-size:10px;
     font-weight:600;
-    color:#2F4F38;
+    color:#2F4F38 !important;
     margin-bottom:8px;
     margin-top:5px;
     line-height:1.6;
@@ -340,7 +344,7 @@ th{
 }
 
 .summary-box b{
-    color:#1E2B23;
+    color:#1E2B23 !important;
 }
 
 /* =========================================================
@@ -472,7 +476,7 @@ th{
 
     @page{
         size:A4 portrait;
-        margin:8mm;
+        margin:6mm;
     }
 
     html,
@@ -536,28 +540,65 @@ th{
 
     .company-header{
         display:block !important;
+        margin-bottom: 2px !important;
+        padding-bottom: 2px !important;
+    }
+    
+    .design-info-box, .weft-info-box{
+        margin-bottom: 4px !important;
+        padding: 4px !important;
+    }
+    
+    .section-title{
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .dual-table-wrapper{
+        display:block !important; 
+        width:100% !important;
+        clear:both !important;
+        overflow:hidden !important;
+        page-break-inside:avoid !important; 
+        margin-bottom: 10px !important;
+    }
+    
+    .single-table-col{
+        display:block !important;
+        float:left !important;
+        width:49% !important;
+        max-width:49% !important;
+    }
+
+    .single-table-col:nth-child(2) {
+        float:right !important;
     }
 
     table{
         width:100% !important;
         border-collapse:collapse !important;
-        background:transparent !important;
-        font-size:14px !important;
+        background:#ffffff !important;
+        font-size:11px !important; 
     }
 
     th,
     td{
-        border:none !important; /* No Row lines */
-        background:transparent !important;
+        border:none !important;
+        background:#ffffff !important;
         color:#000000 !important;
-        padding:8px 5px !important;
-        font-size:14px !important;
+        padding:3px 2px !important; 
+        font-size:11px !important; 
+        line-height: 1.2 !important;
+    }
+
+    .col-set {
+        border-left: 1px dashed #888888 !important;
     }
 
     th{
         background:#EAF0EA !important;
         color:#000000 !important;
-        font-size:12px !important;
+        font-size:10px !important;
         border-top:2px solid #4A7C59 !important;
         border-bottom:2px solid #4A7C59 !important;
         -webkit-print-color-adjust:exact !important;
@@ -580,16 +621,9 @@ th{
     .summary-box{
         background:#F4F7F4 !important;
         color:#000000 !important;
-        font-size:12px !important;
+        font-size:10px !important;
+        padding:4px 6px !important;
         border:1px dashed #888 !important;
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
-
-    .design-info-box,
-    .weft-info-box{
-        background:#F8FAF8 !important;
-        color:#000000 !important;
         -webkit-print-color-adjust:exact !important;
         print-color-adjust:exact !important;
     }
@@ -699,17 +733,17 @@ th{
         </div>
 
         <div>
-            O.ரீட்:
+            Onreed.ரீட்:
             <span id="hdrReed">-</span>
         </div>
 
         <div>
-            O.பிக்:
+            Onreed.பிக்:
             <span id="hdrPick">-</span>
         </div>
 
         <div>
-            O.அகலம்:
+            Onreed.அகலம்:
             <span id="hdrWidth">-</span>
         </div>
 
@@ -971,70 +1005,6 @@ function cleanDesignName(str){
 }
 
 
-/* =========================================================
-   COLOR TRANSLATION
-========================================================= */
-
-function translateColorToTamil(colorName){
-
-    if(!colorName)
-        return "-";
-
-    let original =
-        String(colorName).trim();
-
-    let c =
-        original.toLowerCase();
-
-    let map = {
-
-        "gold":"கோல்டு",
-        "l. olive":"L. ஆலிவ்",
-        "d. olive":"D. ஆலிவ்",
-        "grey":"கிரே",
-        "gray":"கிரே",
-        "t.salavai":"T. சலவை",
-        "t. salavai":"T. சலவை",
-        "t. white":"T. சலவை",
-        "1/2 salavai":"1/2 சலவை",
-        "1/2 white":"1/2 சலவை",
-        "white":"வெள்ளை",
-        "black":"கருப்பு",
-        "blue":"ப்ளூ",
-        "yellow":"மஞ்சள்",
-        "red":"ரெட்",
-        "green":"கிரீன்",
-        "p. green":"கிளி பச்சை",
-        "brown":"பிரவுன்",
-        "khaki":"காக்கி",
-        "l. khaki":"L. காக்கி",
-        "d. khaki":"D. காக்கி",
-        "rose":"ரோஸ்",
-        "orange":"ஆரஞ்சு",
-        "violet":"வைலட்",
-        "pink":"பிங்க்",
-        "navy":"நேவி",
-        "l. navy":"L. நேவி",
-        "d. navy":"D. நேவி",
-        "maroon":"மெரூன்",
-        "olive":"ஆலிவ்",
-        "l. blue":"L. ப்ளூ",
-        "r. blue":"R. ப்ளூ",
-        "turq":"டர்க்",
-        "purple":"பர்புள்",
-        "cream":"கிரீம்",
-        "beige":"பேஜ்",
-        "biscuit":"பிஸ்கட்",
-        "majenda":"மெஜந்தா"
-
-    };
-
-    if(map[c])
-        return map[c];
-
-    return original;
-
-}
 
 
 /* =========================================================
@@ -1794,16 +1764,19 @@ function renderSplitPreviewTable(
                         rInfo.start
                     ) + 1;
 
-
+                // Here X 2 and = 4 split into 2 lines vertically as requested.
                 setHtml = `
                     <td
                         rowspan="${spanRows}"
                         class="col-set"
                         style="vertical-align:middle;">
-
-                        X ${rInfo.set}
-                        = ${totalProduct}
-
+                        <div style="display:flex; align-items:center; justify-content:center;">
+                            <span style="font-size:32px; font-weight:300; margin-right:4px; line-height:0.7; padding-bottom:2px;">}</span>
+                            <div style="display:flex; flex-direction:column; text-align:left; line-height:1.1; font-size:inherit;">
+                                <b>X ${rInfo.set}</b>
+                                <b>= ${totalProduct}</b>
+                            </div>
+                        </div>
                     </td>
                 `;
 
@@ -1886,81 +1859,59 @@ function renderSplitPreviewTable(
 
 
     /* -----------------------------------------------------
-       SPLIT AFTER 35
+       SPLIT COLUMN LOGIC (Split dynamically every 40 rows)
     ----------------------------------------------------- */
 
-    let col1 =
-        rowsData.slice(0,35);
+    let splitLimit = 40; 
+    let finalHtml = "";
 
-    let col2 =
-        rowsData.slice(35);
+    for(let i = 0; i < rowsData.length; i += (splitLimit * 2)) {
+        
+        let col1 = rowsData.slice(i, i + splitLimit);
+        let col2 = rowsData.slice(i + splitLimit, i + splitLimit * 2);
 
+        let t1 = buildTableRowsHtml(col1);
+        let t2 = buildTableRowsHtml(col2);
 
-    let t1 =
-        buildTableRowsHtml(col1);
+        let secondTable = "";
 
-    let t2 =
-        buildTableRowsHtml(col2);
-
-
-    let secondTable = "";
-
-    if(t2 !== ""){
-
-        secondTable = `
-            <div class="single-table-col">
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-                            ${headerHtml}
-                        </thead>
-
-                        <tbody>
-                            ${t2}
-                        </tbody>
-
-                    </table>
-
+        if(t2 !== ""){
+            secondTable = `
+                <div class="single-table-col">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                ${headerHtml}
+                            </thead>
+                            <tbody>
+                                ${t2}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+            `;
+        }
 
+        finalHtml += `
+            <div class="dual-table-wrapper">
+                <div class="single-table-col">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                ${headerHtml}
+                            </thead>
+                            <tbody>
+                                ${t1}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                ${secondTable}
             </div>
         `;
-
     }
 
-
-    wrapper.innerHTML = `
-
-        <div class="dual-table-wrapper">
-
-            <div class="single-table-col">
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-                            ${headerHtml}
-                        </thead>
-
-                        <tbody>
-                            ${t1}
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-            ${secondTable}
-
-        </div>
-
-    `;
+    wrapper.innerHTML = finalHtml;
 
 
     /* -----------------------------------------------------
